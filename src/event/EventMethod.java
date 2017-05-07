@@ -1,0 +1,19 @@
+package event;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Indicates that the method can be used to listen for any relevant event calls.
+ * 
+ * @author Albert Beaupre
+ * 
+ * @version 1.0
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface EventMethod {
+
+}
