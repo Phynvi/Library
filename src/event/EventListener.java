@@ -10,8 +10,6 @@ package event;
  * @see event.Event
  * 
  * @author Albert Beaupre
- * 
- * @version 1.0
  */
 public interface EventListener {
 

@@ -20,8 +20,6 @@ import java.util.Map.Entry;
  * @see event.EventMethod
  * 
  * @author Albert Beaupre
- *
- * @version 1.0
  */
 public class EventManager {
 

@@ -9,8 +9,6 @@ import java.lang.annotation.Target;
  * Indicates that the method can be used to listen for any relevant event calls.
  * 
  * @author Albert Beaupre
- * 
- * @version 1.0
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

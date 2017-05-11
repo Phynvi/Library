@@ -14,7 +14,7 @@ import java.util.zip.ZipEntry;
 import yaml.ConfigSection;
 
 /**
- * A utility class that helps to load {@code Module} types in different ways.
+ * A utility class that helps to load {@code Module} types.
  * 
  * @author Albert Beaupre
  */
@@ -31,7 +31,7 @@ public class ModuleLoader {
      * @return a {@code Collection} of {@code Module} loaded from the
      *         {@code folder}
      */
-    public Collection<Module> getModulesFromFolder(File folder) {
+    public static Collection<Module> getModulesFromFolder(File folder) {
 	List<Module> modules = new ArrayList<>();
 	if (!folder.exists()) {
 	    if (!folder.mkdirs()) {
@@ -65,7 +65,7 @@ public class ModuleLoader {
      * @throws Exception
      *             if an error occurs at any state of loading the module
      */
-    public Module getModuleFromFile(File file) throws Exception {
+    public static Module getModuleFromFile(File file) throws Exception {
 	URLClassLoader classLoader = new URLClassLoader(new URL[] { file.toURI().toURL() }, ClassLoader.getSystemClassLoader());
 	JarFile extensionJar = new JarFile(file);
 	ZipEntry zipEntry = extensionJar.getEntry("extension.yml");
