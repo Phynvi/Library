@@ -17,8 +17,8 @@ import org.yaml.snakeyaml.Yaml;
  * map of <String, Object> where the objects are values or possibly, more
  * ConfigSections.
  * 
- * This is an easy way of storing and loading data from config files. It uses
- * the SnakeYAML library, coupled with this project.
+ * This is an easy way of storing and loading data from configuration files. It
+ * uses the SnakeYAML library, coupled with this project.
  * 
  * @author Dirk Jamieson
  */
@@ -516,7 +516,11 @@ public class ConfigSection implements Map<String, Object> {
 	}
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
 	DumperOptions options = new DumperOptions();
 	options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
@@ -524,57 +528,101 @@ public class ConfigSection implements Map<String, Object> {
 	return parser.dump(map);
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#size()
+     */
     public int size() {
 	return map.size();
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#containsKey(java.lang.Object)
+     */
     public boolean containsKey(Object key) {
 	return map.containsKey(key);
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#containsValue(java.lang.Object)
+     */
     public boolean containsValue(Object value) {
 	return map.containsValue(value);
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#get(java.lang.Object)
+     */
     public Object get(Object key) {
 	return map.get(key);
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#put(java.lang.Object, java.lang.Object)
+     */
     public Object put(String key, Object value) {
 	return map.put(key, value);
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#remove(java.lang.Object)
+     */
     public Object remove(Object key) {
 	return map.remove(key);
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#putAll(java.util.Map)
+     */
     public void putAll(Map<? extends String, ? extends Object> m) {
 	map.putAll(m);
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#clear()
+     */
     public void clear() {
 	map.clear();
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#keySet()
+     */
     public Set<String> keySet() {
 	return map.keySet();
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#values()
+     */
     public Collection<Object> values() {
 	return map.values();
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Map#entrySet()
+     */
     public Set<Entry<String, Object>> entrySet() {
 	return map.entrySet();
     }

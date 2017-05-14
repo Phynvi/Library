@@ -1,8 +1,9 @@
 package container;
 
 /**
- * Represents an item with a specific id used within a {@link Container}. A
- * {@code BasicItem} can have a modifiable amount, but not a modifiable id.
+ * Represents an item with a specific id used within a
+ * {@link container.Container}. A {@code BasicItem} can have a modifiable
+ * amount, but not a modifiable id.
  * 
  * @author Albert Beaupre
  */

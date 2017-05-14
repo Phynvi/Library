@@ -7,11 +7,11 @@ import java.util.HashSet;
 /**
  * Represents an area combined by multiple different shapes.
  * 
- * @see geometry.Shape3D
- * 
  * @author Albert Beaupre
+ * 
+ * @see geometry.Shape3D
  */
-public class Area<T extends Point3D> implements Shape3D {
+public class Area<T extends Locatable> implements Shape3D {
 
     private HashMap<Class<?>, HashSet<T>> entities;
     private ArrayList<Shape3D> combinedArea;
@@ -89,7 +89,7 @@ public class Area<T extends Point3D> implements Shape3D {
 	synchronized (entities) {
 	    HashSet<T> set = entities.get(clazz);
 	    for (T entity : set) {
-		if (bounds.contains(entity))
+		if (bounds.contains(entity.getLocation()))
 		    objects.add((U) entity);
 	    }
 	}

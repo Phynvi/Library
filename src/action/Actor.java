@@ -2,7 +2,8 @@ package action;
 
 /**
  * Represents a {@code ActionQueue} holder that handles any {@code Action}
- * queueing.
+ * queuing. The {@code Actor} is used within any {@code Action} as an 'owner' to
+ * be running the {@code Action}.
  * 
  * @author Albert Beaupre
  * 
@@ -21,6 +22,13 @@ public interface Actor {
     /**
      * Queues the specified {@code action} to the {@code ActionQueue} that this
      * {@code Actor} contains.
+     * 
+     * <p>
+     * This is effectively equivalent to:
+     * 
+     * <pre>
+     * getActions().queue(action);
+     * </pre>
      * 
      * @param action
      *            the action to queue

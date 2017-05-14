@@ -1,5 +1,7 @@
 package event;
 
+import infrastructure.Attachments;
+
 /**
  * The {@code Event} class represents an actual event occurring. Events are used
  * to help organize actions in a program relevant to themselves. For example, if
@@ -22,6 +24,22 @@ public class Event {
 
     private boolean consumed; // This will flag whether or not this specific event has been used.
     private boolean cancelled; // This will flag whether or not this specific event has been cancelled.
+
+    /**
+     * Calls this {@code Event} for the {@code EventManager} within the
+     * {@link infrastructure.Attachments} to have any {@code EventListener}
+     * listen for this {@code Event}.
+     * 
+     * <p>
+     * This is effectively equivalent to:
+     * 
+     * <pre>
+     * Attachments.getEventManager().callEvent(this);
+     * </pre>
+     */
+    public void call() {
+	Attachments.getEventManager().callEvent(this);
+    }
 
     /**
      * This will switch the {@code consumed} flag of this {@code Event} to be on

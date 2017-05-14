@@ -7,13 +7,24 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 /**
- * Represents a type of holder for any {@code BasicItem} which allows for
- * modification of adding/removing of items and uses of a {@code Collection}.
+ * A {@code Container} has a specific number of slots (based on the capacity of
+ * the {@code Container)} which are filled by {@code BasicItem} elements. Any
+ * slot not used within this {@code Container} has a default value of null but
+ * is still usable and is represented as an 'empty' slot.
+ * 
+ * <p>
+ * The {@code Container} class implements {@link java.util.Collection} for
+ * easier references to collection classes and methods. The {@code Container}
+ * class also implements {@link java.lang.Iterable} for much easier iterations,
+ * especially through the {@code BasicItem} data of this {@code Container}.
+ * 
  * 
  * @author Albert Beaupre
  *
  * @param <E>
  *            The type of {@code BasicItem} used within this collection
+ * 
+ * @see container.BasicItem
  */
 @SuppressWarnings("unchecked")
 public class Container<E extends BasicItem> implements Collection<E>, Iterable<E> {

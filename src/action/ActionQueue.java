@@ -15,7 +15,7 @@ import timing.Tick;
  * @author Albert Beaupre
  * 
  * @param <A>
- *            The {@code Actor} type that will be queueing its actions
+ *            The {@code Actor} type that will be queuing its actions
  * 
  * @see action.Action
  * @see action.Actor
