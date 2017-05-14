@@ -44,8 +44,9 @@ The goal of this project is to give an ease to RuneScape Private Server developm
 ## Setting Up
 - <b>Eclipse</b>
   * You can download the library [Here](https://github.com/tehnewb/Library/releases)
-  * Create a folder in your Eclipse Project to place the Library file you downloaded
-  * Right-click the Library JAR file in your Eclipse Project
+  * You also need to download the dependencies for the project [Here](https://www.dropbox.com/sh/05aej3isz120vf3/AACxOGhV0Z2tfBYfcfKJr8nEa?dl=0)
+  * Create a folder in your Eclipse Project to place the Library and dependency files you downloaded
+  * Right-click the Library JAR file and the dependency JAR files in your Eclipse Project
   * Click on Build Path -> Add to Build Path
   * <b>You're all set up!</b>
   
