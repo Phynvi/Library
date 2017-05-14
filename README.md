@@ -41,6 +41,24 @@ EventListener playerWalkListener = new EventListener() {
 ## Goal
 The goal of this project is to give an ease to RuneScape Private Server development for any developer by allowing shorter, comprehendable, and cleaner code, as well as easily understandable designs that even the most unexperienced should be able to use.
 
+Here is a brief list of things to complete:
+- [ ] Server Features
+  - [ ] Region Management (Dynamic/Static Map Building)
+  - [x] Flexible Tick System
+  - [x] Event Listening/Managing
+  - [ ] Easy Mask/Update handling
+  - [ ] Multiple Protocol Support
+  - [ ] Easy packet reading/writing
+- [ ] Content Features
+  - [ ] Interface handling and functionalities
+  - [x] Action system
+  - [ ] Entity design and interaction
+  - [ ] Mini Game handling
+  - [ ] Skill design and management
+  - [x] Container system
+- [x] Configuration serialization (player saves, server data, etc.)
+- [x] Modular system for separated programming
+
 ## Setting Up
 - <b>Eclipse</b>
   * You can download the library [Here](https://github.com/tehnewb/Library/releases)
