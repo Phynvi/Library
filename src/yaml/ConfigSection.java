@@ -308,8 +308,7 @@ public class ConfigSection implements Map<String, Object> {
 		Map<String, Object> map = (Map<String, Object>) o;
 		return new ConfigSection(map);
 	    }
-	} catch (Exception e) {
-	}
+	} catch (Exception e) {}
 	return fallback;
     }
 

@@ -1,7 +1,10 @@
 package timing;
 
+import infrastructure.Attachments;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 /**
  * The {@code Ticker} class is used to handle any {@code Tick}. If a
@@ -29,6 +32,8 @@ import java.util.Iterator;
  */
 public class Ticker implements Runnable {
 
+    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     private ArrayList<Tick> list; // This list is filled by any incoming ticks to be executed
     private ArrayList<Tick> modifier; // This list holds and Tick that is going to be added to the list of executable ticks
 
@@ -50,6 +55,10 @@ public class Ticker implements Runnable {
      *            the {@code Tick} to be queued to execute
      */
     public void queue(Tick tickable) {
+	if (Attachments.getTicker() == null) {
+	    LOGGER.severe("There is not a ticker attached to queue this Tick: " + tickable);
+	    return;
+	}
 	tickable.startTicking();
 	this.modifier.add(tickable);
     }

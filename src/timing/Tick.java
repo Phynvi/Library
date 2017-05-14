@@ -1,5 +1,7 @@
 package timing;
 
+import infrastructure.Attachments;
+
 /**
  * Represents a type of 'Tick' that will execute based on its
  * {@link Tick#getPeriod()} value.
@@ -26,9 +28,9 @@ public abstract class Tick {
     private long period; // The time period of delay before it will be executed
 
     /**
-     * Executes this {@code Tick} after the {@link #queue(long)} method has been
-     * called and the {@link #getDuration()} value is greater or equal to
-     * {@link #getPeriod()}.
+     * Executes this {@code Tickable} after the {@link #queue(long)} method has
+     * been called and the {@link getDuration()} value is greater or equal to
+     * {@link Tick#getPeriod()}.
      */
     protected abstract void tick();
 
@@ -60,10 +62,6 @@ public abstract class Tick {
 	return System.currentTimeMillis() - startedTicking;
     }
 
-    public void setPeriod(long period) {
-	this.period = period;
-    }
-
     /**
      * Queues this {@code Tickable} for execution after the specified
      * {@code period} has passed.
@@ -71,11 +69,11 @@ public abstract class Tick {
      * @param period
      *            the period before this tickable will queued for execution.
      */
-    public void queue(Ticker ticker, long period) {
+    public void queue(long period) {
 	this.period = period;
 	if (queued)
 	    return;
-	ticker.queue(this);
+	Attachments.getTicker().queue(this);
 	queued = true;
 	cancelled = false;
     }
@@ -88,8 +86,8 @@ public abstract class Tick {
      * queue(ticker, 0);
      * </pre>
      */
-    public void queue(Ticker ticker) {
-	queue(ticker, 0);
+    public void queue() {
+	queue(0);
     }
 
     /**
@@ -102,7 +100,7 @@ public abstract class Tick {
     }
 
     /**
-     * Cancels this {@code Tick}.
+     * Cancels this {@code Tick} from being queued or executed.
      */
     public void cancel() {
 	cancelled = true;

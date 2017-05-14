@@ -64,4 +64,8 @@ public class BasicItem {
 	return this;
     }
 
+    public boolean isStackable() {
+	return false;
+    }
+
 }
