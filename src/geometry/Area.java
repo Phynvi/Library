@@ -11,9 +11,9 @@ import java.util.HashSet;
  * 
  * @see geometry.Shape3D
  */
-public class Area<T extends Locatable> implements Shape3D {
+public class Area implements Shape3D {
 
-    private HashMap<Class<?>, HashSet<T>> entities;
+    private HashMap<Class<?>, HashSet<Locatable>> entities;
     private ArrayList<Shape3D> combinedArea;
 
     /**
@@ -42,16 +42,26 @@ public class Area<T extends Locatable> implements Shape3D {
      * 
      * @param entity
      *            the entity to put in this {@code Area}
+     * 
+     * @throws NullPointerException
+     *             if there is no area define in this {@code Area} class where
+     *             the entity is located
      */
-    public void put(T entity) {
+    public void put(Locatable entity) {
 	synchronized (entities) {
-	    HashSet<T> set = entities.get(entity.getClass());
+	    if (!this.contains(entity.getLocation()))
+		throw new NullPointerException("There is no area defined where the specified entity is located");
+	    HashSet<Locatable> set = entities.getOrDefault(entity.getClass(), new HashSet<>());
 	    set.add(entity);
 	    entities.put(entities.getClass(), set);
 	}
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see geometry.Shape3D#contains(geometry.Point3D)
+     */
     public boolean contains(Point3D point) {
 	for (Shape3D shape : combinedArea)
 	    if (shape.contains(point))
@@ -59,7 +69,11 @@ public class Area<T extends Locatable> implements Shape3D {
 	return false;
     }
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see geometry.Shape3D#intersects(geometry.Shape3D)
+     */
     public boolean intersects(Shape3D shape) {
 	for (Shape3D s : combinedArea)
 	    if (s.intersects(shape))
@@ -84,11 +98,11 @@ public class Area<T extends Locatable> implements Shape3D {
      *         the {@code bounds}
      */
     @SuppressWarnings("unchecked")
-    public <U extends T> HashSet<U> findEntities(Shape3D bounds, int guess, Class<U> clazz) {
+    public <U> HashSet<U> findEntities(Shape3D bounds, int guess, Class<U> clazz) {
 	HashSet<U> objects = new HashSet<>(guess);
 	synchronized (entities) {
-	    HashSet<T> set = entities.get(clazz);
-	    for (T entity : set) {
+	    HashSet<Locatable> set = entities.get(clazz);
+	    for (Locatable entity : set) {
 		if (bounds.contains(entity.getLocation()))
 		    objects.add((U) entity);
 	    }

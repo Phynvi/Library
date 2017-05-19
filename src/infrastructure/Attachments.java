@@ -1,8 +1,6 @@
 package infrastructure;
 
 import java.util.Objects;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import timing.Ticker;
@@ -22,21 +20,18 @@ public class Attachments {
     private static EventManager EVENT_MANAGER; // This is an attached EventManager that will globally handle Events
 
     /**
-     * Attaches the specified {@code ticker} to this {@code Attachments} class
-     * scheduled to the specified {@code service} to run the {@code ticker}.
+     * Attaches the specified {@code ticker} to this {@code Attachments} class.
      * 
-     * @param service
-     *            the service to run the ticker
      * @param ticker
      *            the ticker to attach
      */
-    public static void attachTicker(ScheduledExecutorService service, Ticker ticker) {
+    public static void attachTicker(Ticker ticker) {
 	if (Attachments.TICKER != null) {
 	    LOGGER.warning("A Ticker has already been attached");
 	    return;
 	}
 	Attachments.TICKER = Objects.requireNonNull(ticker, "The Ticker cannot be attached as NULL");
-	service.scheduleAtFixedRate(ticker, 1, 1, TimeUnit.MILLISECONDS);
+	Core.submit(ticker);
 	LOGGER.info("A Ticker has successfully been attached");
     }
 

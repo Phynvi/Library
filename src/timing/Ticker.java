@@ -68,7 +68,7 @@ public class Ticker implements Runnable {
      * execute, and remove any {@code Tick} within this {@code Ticker}.
      */
     public void run() {
-	try {
+	while (true) {
 	    if (modifier.size() > 0) {
 		list.addAll(modifier);
 		modifier = new ArrayList<>();
@@ -87,8 +87,6 @@ public class Ticker implements Runnable {
 		    tickable.tick();
 		}
 	    }
-	} catch (Exception e) {
-	    e.printStackTrace();
 	}
     }
 }
