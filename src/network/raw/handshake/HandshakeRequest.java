@@ -2,8 +2,8 @@ package network.raw.handshake;
 
 /**
  * Represents a type of request used by the
- * {@link network.raw.handshake.HandshakeDecoder} to decide what action to take
- * next within decoding the beginning of the server.
+ * {@link network.raw.handshake.HandshakeDecoder} to decide what
+ * entity.actor.action to take next within decoding the beginning of the server.
  * 
  * @author Albert Beaupre
  */

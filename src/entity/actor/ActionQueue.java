@@ -1,4 +1,4 @@
-package action;
+package entity.actor;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,8 +17,8 @@ import timing.Tick;
  * @param <A>
  *            The {@code Actor} type that will be queuing its actions
  * 
- * @see action.Action
- * @see action.Actor
+ * @see entity.actor.Action
+ * @see entity.actor.Actor
  */
 public final class ActionQueue<A extends Actor> extends Tick {
 
@@ -35,8 +35,8 @@ public final class ActionQueue<A extends Actor> extends Tick {
      * Queues the specified {@code Action} to this {@code ActionQueue} so it
      * will eventually be cycled.
      * 
-     * @param action
-     *            the action to queue.
+     * @param entity
+     *            .actor.action the entity.actor.action to queue.
      */
     public void queue(Action<A> action) {
 	Iterator<Action<A>> iterator = this.actions.iterator();
@@ -67,13 +67,13 @@ public final class ActionQueue<A extends Actor> extends Tick {
     }
 
     /**
-     * Cancels the specified {@code action} if within this {@code ActionQueue}
-     * and sets its {@code ActionState} to {@link ActionState#CANCEL} and cycles
-     * it through the cancel state before it completely removes it from the
-     * queue.
+     * Cancels the specified {@code entity.actor.action} if within this
+     * {@code ActionQueue} and sets its {@code ActionState} to
+     * {@link ActionState#CANCEL} and cycles it through the cancel state before
+     * it completely removes it from the queue.
      * 
-     * @param action
-     *            the action to be cancelled
+     * @param entity
+     *            .actor.action the entity.actor.action to be cancelled
      */
     public void cancel(Action<A> action) {
 	if (this.actions.remove(action)) {
@@ -87,11 +87,12 @@ public final class ActionQueue<A extends Actor> extends Tick {
      * 
      * <p>
      * This method executes any actions in its queue in the order that each
-     * action was queued in. As an {@code Action} that was executed stops
-     * running, it is removed from the current queue and the next action is
-     * executed. If an {@link Action#cancellable()} returns false, then the next
-     * action in the queue <b>will not</b> execute until the current action is
-     * completely stopped.
+     * entity.actor.action was queued in. As an {@code Action} that was executed
+     * stops running, it is removed from the current queue and the next
+     * entity.actor.action is executed. If an {@link Action#cancellable()}
+     * returns false, then the next entity.actor.action in the queue <b>will
+     * not</b> execute until the current entity.actor.action is completely
+     * stopped.
      */
     protected final void tick() {
 	if (this.actions.isEmpty())
@@ -99,7 +100,7 @@ public final class ActionQueue<A extends Actor> extends Tick {
 	Action<A> action = this.actions.peek();
 	if (action != null) {
 	    if (!action.cycle(action.getState())) {
-		this.cancel(action);
+		this.actions.remove();
 		this.queue(0);
 	    } else {
 		this.queue(600);
@@ -108,5 +109,4 @@ public final class ActionQueue<A extends Actor> extends Tick {
 	}
 	super.cancel();
     }
-
 }

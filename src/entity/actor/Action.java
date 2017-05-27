@@ -1,4 +1,4 @@
-package action;
+package entity.actor;
 
 /**
  * @author Albert Beaupre
@@ -6,7 +6,7 @@ package action;
  * @param <A>
  *            The {@code Actor} type of this {@code Action}.
  * 
- * @see action.Actor
+ * @see entity.actor.Actor
  */
 public abstract class Action<A extends Actor> {
 
@@ -22,10 +22,12 @@ public abstract class Action<A extends Actor> {
      * owner of this {@code Action}.
      * 
      * @param actor
-     *            the owner of this action
+     *            the owner of this entity.actor.action
      */
     public Action(A actor) {
 	this.actor = actor;
+
+	this.state = ActionState.START;
     }
 
     /**
@@ -55,7 +57,7 @@ public abstract class Action<A extends Actor> {
      * @return true if the next cycle can be made; return false otherwise
      */
     public boolean nextCycle() {
-	if (state == ActionState.STOP)
+	if (state == ActionState.FINISH)
 	    return false;
 	state = ActionState.values()[state.ordinal() + 1];
 	return true;

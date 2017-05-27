@@ -1,12 +1,10 @@
 package network.raw;
 
 import io.netty.buffer.ByteBuf;
-
-import java.util.HashMap;
-
 import network.Connection;
 import network.ConnectionHolder;
 import network.packet.decoding.PacketProcessor;
+import network.packet.encoding.EncodedPacket;
 import network.packet.encoding.PacketSender;
 
 /**
@@ -17,16 +15,18 @@ import network.packet.encoding.PacketSender;
  * 
  * @author Albert Beaupre
  */
+@SuppressWarnings("unchecked")
 public abstract class RawHandler {
 
-    private HashMap<Integer, PacketProcessor<?>> processors;
-    private HashMap<Integer, PacketSender<?>> senders;
+    private PacketProcessor<ConnectionHolder>[] processors;
+    private PacketSender<ConnectionHolder>[] senders;
 
     /**
      * Constructs a new {@code RawHandler}.
      */
     public RawHandler() {
-	this.processors = new HashMap<>();
+	this.processors = new PacketProcessor[256];
+	this.senders = new PacketSender[256];
     }
 
     /**
@@ -48,7 +48,7 @@ public abstract class RawHandler {
 	    throw new NullPointerException("A PacketProcessor cannot be registered as null");
 	if (opcode < 0)
 	    throw new UnsupportedOperationException("A PacketProcessor must have an opcode >= 0");
-	senders.put(opcode, sender);
+	senders[opcode] = (PacketSender<ConnectionHolder>) sender;
     }
 
     /**
@@ -70,7 +70,7 @@ public abstract class RawHandler {
 	    throw new NullPointerException("A PacketProcessor cannot be registered as null");
 	if (opcode < 0)
 	    throw new UnsupportedOperationException("A PacketProcessor must have an opcode >= 0");
-	processors.put(opcode, processor);
+	processors[opcode] = (PacketProcessor<ConnectionHolder>) processor;
     }
 
     /**
@@ -81,9 +81,24 @@ public abstract class RawHandler {
      *            the opcode of the correlating {@code PacketProcessor}
      * @return the {@code PacketProcessor} if existing; return null otherwise
      */
-    @SuppressWarnings("unchecked")
-    public <C extends ConnectionHolder> PacketProcessor<C> getPacketProcessor(int opcode) {
-	return (PacketProcessor<C>) processors.get(opcode);
+    public PacketProcessor<ConnectionHolder> getPacketProcessor(int opcode) {
+	return processors[opcode];
+    }
+
+    /**
+     * Retrieves the {@code PacketSender} registered within this
+     * {@code RawHandler} based on the specified {@code opcode}.
+     * 
+     * @param opcode
+     *            the opcode of the correlating {@code PacketSender}
+     * @return the {@code PacketSender} if existing; return null otherwise
+     */
+    public PacketSender<ConnectionHolder> getPacketSender(int opcode) {
+	return senders[opcode];
+    }
+
+    public <C extends ConnectionHolder> EncodedPacket getEncodedPacket(ConnectionHolder holder, int opcode, Object... args) {
+	return senders[opcode].send(holder, args);
     }
 
     /**

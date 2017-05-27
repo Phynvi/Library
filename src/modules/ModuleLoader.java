@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import yaml.ConfigSection;
+import util.yaml.ConfigSection;
 
 /**
  * A utility class that helps to load {@code Module} types.

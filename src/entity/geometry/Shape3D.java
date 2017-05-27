@@ -1,9 +1,9 @@
-package geometry;
+package entity.geometry;
 
 /**
  * Represents a shape usable within a 3-dimensional plane.
  * 
- * @see geometry.Point3D
+ * @see entity.geometry.Point3D
  * 
  * @author Albert Beaupre
  */

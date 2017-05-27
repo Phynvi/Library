@@ -60,7 +60,7 @@ public class HandshakeDecoder extends ByteToMessageDecoder {
 		ctx.pipeline().replace("decoder", "decoder", new CacheRequestDecoder(handler));
 		break;
 	    case LOGIN:
-		ctx.writeAndFlush(Unpooled.buffer(1).writeByte(0));
+		ctx.writeAndFlush(Unpooled.wrappedBuffer(new byte[] { 0 }));
 		ctx.pipeline().replace("decoder", "decoder", new LoginRequestDecoder());
 		break;
 	}

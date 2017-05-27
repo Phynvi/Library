@@ -1,12 +1,11 @@
-package yaml;
+package util.yaml;
 
 /**
- * YMLSerializable should <b>NEVER</b> have a constructor. It is used through
- * reflection to create itself a new instance.
+ * Used for serialization of YAML scripts.
  * 
  * @author Albert Beaupre
  */
-public interface YMLSerializable<E> {
+public interface YMLSerializable {
 
     /**
      * Takes the specified {@code object} element and creates a serialized
@@ -17,7 +16,7 @@ public interface YMLSerializable<E> {
      * @return the serialized {@code ConfigSection} based on the specified
      *         object
      */
-    public ConfigSection serialize(E object);
+    public ConfigSection serialize();
 
     /**
      * Deserializes the specified {@code ConfigSection} given based on the
@@ -27,6 +26,6 @@ public interface YMLSerializable<E> {
      *            the {@code ConfigSection} to take for deserialization
      * @return the deserialized object
      */
-    public E deserialize(ConfigSection section);
+    public void deserialize(ConfigSection section);
 
 }

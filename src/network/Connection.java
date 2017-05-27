@@ -11,6 +11,7 @@ import io.netty.channel.Channel;
 public class Connection {
 
     private final Channel channel;
+    private Display display;
 
     /**
      * Constructs a new {@code Connection} based on the specified
@@ -35,7 +36,8 @@ public class Connection {
     public void write(Object object) {
 	if (object == null)
 	    throw new NullPointerException("You cannot write a NULL object through a Connection");
-	channel.writeAndFlush(object);
+	if (channel.isActive())
+	    channel.writeAndFlush(object);
     }
 
     /**
@@ -45,6 +47,26 @@ public class Connection {
      */
     public Channel getChannel() {
 	return channel;
+    }
+
+    /**
+     * Returns the {@code Display} for this {@code Connection}.
+     * 
+     * @return the display
+     */
+    public Display getDisplay() {
+	return display;
+    }
+
+    /**
+     * Sets the {@code Display} of this {@code Connection} to the specified
+     * argument.
+     * 
+     * @param display
+     *            the display to set
+     */
+    public void setDisplay(Display display) {
+	this.display = display;
     }
 
 }

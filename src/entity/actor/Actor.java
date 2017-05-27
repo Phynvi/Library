@@ -1,4 +1,8 @@
-package action;
+package entity.actor;
+
+import container.BasicItem;
+import container.Container;
+import entity.actor.model.Model;
 
 /**
  * Represents a {@code ActionQueue} holder that handles any {@code Action}
@@ -7,7 +11,7 @@ package action;
  * 
  * @author Albert Beaupre
  * 
- * @see action.ActionQueue
+ * @see actionQueue
  */
 public interface Actor {
 
@@ -37,5 +41,14 @@ public interface Actor {
     public default void queue(Action action) {
 	getActions().queue(action);
     }
+
+    /**
+     * Returns the {@code Model} of this {@code Actor}.
+     * 
+     * @return model the model
+     */
+    public Model getModel();
+
+    public Container<? extends BasicItem> getInventory();
 
 }

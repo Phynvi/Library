@@ -125,12 +125,18 @@ public class EncodedPacket extends Packet {
     }
 
     public EncodedPacket writeByteS(int val) {
-	this.bytes.writeByte((128 - val));
+	this.bytes.writeByte((byte) (128 - val));
 	return this;
     }
 
     public EncodedPacket writeByteA(int val) {
 	this.bytes.writeByte((byte) (val + 128));
+	return this;
+    }
+
+    public EncodedPacket writeBytesA(byte[] data, int offset, int len) {
+	for (int k = offset; k < len; k++)
+	    this.bytes.writeByte((byte) (data[k] + 128));
 	return this;
     }
 
@@ -150,7 +156,7 @@ public class EncodedPacket extends Packet {
      *            the byte value to write
      * @return the instance of this {@code EncodedPacket} for chaining
      */
-    public EncodedPacket writeByte(int b) {
+    public EncodedPacket writeByte(byte b) {
 	this.bytes.writeByte(b);
 	return this;
     }
@@ -218,7 +224,9 @@ public class EncodedPacket extends Packet {
      * @return the instance of this {@code EncodedPacket} for chaining
      */
     public EncodedPacket writeShortA(int value) {
-	return writeBytes((byte) (value >> 8), (byte) (value + 128));
+	writeByte((byte) (value >> 8));
+	writeByte((byte) (value + 128));
+	return this;
     }
 
     /**
@@ -237,7 +245,9 @@ public class EncodedPacket extends Packet {
      * @return the instance of this {@code EncodedPacket} for chaining
      */
     public EncodedPacket writeLEShortA(int value) {
-	return writeBytes((byte) (value + 128), (byte) (value >> 8));
+	bytes.writeByte((byte) (value + 128));
+	bytes.writeByte((byte) (value >> 8));
+	return this;
     }
 
     /**
@@ -248,9 +258,8 @@ public class EncodedPacket extends Packet {
      *            the values to write
      * @return the instance of this {@code EncodedPacket} for chaining
      */
-    public EncodedPacket writeInt(int... i) {
-	for (int in : i)
-	    this.bytes.writeInt(in);
+    public EncodedPacket writeInt(int i) {
+	this.bytes.writeInt(i);
 	return this;
     }
 
@@ -272,6 +281,15 @@ public class EncodedPacket extends Packet {
 
     public EncodedPacket writeInt2(int val) {
 	return writeBytes((byte) (val >> 16), (byte) (val >> 24), (byte) val, (byte) (val >> 8));
+    }
+
+    public EncodedPacket writeIntSmart(int val) {
+	if (val >= 32768) {
+	    writeInt(val + 32768);
+	} else {
+	    writeShort(val);
+	}
+	return this;
     }
 
     /**

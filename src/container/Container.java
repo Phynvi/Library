@@ -65,7 +65,6 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
 
 	private int index;
 
-	@Override
 	public boolean hasNext() {
 	    return index < capacity;
 	}

@@ -10,10 +10,11 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 /**
  * The {@code NetworkHandler} class handles all receiving, sending,
  * unregistering, reading, and activations of a {@code Channel} for the server.
- * When a {@code Channel} becomes active, the {@link network.event.ChannelActiveEvent}
- * is called. When a {@code Channel} becomes inactive, the
- * {@link network.event.ChannelInactiveEvent} is called. When a {@code Channel}
- * becomes unregistered, the {@link network.event.ChannelUnregisteredEvent} is called.
+ * When a {@code Channel} becomes active, the
+ * {@link network.event.ChannelActiveEvent} is called. When a {@code Channel}
+ * becomes inactive, the {@link network.event.ChannelInactiveEvent} is called.
+ * When a {@code Channel} becomes unregistered, the
+ * {@link network.event.ChannelUnregisteredEvent} is called.
  * 
  * @author Albert Beaupre
  */
@@ -60,7 +61,6 @@ public class NetworkHandler extends ChannelInboundHandlerAdapter {
      * .ChannelHandlerContext, java.lang.Object)
      */
     public void channelRead(ChannelHandlerContext ctx, Object message) {
-	System.out.println(message);
 	if (message == null)
 	    return;
 	if (message instanceof ByteBuf)

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 import network.Connection;
+import network.ConnectionHolder;
 import network.NetworkRepository;
 import network.packet.decoding.IncomingPacketDecoder;
 
@@ -37,7 +38,11 @@ public class LoginRequestDecoder extends ByteToMessageDecoder {
 	    if (handler == null)
 		throw new UnsupportedOperationException("Revision not supported for login: " + revision);
 	    handler.loadRawHandler();
-	    ctx.pipeline().replace("decoder", "decoder", new IncomingPacketDecoder(handler, handler.createConnectionHolder(new Connection(ctx.channel()), in, state)));
+
+	    Connection connection = new Connection(ctx.channel());
+	    ConnectionHolder holder = handler.createConnectionHolder(connection, in, state);
+
+	    ctx.pipeline().replace("decoder", "decoder", new IncomingPacketDecoder(handler, holder));
 	}
     }
 }

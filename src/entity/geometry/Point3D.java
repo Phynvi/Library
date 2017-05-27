@@ -1,4 +1,7 @@
-package geometry;
+package entity.geometry;
+
+import util.yaml.ConfigSection;
+import util.yaml.YMLSerializable;
 
 /**
  * A 3-dimensional point representing a location in {@code (x,y,z)} coordinate
@@ -6,7 +9,7 @@ package geometry;
  * 
  * @author Albert Beaupre
  */
-public class Point3D {
+public class Point3D implements YMLSerializable {
 
     /**
      * The X coordinate of this {@code Point3D}. If no X coordinate is set it
@@ -52,6 +55,21 @@ public class Point3D {
     }
 
     /**
+     * Returns {@code true} if the specified {@code Point3D} has a distance <=
+     * the specified {@code range} argument. If it does not, then {@code false}
+     * is returned.
+     * 
+     * @param point
+     *            the point to check if this {@code Point3D} is in range
+     * @param range
+     *            the range distance to check
+     * @return true if within range; return false otherwise
+     */
+    public boolean inRange(Point3D point, int range) {
+	return point.distance(this) <= range;
+    }
+
+    /**
      * Translates this point, at location {@code (x,y)}, by {@code dx} along the
      * {@code x} axis and {@code dy} along the {@code y} axis so that it now
      * represents the point {@code (x+dx,y+dy)}.
@@ -79,10 +97,10 @@ public class Point3D {
      * @return the distance between this point and the specific {@code Point3D}
      */
     public double distance(Point3D point) {
-	int ax = Math.abs(point.x - x);
-	int ay = Math.abs(point.y - y);
-	int az = Math.abs(point.z - z);
-	return Math.sqrt(ax + ay + az);
+	double ax = Math.abs(point.x - x);
+	double ay = Math.abs(point.y - y);
+	double az = Math.abs(point.z - z);
+	return Math.sqrt((ax * ax) + (ay * ay) + (az * az));
     }
 
     /**
@@ -121,5 +139,29 @@ public class Point3D {
 	    return p.x == x && p.y == y && p.z == z;
 	}
 	return super.equals(obj);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see util.yaml.YMLSerializable#serialize()
+     */
+    public ConfigSection serialize() {
+	ConfigSection config = new ConfigSection();
+	config.put("x", x);
+	config.put("y", y);
+	config.put("z", z);
+	return config;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see util.yaml.YMLSerializable#deserialize(util.yaml.ConfigSection)
+     */
+    public void deserialize(ConfigSection section) {
+	this.x = section.getInt("x");
+	this.y = section.getInt("y");
+	this.z = section.getInt("z");
     }
 }

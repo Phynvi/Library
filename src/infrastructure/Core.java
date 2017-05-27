@@ -1,10 +1,10 @@
 package infrastructure;
 
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import timing.Ticker;
 import event.EventManager;
@@ -14,27 +14,18 @@ import event.EventManager;
  */
 public class Core {
 
-    private static ExecutorService threadPool;
+    private static ScheduledExecutorService threadPool;
 
     /**
      * Initializes the important variables and steps for this Library to
      * function properly and efficiently.
      */
     public static void initialize() {
-	threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new ThreadFactory() {
-	    private int nextThreadId = 0;
+	threadPool = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
-	    @Override
-	    public Thread newThread(Runnable r) {
-		Thread t = new Thread(r, "ExecutorService " + nextThreadId++);
-		t.setPriority(Thread.NORM_PRIORITY);
-		t.setContextClassLoader(ClassLoader.getSystemClassLoader());
-		t.setDaemon(true);
-		return t;
-	    }
-	});
-
-	Attachments.attachTicker(new Ticker());
+	Ticker ticker = new Ticker();
+	Attachments.attachTicker(ticker);
+	threadPool.scheduleAtFixedRate(ticker, 1, 1, TimeUnit.MILLISECONDS);
 	Attachments.attachEventManager(new EventManager());
     }
 

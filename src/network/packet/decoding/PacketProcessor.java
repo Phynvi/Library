@@ -4,7 +4,7 @@ import network.ConnectionHolder;
 
 /**
  * The {@code PacketProcessor} is used to process a {@code DecodedPacket} and
- * take action based on what is decoded.
+ * take entity.actor.action based on what is decoded.
  * 
  * @author Albert Beaupre
  * 

@@ -31,7 +31,6 @@ public class Attachments {
 	    return;
 	}
 	Attachments.TICKER = Objects.requireNonNull(ticker, "The Ticker cannot be attached as NULL");
-	Core.submit(ticker);
 	LOGGER.info("A Ticker has successfully been attached");
     }
 

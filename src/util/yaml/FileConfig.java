@@ -1,4 +1,4 @@
-package yaml;
+package util.yaml;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -24,17 +24,18 @@ public class OutgoingPacketEncoder extends MessageToByteEncoder<EncodedPacket> {
 	if (!out.isRaw()) {
 	    int packetLength = 1 + out.getLength() + out.getType().getSize();
 	    ByteBuf response = Unpooled.buffer(packetLength);
-	    response.writeByte((byte) out.getOpcode());
+	    if (out.getOpcode() > 127)
+		response.writeByte(128);
+	    response.writeByte(out.getOpcode());
 	    if (out.getType() == PacketType.VAR_BYTE) {
-		response.writeByte((byte) out.getLength());
+		response.writeByte(out.getLength());
 	    } else if (out.getType() == PacketType.VAR_SHORT) {
-		response.writeShort((short) out.getLength());
+		response.writeShort(out.getLength());
 	    }
 	    response.writeBytes(out.getBytes());
-	    ctx.writeAndFlush(response);
+	    ctx.channel().writeAndFlush(response);
 	    return;
 	}
-	ctx.writeAndFlush(out.getBytes());
+	ctx.channel().writeAndFlush(out.getBytes());
     }
-
 }

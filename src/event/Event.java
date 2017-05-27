@@ -8,7 +8,7 @@ import infrastructure.Attachments;
  * you wish to create an {@code Event} relevant only to a specific entity called
  * {@code Animal}, then you would create an {@code Event} called
  * {@code AnimalEvent} and call that event whenever a relevant
- * {@code AnimalEvent} action would occur.
+ * {@code AnimalEvent} entity.actor.action would occur.
  * 
  * <p>
  * The {@link event.EventManager} class is used to manage the calling,

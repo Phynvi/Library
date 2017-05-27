@@ -1,4 +1,4 @@
-package action;
+package entity.actor;
 
 /**
  * Represents a State at which an {@code Action} is at in cycling
@@ -28,11 +28,6 @@ public enum ActionState {
      * {@code Action} is "finishing up" or finalizing things.
      */
     FINISH,
-
-    /**
-     * The state of an {@code Action} that is stopping the {@code Action}.
-     */
-    STOP,
 
     /**
      * The state of an {@code Action} where it has been cancelled by an
