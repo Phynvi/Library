@@ -40,17 +40,4 @@ public interface Shape3D {
 	return contains(new Point3D(x, y, z));
     }
 
-    /**
-     * Checks if the specified {@code Shape3D} will intersect with this
-     * {@code Shape3D} and returns {@code true} if so.
-     * 
-     * @param shape
-     *            the {@code Shape3D} to check if it is intersecting with this
-     *            one
-     * 
-     * @return true if this {@code Shape3D} intersects with the specified
-     *         {@code Shape3D}; return {@code false} otherwise
-     */
-    public boolean intersects(Shape3D shape);
-
 }

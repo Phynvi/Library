@@ -3,7 +3,7 @@ package network.packet.encoding;
 import network.ConnectionHolder;
 
 /**
- * The {@code PacketSender} is used to create an {@code EncodedPacket} based on
+ * The {@code PacketEncoder} is used to create an {@code EncodedPacket} based on
  * arguments that will be sent to the client.
  * 
  * @author Albert Beaupre
@@ -11,7 +11,7 @@ import network.ConnectionHolder;
  * @param <C>
  *            The {@code ConnectionHolder} type
  */
-public interface PacketSender<C extends ConnectionHolder> {
+public interface PacketEncoder<C extends ConnectionHolder> {
 
     /**
      * Encodes a packet being sent based on the specified {@code args} argument
@@ -23,5 +23,5 @@ public interface PacketSender<C extends ConnectionHolder> {
      *            the arguments to use to encode the packet
      * @return the {@code EncodedPacket}
      */
-    public EncodedPacket send(C holder, Object... args);
+    public EncodedPacket encode(C holder, Object... args);
 }

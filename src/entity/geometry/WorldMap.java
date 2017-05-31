@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import entity.EntityList;
 import entity.actor.npc.NPC;
 import entity.actor.persona.Persona;
+import entity.geometry.area.AreaManager;
 
 /**
  * The {@code WorldMap} class is used to create maps that are either static
@@ -326,18 +327,19 @@ public abstract class WorldMap extends AreaManager {
      *             if there is no area defined in this {@code WorldMap} class
      *             where the entity is located
      */
-    public void put(Locatable entity) {
+    public <E extends Locatable> void put(E entity) {
 	if (!this.contains(entity.getLocation()))
 	    LOGGER.warning("There is no area defined where the specified entity is located");
-	HashSet<Locatable> set = entities.getOrDefault(entity.getClass(), new HashSet<>());
-	set.add(entity);
-	entities.put(entity.getClass(), set);
 
-	if (entity instanceof Persona)
+	if (entity instanceof Persona) {
 	    personas.add((Persona) entity);
-
-	if (entity instanceof NPC)
+	} else if (entity instanceof NPC) {
 	    npcs.add((NPC) entity);
+	} else {
+	    HashSet<Locatable> set = entities.getOrDefault(entity.getClass(), new HashSet<>());
+	    set.add(entity);
+	    entities.put(entity.getClass(), set);
+	}
     }
 
     /**
@@ -348,18 +350,16 @@ public abstract class WorldMap extends AreaManager {
      */
     public void remove(Locatable entity) {
 	HashSet<Locatable> set = entities.get(entity.getClass());
-	if (set != null) {
-	    if (set.remove(entity)) {
-		if (entity instanceof Persona)
-		    personas.remove((Persona) entity);
-		if (entity instanceof NPC)
-		    npcs.remove((NPC) entity);
-	    } else {
-		LOGGER.warning("The entity " + entity + " was not removed from WorldMap: " + toString());
-	    }
-	} else {
+	if (entity instanceof Persona)
+	    personas.remove((Persona) entity);
+	if (entity instanceof NPC)
+	    npcs.remove((NPC) entity);
+	if (set == null) {
 	    LOGGER.warning("The entity " + entity + " was not removed from WorldMap: " + toString());
+	    return;
 	}
+	if (!set.remove(entity))
+	    LOGGER.warning("The entity " + entity + " was not removed from WorldMap: " + toString());
     }
 
     /**
@@ -423,9 +423,15 @@ public abstract class WorldMap extends AreaManager {
      */
     @SuppressWarnings("unchecked")
     public <U extends Locatable> Iterable<U> getAll(Class<U> clazz) {
-	if (clazz.isAssignableFrom(Persona.class))
-	    return (Iterable<U>) personas;
 	return (Iterable<U>) entities.getOrDefault(clazz, new HashSet<>());
+    }
+
+    public EntityList<Persona> getPersonas() {
+	return personas;
+    }
+
+    public EntityList<NPC> getNPCs() {
+	return npcs;
     }
 
     public Persona getPersona(int index) {

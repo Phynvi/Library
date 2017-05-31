@@ -7,26 +7,24 @@ import java.util.TreeSet;
 /**
  * @author Albert Beaupre
  */
-public abstract class Model {
+public abstract class UpdateFlags {
 
     private final TreeSet<UpdateMask> currentMasks;
     private int maskData;
 
     /**
-     * Constructs a new {@code Model}.
+     * Constructs a new {@code UpdateFlags}.
      */
-    public Model() {
+    public UpdateFlags() {
 	this.currentMasks = new TreeSet<>();
     }
 
-    public abstract void update();
-
     /**
-     * Registers the specified {@code mask} to be updated for this {@code Model}
-     * .
+     * Registers the specified {@code mask} to be updated for this
+     * {@code UpdateFlags}
      * 
      * @param mask
-     *            the flag to register
+     *            the mask to register
      */
     public void registerMask(UpdateMask mask) {
 	if ((maskData & mask.data()) != 0)
@@ -37,7 +35,7 @@ public abstract class Model {
 
     /**
      * Returns an unmodifiable {@code Collection} of the current masks within
-     * this {@code Model}.
+     * this {@code UpdateFlags}.
      * 
      * @return the unmodifiable collection of current masks
      */
@@ -46,7 +44,7 @@ public abstract class Model {
     }
 
     /**
-     * Finishes updating the masks of this {@code Model}.
+     * Finishes updating the masks of this {@code UpdateFlags}.
      */
     public void finishUpdate() {
 	maskData = 0;
@@ -70,7 +68,7 @@ public abstract class Model {
      * @return {@code True} if the update flag was registered, {@code false} if
      *         not.
      */
-    public boolean get(int data) {
+    public boolean activated(int data) {
 	return (maskData & data) != 0;
     }
 

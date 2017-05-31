@@ -1,15 +1,18 @@
-package entity.geometry;
+package entity.geometry.area;
 
 import infrastructure.Attachments;
 
 import java.util.HashSet;
+
+import entity.geometry.Point3D;
+import entity.geometry.Shape3D;
 
 /**
  * The {@code AreaManager} holds
  * 
  * @author Albert Beaupre
  * 
- * @see entity.geometry.Area
+ * @see entity.geometry.area.Area
  */
 public class AreaManager implements Shape3D {
 
@@ -43,18 +46,6 @@ public class AreaManager implements Shape3D {
     public boolean contains(Point3D point) {
 	for (Area shape : combinedArea)
 	    if (shape.contains(point))
-		return true;
-	return false;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see geometry.Shape3D#intersects(geometry.Shape3D)
-     */
-    public boolean intersects(Shape3D shape) {
-	for (Area s : combinedArea)
-	    if (s.intersects(shape))
 		return true;
 	return false;
     }

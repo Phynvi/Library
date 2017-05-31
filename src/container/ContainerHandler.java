@@ -20,11 +20,11 @@ public interface ContainerHandler<E extends BasicItem> {
      * 
      * @param container
      *            the container to add the item to
-     * @param item
+     * @param basicItem
      *            the item to add
      * @return true if the item was added; return false otherwise
      */
-    boolean add(Container<E> container, BasicItem item);
+    boolean add(Container<E> container, BasicItem basicItem);
 
     /**
      * Removes the specified {@code item} from the {@code container}, if
@@ -32,11 +32,11 @@ public interface ContainerHandler<E extends BasicItem> {
      * 
      * @param container
      *            the container to remove the item from
-     * @param item
+     * @param basicItem
      *            the item to remove
      * @return true if the item was removed; return false otherwise
      */
-    boolean remove(Container<E> container, BasicItem item);
+    boolean remove(Container<E> container, BasicItem basicItem);
 
     /**
      * Returns true if the specified {@code item} can be added to the
@@ -44,10 +44,10 @@ public interface ContainerHandler<E extends BasicItem> {
      * 
      * @param container
      *            the container to check
-     * @param item
+     * @param basicItem
      *            the item to use for checking
      * @return true if the item can be added; return false otherwise
      */
-    boolean addable(Container<E> container, BasicItem item);
+    boolean addable(Container<E> container, BasicItem basicItem);
 
 }

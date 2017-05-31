@@ -1,14 +1,60 @@
 package entity;
 
+import java.util.Objects;
+
 import util.ReflectUtil;
 import entity.geometry.Locatable;
+import entity.geometry.Location;
 
 /**
  * @author Albert Beaupre
  */
 public abstract class Entity implements Locatable, Interactable {
 
+    private final Location location;
+    private Location previousLocation;
+
     private int index;
+
+    /**
+     * Constructs a new {@code Entity} at the specified {@code Location}.
+     * 
+     * @param location
+     *            the location to create the entity at
+     */
+    public Entity(Location location) {
+	this.location = Objects.requireNonNull(location, "The location of an entity must not be NULL");
+	this.previousLocation = location;
+    }
+
+    /**
+     * Sets the location of this {@code Entity} to the specified
+     * {@code Location}.
+     * 
+     * @param location
+     *            the location to set this {@code Entity}
+     */
+    public final void setLocation(Location location) {
+	this.previousLocation = this.location;
+
+	this.location.setMap(location.getMap());
+	this.location.x = location.x;
+	this.location.y = location.y;
+	this.location.z = location.z;
+    }
+
+    public final Location getPreviousLocation() {
+	return this.previousLocation;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see entity.geometry.Locatable#getLocation()
+     */
+    public final Location getLocation() {
+	return location;
+    }
 
     /**
      * This method is called when this {@code Entity} is added to an

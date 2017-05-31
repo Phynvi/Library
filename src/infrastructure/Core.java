@@ -25,7 +25,7 @@ public class Core {
 
 	Ticker ticker = new Ticker();
 	Attachments.attachTicker(ticker);
-	threadPool.scheduleAtFixedRate(ticker, 1, 1, TimeUnit.MILLISECONDS);
+	threadPool.scheduleAtFixedRate(ticker, 0, 1, TimeUnit.NANOSECONDS);
 	Attachments.attachEventManager(new EventManager());
     }
 

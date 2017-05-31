@@ -68,26 +68,28 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 	    int length = PACKET_SIZES.get(handler.getRevision())[opcode];
 	    if (length == -1 && in.isReadable())
 		length = in.readByte() & 0xFF;
-	    if (length <= in.readableBytes() && length > 0) {
+	    if (length <= in.readableBytes()) {
+		if (length < 1) {
+		    DecodedPacket packet = new DecodedPacket(PacketType.STANDARD, Unpooled.buffer(), opcode);
+		    PacketDecoder<ConnectionHolder> processor = handler.getPacketProcessor(opcode);
+		    if (processor != null) {
+			processor.process(holder, packet);
+		    } else {
+			LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
+		    }
+		    return;
+		}
 		byte[] payload = new byte[length];
 		in.readBytes(payload, 0, length);
 		DecodedPacket packet = new DecodedPacket(PacketType.STANDARD, Unpooled.wrappedBuffer(payload), opcode);
 
-		PacketProcessor<ConnectionHolder> processor = handler.getPacketProcessor(opcode);
+		PacketDecoder<ConnectionHolder> processor = handler.getPacketProcessor(opcode);
 		if (processor != null) {
 		    processor.process(holder, packet);
 		} else {
 		    LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
 		}
-	    } else {
-		DecodedPacket packet = new DecodedPacket(PacketType.STANDARD, Unpooled.EMPTY_BUFFER, opcode);
-		PacketProcessor<ConnectionHolder> processor = handler.getPacketProcessor(opcode);
-		if (processor != null) {
-		    processor.process(holder, packet);
-		} else {
-		    LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
-		}
-	    }
+	    } else {}
 	}
     }
 }

@@ -7,9 +7,8 @@ import entity.geometry.Location;
 
 public abstract class NPC extends Entity implements Actor {
 
-    @Override
-    public Location getLocation() {
-	return null;
+    public NPC(Location location) {
+	super(location);
     }
 
     @Override

@@ -76,8 +76,9 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	    lastOpenIndex = -1;
 	    entity.create();
 	} else {
+	    size++;
 	    data[size] = entity;
-	    entity.setIndex(++size);
+	    entity.setIndex(size);
 	    entity.create();
 	}
 	return false;
@@ -95,20 +96,14 @@ public class EntityList<E extends Entity> implements Iterable<E> {
      * @return true if the {@code Entity} was removed; return false otherwise
      */
     public boolean remove(E entity) {
-	if (!(entity instanceof Entity))
+	if (entity == null || entity.getIndex() == -1 || entity.getIndex() >= data.length)
 	    return false;
-	if (((Entity) entity).getIndex() == -1 || ((Entity) entity).getIndex() >= data.length)
-	    return false;
-	Entity i = data[((Entity) entity).getIndex()];
-	if (i != null) {
-	    this.lastOpenIndex = i.getIndex();
-	    data[i.getIndex()] = null;
-	    i.setIndex(-1);
-	    size--;
-	    i.destroy();
-	    return true;
-	}
-	return false;
+	this.lastOpenIndex = entity.getIndex();
+	data[entity.getIndex()] = null;
+	entity.setIndex(-1);
+	size--;
+	entity.destroy();
+	return true;
     }
 
     /**

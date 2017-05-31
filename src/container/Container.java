@@ -287,9 +287,9 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      */
     public int indexOf(Object object) {
 	if (object instanceof BasicItem) {
-	    BasicItem item = (BasicItem) object;
+	    BasicItem basicItem = (BasicItem) object;
 	    for (int i = 0; i < capacity; i++)
-		if (data[i] != null && data[i].getId() == item.getId() && data[i].getAmount() >= item.getAmount())
+		if (data[i] != null && data[i].getId() == basicItem.getId() && data[i].getAmount() >= basicItem.getAmount())
 		    return i;
 	} else if (object instanceof Integer) {
 	    for (int i = 0; i < capacity; i++)
@@ -402,8 +402,8 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      * {@inheritDoc}
      */
     public boolean addAll(Collection<? extends E> c) {
-	for (BasicItem item : c)
-	    if (item != null && !add(item))
+	for (BasicItem basicItem : c)
+	    if (basicItem != null && !add(basicItem))
 		return false;
 	return true;
     }

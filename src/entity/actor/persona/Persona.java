@@ -32,7 +32,6 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
     protected ConfigSection config;
 
     private final ActionQueue<Persona> actions = new ActionQueue<>();
-    private Location location;
 
     private Container<BasicItem> inventory, equipment;
     private final PersonaOption[] options;
@@ -40,7 +39,8 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
     /**
      * Constructs a new {@code Persona}.
      */
-    public Persona() {
+    public Persona(Location location) {
+	super(location);
 	this.inventory = new Container<>(Containers.AVAILABLE_STACK, 28, 1, Integer.MAX_VALUE);
 	this.config = new ConfigSection();
 	this.options = new PersonaOption[5];
@@ -88,10 +88,6 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
 	return config;
     }
 
-    public void setLocation(Location location) {
-	this.location = location;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -121,15 +117,6 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
      */
     public Container<? extends BasicItem> getInventory() {
 	return inventory;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see entity.geometry.Locatable#getLocation()
-     */
-    public Location getLocation() {
-	return location;
     }
 
     /*
