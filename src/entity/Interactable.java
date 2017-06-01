@@ -17,8 +17,11 @@ public interface Interactable {
     public Option[] options();
 
     /**
+     * Sets the specified {@code Option} of this {@code Interactable} to its
+     * index value from {@link Option#getIndex()}.
      * 
      * @param option
+     *            the option to set
      */
     public default void setOption(Option option) {
 	options()[option.getIndex()] = option;

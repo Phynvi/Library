@@ -1,5 +1,7 @@
 package entity.actor;
 
+import entity.actor.model.Model;
+
 /**
  * Represents a {@code ActionQueue} holder that handles any {@code Action}
  * queuing. The {@code Actor} is used within any {@code Action} as an 'owner' to
@@ -7,7 +9,7 @@ package entity.actor;
  * 
  * @author Albert Beaupre
  * 
- * @see actionQueue
+ * @see entity.actor.ActionQueue
  */
 public interface Actor {
 
@@ -37,5 +39,12 @@ public interface Actor {
     public default void queue(Action action) {
 	getActions().queue(action);
     }
+
+    /**
+     * Returns the {@code Model} of this {@code Actor}.
+     * 
+     * @return the model
+     */
+    public Model getModel();
 
 }

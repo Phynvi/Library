@@ -1,13 +1,13 @@
 package entity.actor;
 
+import infrastructure.timing.Tick;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import timing.Tick;
-
 /**
  * Represents a type of 'Queue' for queuing {@code Action} types so they may be
- * cycled. {@code ActionQueue} extends the {@link timing.Tick} class so it may
+ * cycled. {@code ActionQueue} extends the {@link infrastructure.timing.Tick} class so it may
  * cycle through actions continuously until all actions are gone and it will
  * stop itself from cycling anymore until another {@code Action} has been
  * queued.

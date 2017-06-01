@@ -1,9 +1,10 @@
 package infrastructure;
 
+import infrastructure.timing.Ticker;
+
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import timing.Ticker;
 import event.EventManager;
 
 /**

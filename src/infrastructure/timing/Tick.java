@@ -1,4 +1,4 @@
-package timing;
+package infrastructure.timing;
 
 import infrastructure.Attachments;
 

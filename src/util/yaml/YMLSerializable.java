@@ -4,6 +4,7 @@ package util.yaml;
  * Used for serialization of YAML scripts.
  * 
  * @author Albert Beaupre
+ * @author Dirk Jamieson
  */
 public interface YMLSerializable {
 

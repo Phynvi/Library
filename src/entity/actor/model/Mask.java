@@ -5,7 +5,7 @@ import network.packet.encoding.EncodedPacket;
 /**
  * @author Albert Beaupre
  */
-public abstract class UpdateMask implements Comparable<UpdateMask> {
+public abstract class Mask implements Comparable<Mask> {
 
     /**
      * 
@@ -30,7 +30,7 @@ public abstract class UpdateMask implements Comparable<UpdateMask> {
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(UpdateMask o) {
+    public int compareTo(Mask o) {
 	return Integer.compare(ordinal(), o.ordinal());
     }
 

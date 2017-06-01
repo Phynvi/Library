@@ -121,10 +121,10 @@ public class Point3D implements YMLSerializable {
     }
 
     /**
-     * Determines whether or not two points are equal. Two instances of
-     * {@code Point3D} are equal if the values of their {@code code}, {@code y},
-     * and {@code z} member fields, representing their position in the
-     * coordinate space, are the same.
+     * Determines whether or not three coordinates are equal. Two instances of
+     * {@code Point3D} are equal if the coordinate values of their
+     * {@code code x}, {@code y}, and {@code z} member fields, representing
+     * their position in the coordinate space, are the same.
      * 
      * @param obj
      *            an object to be compared with this {@code Point3D}

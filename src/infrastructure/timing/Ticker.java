@@ -1,9 +1,10 @@
-package timing;
+package infrastructure.timing;
 
 import infrastructure.Attachments;
+import infrastructure.Core;
+import infrastructure.CoreThread;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -28,21 +29,21 @@ import java.util.logging.Logger;
  * 
  * @author Albert Beaupre
  * 
- * @see timing.Tick
+ * @see infrastructure.timing.Tick
  */
-public class Ticker implements Runnable {
+public class Ticker extends CoreThread {
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private ArrayList<Tick> list; // This list is filled by any incoming ticks to be executed
-    private ArrayList<Tick> modifier; // This list holds and Tick that is going to be added to the list of executable ticks
+    private CopyOnWriteArrayList<Tick> list; // This list is filled by any incoming ticks to be executed
+    private boolean running;
 
     /**
      * Constructs a new {@code Ticker} with an empty list of {@code Ticks}.
      */
     public Ticker() {
-	this.list = new ArrayList<>();
-	this.modifier = new ArrayList<>();
+	super("Ticker Thread" + Math.random(), Thread.NORM_PRIORITY, false);
+	this.list = new CopyOnWriteArrayList<>();
     }
 
     /**
@@ -60,7 +61,10 @@ public class Ticker implements Runnable {
 	    return;
 	}
 	tickable.startTicking();
-	this.modifier.add(tickable);
+	this.list.add(tickable);
+	if (!running)
+	    Core.submit(Ticker.this);
+	running = true;
     }
 
     /**
@@ -69,24 +73,23 @@ public class Ticker implements Runnable {
      */
     public void run() {
 	try {
-	    if (modifier.size() > 0) {
-		list.addAll(modifier);
-		modifier = new ArrayList<>();
-	    }
-	    Iterator<Tick> iterator = list.iterator();
-	    while (iterator.hasNext()) {
-		Tick tickable = iterator.next();
-		if (tickable == null)
-		    continue;
-		if (tickable.isCancelled()) {
-		    iterator.remove();
-		    continue;
-		}
-		if (tickable.getDuration() >= tickable.getPeriod()) {
-		    tickable.startTicking();
-		    tickable.tick();
+	    while (list.size() > 0) {
+		running = true;
+		for (int i = 0; i < list.size(); i++) {
+		    Tick tickable = list.get(i);
+		    if (tickable == null)
+			continue;
+		    if (tickable.isCancelled()) {
+			list.remove(i);
+			continue;
+		    }
+		    if (tickable.getDuration() >= tickable.getPeriod()) {
+			tickable.startTicking();
+			tickable.tick();
+		    }
 		}
 	    }
+	    running = false;
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}

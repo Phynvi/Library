@@ -15,7 +15,7 @@ import org.yaml.snakeyaml.Yaml;
  * A ConfigSection which is based on a particular file. This class contains
  * methods for reloading and saving a ConfigSection.
  * 
- * @author Albert Beaupre
+ * @author Dirk Jamieson
  */
 public class FileConfig extends ConfigSection {
 

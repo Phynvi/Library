@@ -97,6 +97,20 @@ public abstract class RawHandler {
 	return senders[opcode];
     }
 
+    /**
+     * Returns the {@code EncodedPacket} based on the specified {@code opcode}
+     * and argument array, if registered to this {@code RawHandler}; returns
+     * null otherwise.
+     * 
+     * @param holder
+     *            the {@code ConnectionHolder} to retrieve the
+     *            {@code EncodedPacket}
+     * @param opcode
+     *            the opcode of the packet
+     * @param args
+     *            the arguments to use to encode the packet
+     * @return the {@code EncodedPacket}, if registered; returns null otherwise
+     */
     public <C extends ConnectionHolder> EncodedPacket getEncodedPacket(ConnectionHolder holder, int opcode, Object... args) {
 	return senders[opcode].encode(holder, args);
     }
