@@ -3,17 +3,17 @@ package entity;
 import java.util.Objects;
 
 import util.ReflectUtil;
+import entity.event.EntityLocationChangeEvent;
 import entity.geometry.Locatable;
 import entity.geometry.Location;
+import entity.geometry.area.AreaChangeType;
 
 /**
  * @author Albert Beaupre
  */
 public abstract class Entity implements Locatable, Interactable {
 
-    private final Location location;
-    private Location previousLocation;
-
+    private Location location;
     private int index;
 
     /**
@@ -24,7 +24,6 @@ public abstract class Entity implements Locatable, Interactable {
      */
     public Entity(Location location) {
 	this.location = Objects.requireNonNull(location, "The location of an entity must not be NULL");
-	this.previousLocation = location;
     }
 
     /**
@@ -34,17 +33,30 @@ public abstract class Entity implements Locatable, Interactable {
      * @param location
      *            the location to set this {@code Entity}
      */
-    public final void setLocation(Location location) {
-	this.previousLocation = this.location;
+    public final void setLocation(Location location, AreaChangeType type) {
+	Location previousLocation = this.location;
+	this.location = location;
 
-	this.location.setMap(location.getMap());
-	this.location.x = location.x;
-	this.location.y = location.y;
-	this.location.z = location.z;
+	EntityLocationChangeEvent event = new EntityLocationChangeEvent(this, type, this.location, previousLocation);
+	event.call();
     }
 
-    public final Location getPreviousLocation() {
-	return this.previousLocation;
+    /**
+     * This will trigger the {@link entity.event.EntityLocationChangeEvent}
+     * event with the {@link AreaChangeType#TELEPORT} as the type of location
+     * change.
+     * 
+     * <p>
+     * This method is effectively equivalent to:
+     * 
+     * <pre>
+     * setLocation(location, {@link AreaChangeType#TELEPORT});
+     * </pre>
+     * 
+     * @param location
+     */
+    public void teleport(Location location) {
+	setLocation(location, AreaChangeType.TELEPORT);
     }
 
     /*
@@ -62,7 +74,7 @@ public abstract class Entity implements Locatable, Interactable {
      * 
      * @see entity.EntityList#add(Entity)
      */
-    protected abstract void create();
+    public abstract void create();
 
     /**
      * This method is called when this {@code Entity} is removed from an
@@ -72,7 +84,7 @@ public abstract class Entity implements Locatable, Interactable {
      * @see entity.EntityList#remove(Entity)
      * @see entity.EntityList#remove(int)
      */
-    protected abstract void destroy();
+    public abstract void destroy();
 
     /**
      * Returns the index value relating to an {@code EntityList} that this

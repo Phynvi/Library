@@ -71,7 +71,7 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 	    if (length <= in.readableBytes()) {
 		if (length < 1) {
 		    DecodedPacket packet = new DecodedPacket(PacketType.STANDARD, Unpooled.buffer(), opcode);
-		    PacketDecoder<ConnectionHolder> processor = handler.getPacketProcessor(opcode);
+		    PacketDecoder<ConnectionHolder> processor = handler.getPacketDecoder(opcode);
 		    if (processor != null) {
 			processor.process(holder, packet);
 		    } else {
@@ -83,7 +83,7 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 		in.readBytes(payload, 0, length);
 		DecodedPacket packet = new DecodedPacket(PacketType.STANDARD, Unpooled.wrappedBuffer(payload), opcode);
 
-		PacketDecoder<ConnectionHolder> processor = handler.getPacketProcessor(opcode);
+		PacketDecoder<ConnectionHolder> processor = handler.getPacketDecoder(opcode);
 		if (processor != null) {
 		    processor.process(holder, packet);
 		} else {

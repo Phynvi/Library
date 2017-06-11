@@ -56,9 +56,8 @@ public class EntityList<E extends Entity> implements Iterable<E> {
     /**
      * Adds the specified {@code Entity} type to this {@code EntityList} and
      * sets its index value to the available index in this {@code EntityList}
-     * that has not been used and calls the {@link Entity#create()} method on
-     * the {@code Entity} added and returns {@code true} if the {@code Entity}
-     * was added; otherwise {@code false} is returned;
+     * that has not been used and returns {@code true} if the {@code Entity} was
+     * added; otherwise {@code false} is returned;
      * 
      * @param entity
      *            the {@code Entity} type to add
@@ -74,22 +73,18 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	    data[lastOpenIndex] = entity;
 	    entity.setIndex(lastOpenIndex + 1);
 	    lastOpenIndex = -1;
-	    entity.create();
 	} else {
 	    size++;
 	    data[size] = entity;
 	    entity.setIndex(size);
-	    entity.create();
 	}
 	return false;
     }
 
     /**
      * Removes the specified {@code Entity} from this {@code EntityList}, sets
-     * the index of the {@code Entity} to -1, and calls the
-     * {@link Entity#destroy()} method on the {@code Entity} removed and returns
-     * {@code true} if the {@code Entity} was removed; otherwise {@code false}
-     * is returned.
+     * the index of the {@code Entity} to -1, and returns {@code true} if the
+     * {@code Entity} was removed; otherwise {@code false} is returned.
      * 
      * @param entity
      *            the entity to remove
@@ -102,7 +97,6 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	data[entity.getIndex()] = null;
 	entity.setIndex(-1);
 	size--;
-	entity.destroy();
 	return true;
     }
 
@@ -136,12 +130,10 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 
     /**
      * Clears this {@code EntityList} of every contained {@code Entity}, sets
-     * the index of every {@code Entity} to -1, and calls the
-     * {@link Entity#destroy()} method for each of them.
+     * the index of every {@code Entity} to -1.
      */
     public void clear() {
 	for (Entity e : this.data) {
-	    e.destroy();
 	    e.setIndex(-1);
 	}
 	int length = data.length;

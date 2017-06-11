@@ -37,6 +37,12 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
     private final PersonaOption[] options;
 
     /**
+     * This flag must be set as true if this {@code Persona} is active in the
+     * game, otherwise set it to false.
+     */
+    public boolean active;
+
+    /**
      * Constructs a new {@code Persona}.
      */
     public Persona(Location location) {

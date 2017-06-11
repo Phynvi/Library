@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
+import entity.Entity;
 import entity.EntityList;
 import entity.actor.npc.NPC;
 import entity.actor.persona.Persona;
@@ -38,7 +39,7 @@ public abstract class WorldMap extends AreaManager {
      */
     public static final int LOAD_RADIUS = 52;
 
-    private final HashMap<Class<?>, HashSet<Locatable>> entities;
+    private final HashMap<Class<? extends Entity>, HashSet<Entity>> entities;
     private final EntityList<Persona> personas;
     private final EntityList<NPC> npcs;
     private final int width, height;
@@ -116,7 +117,7 @@ public abstract class WorldMap extends AreaManager {
 		this.chunks[cx - this.location.x] = new Chunk[height >> CHUNK_BITS][];
 	    if (this.chunks[cx - this.location.x][cy - this.location.y] == null)
 		this.chunks[cx - this.location.x][cy - this.location.y] = new Chunk[4];
-	} catch (IndexOutOfBoundsException e) {}
+	} catch (Exception e) {}
     }
 
     /**
@@ -188,11 +189,10 @@ public abstract class WorldMap extends AreaManager {
 		    c = new Chunk(0, 0, 0);
 		}
 		setChunk(chunkX, chunkY, z, c);
-
 		return c;
 	    }
 	    return c;
-	} catch (IndexOutOfBoundsException e) {
+	} catch (Exception e) {
 	    return null;
 	}
     }
@@ -220,7 +220,7 @@ public abstract class WorldMap extends AreaManager {
 	    if (c == null)
 		return;
 	    c.addClip(x % CHUNK_SIZE, y % CHUNK_SIZE, clip);
-	} catch (ArrayIndexOutOfBoundsException e) {
+	} catch (Exception e) {
 	    //We can probably ignore this.
 	}
     }
@@ -248,7 +248,7 @@ public abstract class WorldMap extends AreaManager {
 	    if (c == null)
 		return; //No chunk there.
 	    c.removeClip(x % CHUNK_SIZE, y % CHUNK_SIZE, clip);
-	} catch (ArrayIndexOutOfBoundsException e) {}
+	} catch (Exception e) {}
     }
 
     /**
@@ -274,7 +274,7 @@ public abstract class WorldMap extends AreaManager {
 	    if (c == null || c.isLoaded() == false)
 		return -1;
 	    return c.getClip(x & 7, y & 7);
-	} catch (ArrayIndexOutOfBoundsException e) {
+	} catch (Exception e) {
 	    return -1;
 	}
     }
@@ -318,7 +318,9 @@ public abstract class WorldMap extends AreaManager {
 
     /**
      * Puts the specified {@code entity} within this {@code  WorldMap} allowing
-     * it to be searched for or added/removed from this {@code  WorldMap}.
+     * it to be searched for or added/removed from this {@code  WorldMap}. If the
+     * specified {@code entity} is an instance of {@code NPC} or {@code Persona}
+     * , then they will be put into their own separated lists.
      * 
      * @param entity
      *            the entity to put in this {@code WorldMap}
@@ -327,7 +329,7 @@ public abstract class WorldMap extends AreaManager {
      *             if there is no area defined in this {@code WorldMap} class
      *             where the entity is located
      */
-    public <E extends Locatable> void put(E entity) {
+    public <E extends Entity> void put(E entity) {
 	if (!this.contains(entity.getLocation()))
 	    LOGGER.warning("There is no area defined where the specified entity is located");
 
@@ -335,11 +337,12 @@ public abstract class WorldMap extends AreaManager {
 	    personas.add((Persona) entity);
 	} else if (entity instanceof NPC) {
 	    npcs.add((NPC) entity);
-	} else {
-	    HashSet<Locatable> set = entities.getOrDefault(entity.getClass(), new HashSet<>());
-	    set.add(entity);
-	    entities.put(entity.getClass(), set);
 	}
+	entity.create();
+
+	HashSet<Entity> set = entities.getOrDefault(entity.getClass(), new HashSet<>());
+	set.add(entity);
+	entities.put(entity.getClass(), set);
     }
 
     /**
@@ -348,24 +351,23 @@ public abstract class WorldMap extends AreaManager {
      * @param entity
      *            the entity to remove
      */
-    public void remove(Locatable entity) {
-	HashSet<Locatable> set = entities.get(entity.getClass());
-	if (entity instanceof Persona)
+    public void remove(Entity entity) {
+	if (entity instanceof Persona) {
 	    personas.remove((Persona) entity);
-	if (entity instanceof NPC)
+	} else if (entity instanceof NPC) {
 	    npcs.remove((NPC) entity);
-	if (set == null) {
-	    LOGGER.warning("The entity " + entity + " was not removed from WorldMap: " + toString());
-	    return;
 	}
-	if (!set.remove(entity))
-	    LOGGER.warning("The entity " + entity + " was not removed from WorldMap: " + toString());
+	entity.destroy();
+
+	HashSet<Entity> set = entities.getOrDefault(entity.getClass(), new HashSet<>());
+	set.remove(entity);
+	entities.put(entity.getClass(), set);
     }
 
     /**
-     * Retrieves a {@code Locatable} entity with the specified {@code clazz}
+     * Retrieves any {@code Locatable} entity with the specified {@code clazz}
      * type that passes the {@code filter}. If no {@code Locatable} passes the
-     * {@code filter} then {@code null} is returned.
+     * {@code filter} then an empty {@code HashSet} is returned.
      * 
      * @param filter
      *            the filter to check with entities
@@ -374,13 +376,17 @@ public abstract class WorldMap extends AreaManager {
      * @return the found entity; return null if not found
      */
     @SuppressWarnings("unchecked")
-    public <U extends Locatable> U getEntity(Predicate<U> filter, Class<U> clazz) {
-	HashSet<Locatable> set = entities.get(clazz);
-	U found = null;
-	for (Locatable type : set) {
-	    if (!filter.test((U) type))
-		return null;
+    public <U extends Entity> HashSet<U> getEntities(Predicate<U> filter, Class<U> clazz) {
+	HashSet<U> set = (HashSet<U>) entities.get(clazz);
+	HashSet<U> found = new HashSet<>();
+	if (set == null) {
+	    LOGGER.warning("No entities placed with class type: " + clazz.getSimpleName());
+	    return found;
 	}
+	set.forEach(e -> {
+	    if (e != null && filter.test((U) e))
+		found.add((U) e);
+	});
 	return found;
     }
 
@@ -401,14 +407,12 @@ public abstract class WorldMap extends AreaManager {
      *         the {@code bounds}
      */
     @SuppressWarnings("unchecked")
-    public <U extends Locatable> HashSet<U> findEntities(Shape3D bounds, int guess, Class<U> clazz) {
+    public <U extends Entity> HashSet<U> findEntities(Shape3D bounds, int guess, Class<U> clazz) {
 	HashSet<U> objects = new HashSet<>(guess);
-	synchronized (entities) {
-	    HashSet<Locatable> set = entities.get(clazz);
-	    for (Locatable entity : set) {
-		if (bounds.contains(entity.getLocation()))
-		    objects.add((U) entity);
-	    }
+	HashSet<Entity> set = entities.get(clazz);
+	for (Entity entity : set) {
+	    if (bounds.contains(entity.getLocation()))
+		objects.add((U) entity);
 	}
 	return objects;
     }
@@ -421,9 +425,8 @@ public abstract class WorldMap extends AreaManager {
      *            the supertype of the entities
      * @return a {@code HashSet} of the entities
      */
-    @SuppressWarnings("unchecked")
-    public <U extends Locatable> Iterable<U> getAll(Class<U> clazz) {
-	return (Iterable<U>) entities.getOrDefault(clazz, new HashSet<>());
+    public <U extends Entity> HashSet<Entity> getAll(Class<U> clazz) {
+	return entities.getOrDefault(clazz, new HashSet<>());
     }
 
     public EntityList<Persona> getPersonas() {

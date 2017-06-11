@@ -18,15 +18,15 @@ import network.packet.encoding.PacketEncoder;
 @SuppressWarnings("unchecked")
 public abstract class RawHandler {
 
-    private PacketDecoder<ConnectionHolder>[] processors;
-    private PacketEncoder<ConnectionHolder>[] senders;
+    private PacketDecoder<ConnectionHolder>[] decoders;
+    private PacketEncoder<ConnectionHolder>[] encoders;
 
     /**
      * Constructs a new {@code RawHandler}.
      */
     public RawHandler() {
-	this.processors = new PacketDecoder[256];
-	this.senders = new PacketEncoder[256];
+	this.decoders = new PacketDecoder[256];
+	this.encoders = new PacketEncoder[256];
     }
 
     /**
@@ -38,17 +38,17 @@ public abstract class RawHandler {
      *             if the sender is null
      * @throws UnsupportedOperationException
      *             if the opcode is less than 0
-     * @param processor
+     * @param encoder
      *            the {@code PacketEncoder} to register
      * @param opcode
      *            the opcode to correlate the {@code PacketEncoder} to
      */
-    public <C extends ConnectionHolder> void registerSender(PacketEncoder<C> sender, int opcode) {
-	if (sender == null)
+    public <C extends ConnectionHolder> void registerEncoder(PacketEncoder<C> encoder, int opcode) {
+	if (encoder == null)
 	    throw new NullPointerException("A PacketDecoder cannot be registered as null");
 	if (opcode < 0)
 	    throw new UnsupportedOperationException("A PacketDecoder must have an opcode >= 0");
-	senders[opcode] = (PacketEncoder<ConnectionHolder>) sender;
+	encoders[opcode] = (PacketEncoder<ConnectionHolder>) encoder;
     }
 
     /**
@@ -65,12 +65,12 @@ public abstract class RawHandler {
      * @param opcode
      *            the opcode to correlate the {@code PacketDecoder} to
      */
-    public <C extends ConnectionHolder> void registerProcessor(PacketDecoder<C> processor, int opcode) {
+    public <C extends ConnectionHolder> void registerDecoder(PacketDecoder<C> processor, int opcode) {
 	if (processor == null)
 	    throw new NullPointerException("A PacketDecoder cannot be registered as null");
 	if (opcode < 0)
 	    throw new UnsupportedOperationException("A PacketDecoder must have an opcode >= 0");
-	processors[opcode] = (PacketDecoder<ConnectionHolder>) processor;
+	decoders[opcode] = (PacketDecoder<ConnectionHolder>) processor;
     }
 
     /**
@@ -81,8 +81,8 @@ public abstract class RawHandler {
      *            the opcode of the correlating {@code PacketDecoder}
      * @return the {@code PacketDecoder} if existing; return null otherwise
      */
-    public PacketDecoder<ConnectionHolder> getPacketProcessor(int opcode) {
-	return processors[opcode];
+    public PacketDecoder<ConnectionHolder> getPacketDecoder(int opcode) {
+	return decoders[opcode];
     }
 
     /**
@@ -93,8 +93,8 @@ public abstract class RawHandler {
      *            the opcode of the correlating {@code PacketEncoder}
      * @return the {@code PacketEncoder} if existing; return null otherwise
      */
-    public PacketEncoder<ConnectionHolder> getPacketSender(int opcode) {
-	return senders[opcode];
+    public PacketEncoder<ConnectionHolder> getPacketEncoder(int opcode) {
+	return encoders[opcode];
     }
 
     /**
@@ -112,7 +112,7 @@ public abstract class RawHandler {
      * @return the {@code EncodedPacket}, if registered; returns null otherwise
      */
     public <C extends ConnectionHolder> EncodedPacket getEncodedPacket(ConnectionHolder holder, int opcode, Object... args) {
-	return senders[opcode].encode(holder, args);
+	return encoders[opcode].encode(holder, args);
     }
 
     /**

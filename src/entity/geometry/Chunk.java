@@ -165,7 +165,7 @@ public class Chunk {
      * @param loaded
      *            the flag to set
      */
-    protected void setLoaded(boolean loaded) {
+    public void setLoaded(boolean loaded) {
 	this.loaded = loaded;
     }
 

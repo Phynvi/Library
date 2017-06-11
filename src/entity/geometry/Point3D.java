@@ -70,9 +70,10 @@ public class Point3D implements YMLSerializable {
     }
 
     /**
-     * Translates this point, at location {@code (x,y)}, by {@code dx} along the
-     * {@code x} axis and {@code dy} along the {@code y} axis so that it now
-     * represents the point {@code (x+dx,y+dy)}.
+     * Returns a new translated {@code Point3D}, at location {@code (x,y,z)}, by
+     * {@code dx} along the {@code x} axis and {@code dy} along the {@code y}
+     * axis and {@code dz} along the {@code z} axis so that it now represents
+     * the point {@code (x+dx,y+dy, z+dz)}.
      *
      * @param dx
      *            the distance to move this point along the X axis
@@ -80,11 +81,11 @@ public class Point3D implements YMLSerializable {
      *            the distance to move this point along the Y axis
      * @param dz
      *            the distance to move this point along the Z axis
+     * 
+     * @return the {@code Point3D} with the translated coordinates
      */
-    public void translate(int dx, int dy, int dz) {
-	this.x += dx;
-	this.y += dy;
-	this.z += dz;
+    public Point3D translate(int dx, int dy, int dz) {
+	return new Point3D(this.x + dx, this.y + dy, this.z + dz);
     }
 
     /**

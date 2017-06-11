@@ -1,6 +1,4 @@
-package infrastructure.timing;
-
-import infrastructure.Attachments;
+package infrastructure;
 
 /**
  * Represents a type of 'Tick' that will execute based on its
@@ -32,11 +30,11 @@ public abstract class Tick {
      * been called and the {@link getDuration()} value is greater or equal to
      * {@link Tick#getPeriod()}.
      */
-    protected abstract void tick();
+    public abstract void tick();
 
     /**
      * Starts a period of time at which this {@code Tick} has started updating.
-     * This method should be used by a {@code Ticker} only.
+     * This method should be used by a {@code TickThread} only.
      */
     public void startTicking() {
 	this.startedTicking = System.currentTimeMillis();

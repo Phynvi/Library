@@ -1,8 +1,12 @@
 package entity.actor.model;
 
+import infrastructure.Attachments;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.TreeSet;
+
+import entity.actor.Actor;
 
 /**
  * @author Albert Beaupre
@@ -12,10 +16,13 @@ public abstract class Model {
     private final TreeSet<Mask> currentMasks;
     private int maskData;
 
+    private final Actor actor;
+
     /**
      * Constructs a new {@code Model}.
      */
-    public Model() {
+    public Model(Actor actor) {
+	this.actor = actor;
 	this.currentMasks = new TreeSet<>();
     }
 
@@ -42,6 +49,8 @@ public abstract class Model {
 	    currentMasks.remove(mask);
 	maskData |= mask.data();
 	currentMasks.add(mask);
+
+	Attachments.getActorUpdator().setForUpdating(actor);
     }
 
     /**
@@ -90,5 +99,14 @@ public abstract class Model {
      */
     public int getMaskData() {
 	return maskData;
+    }
+
+    /**
+     * Returns the {@code Actor} using this {@code Model}.
+     * 
+     * @return the actor
+     */
+    public Actor getActor() {
+	return actor;
     }
 }

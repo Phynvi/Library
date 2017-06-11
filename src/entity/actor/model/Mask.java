@@ -3,25 +3,31 @@ package entity.actor.model;
 import network.packet.encoding.EncodedPacket;
 
 /**
+ * Represents a type of mask, such as movement, facing, graphics, animations,
+ * etc placed on an {@code Actor} for updating.
+ * 
  * @author Albert Beaupre
  */
 public abstract class Mask implements Comparable<Mask> {
 
     /**
+     * Returns the data value of this {@code Mask}, usually in hexadecimal form.
      * 
-     * @return
+     * @return the data value of this {@code Mask}
      */
     public abstract int data();
 
     /**
+     * Returns the ordinal (index) which this {@code Mask} is specifically read
+     * by any {@code Model}.
      * 
-     * @return
+     * @return the ordinate (index) of this {@code Mask} to be read
      */
     public abstract byte ordinal();
 
     /**
-     * 
-     * @return
+     * Writes information based on this {@code Mask} to the specified
+     * {@code packet} argument.
      */
     public abstract void write(EncodedPacket packet);
 

@@ -63,8 +63,8 @@ public abstract class Area implements Shape3D, EventListener {
 
     @EventMethod
     private void onAreaChange(EntityLocationChangeEvent event) {
-	Location current = event.getEntity().getLocation();
-	Location previous = event.getEntity().getPreviousLocation();
+	Location current = event.getCurrentLocation();
+	Location previous = event.getPreviousLocation();
 	if (previous.equals(current))
 	    return;
 

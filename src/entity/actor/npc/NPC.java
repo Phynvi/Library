@@ -13,7 +13,7 @@ public abstract class NPC extends Entity implements Actor {
 
     @Override
     public ActionQueue<NPC> getActions() {
-	return null;
+	return new ActionQueue<>();
     }
 
 }

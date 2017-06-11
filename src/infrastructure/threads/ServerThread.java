@@ -1,5 +1,7 @@
-package network;
+package infrastructure.threads;
 
+import infrastructure.Core;
+import infrastructure.CoreThread;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -10,13 +12,14 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.util.logging.Logger;
 
+import network.NetworkHandler;
 import network.packet.encoding.OutgoingPacketEncoder;
 import network.raw.handshake.HandshakeDecoder;
 
 /**
  * @author Albert Beaupre
  */
-public class Server {
+public class ServerThread extends CoreThread {
 
     private final Logger logger = Logger.getLogger(getClass().getName());
 
@@ -28,12 +31,13 @@ public class Server {
     private boolean running;
 
     /**
-     * Constructs a new {@code Server} from the specified {@code port}.
+     * Constructs a new {@code ServerThread} from the specified {@code port}.
      * 
      * @param port
      *            the port of this server
      */
-    public Server(int port) {
+    public ServerThread(int port) {
+	super("Server Thread", Thread.NORM_PRIORITY, false);
 	this.port = port;
 	this.bootstrap = new ServerBootstrap();
 	this.bossGroup = new NioEventLoopGroup();
@@ -41,11 +45,16 @@ public class Server {
     }
 
     /**
-     * Starts this {@code Server} from the port previously assigned.
+     * Starts this {@code ServerThread} from the port previously assigned.
      */
     public final void start() {
 	if (running)
 	    return;
+	Core.submitThread(this);
+    }
+
+    @Override
+    public void run() {
 	try {
 	    bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
 		@Override
@@ -61,7 +70,7 @@ public class Server {
 
 	    running = f.isSuccess();
 
-	    logger.info("Initialized Server on port " + port + ".");
+	    logger.info("Initialized ServerThread on port " + port + ".");
 
 	    f.channel().closeFuture().sync();
 	} catch (Exception e) {

@@ -1,8 +1,10 @@
 package infrastructure;
 
-import infrastructure.timing.Ticker;
+import infrastructure.threads.ActorUpdateThread;
+import infrastructure.threads.TickThread;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import event.EventManager;
@@ -17,36 +19,68 @@ public class Attachments {
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); // This is used for any sort of console logging
 
-    private static Ticker TICKER; // This is an attached Ticker that will globally handle Ticks
+    private static TickThread TICKER; // This is an attached TickThread that will globally handle Ticks
     private static EventManager EVENT_MANAGER; // This is an attached EventManager that will globally handle Events
+    private static ActorUpdateThread UPDATE_THREAD;
+
+    /**
+     * Attaches the specified {@code ActorUpdateThread} to this
+     * {@code Attachments} class.
+     * 
+     * @param updateThread
+     *            the {@code ActorUpdateThread} to attach
+     */
+    public static void attachActorUpdator(ActorUpdateThread updateThread) {
+	if (Attachments.UPDATE_THREAD != null) {
+	    LOGGER.warning("An ActorUpdateThread has already been attached");
+	    return;
+	}
+	Attachments.UPDATE_THREAD = Objects.requireNonNull(updateThread, "The ActorUpdateThread cannot be attached as NULL");
+	Core.scheduleFixedTask(UPDATE_THREAD, 0, 30, TimeUnit.MILLISECONDS);
+	LOGGER.info("An ActorUpdateThread has successfully been attached");
+    }
+
+    /**
+     * Returns the {@code ActorUpdateThread} that has been attached to this
+     * {@code Attachments} class so it may globally handle any updating of an
+     * {@code Actor}.
+     * 
+     * @return the {@code ActorUpdateThread} attached to this class
+     */
+    public static ActorUpdateThread getActorUpdator() {
+	if (Attachments.UPDATE_THREAD == null)
+	    throw new NullPointerException("There is not an ActorUpdateThread attached");
+	return Attachments.UPDATE_THREAD;
+    }
 
     /**
      * Attaches the specified {@code ticker} to this {@code Attachments} class.
      * 
-     * @param ticker
+     * @param tickThread
      *            the ticker to attach
      */
-    public static void attachTicker(Ticker ticker) {
+    public static void attachTicker(TickThread tickThread) {
 	if (Attachments.TICKER != null) {
-	    LOGGER.warning("A Ticker has already been attached");
+	    LOGGER.warning("A TickThread has already been attached");
 	    return;
 	}
-	Attachments.TICKER = Objects.requireNonNull(ticker, "The Ticker cannot be attached as NULL");
-	LOGGER.info("A Ticker has successfully been attached");
+	Attachments.TICKER = Objects.requireNonNull(tickThread, "The TickThread cannot be attached as NULL");
+	Core.scheduleFixedTask(TICKER, 0, 1, TimeUnit.MILLISECONDS);
+	LOGGER.info("A TickThread has successfully been attached");
     }
 
     /**
-     * Returns the {@code Ticker} that has been attached to this
+     * Returns the {@code TickThread} that has been attached to this
      * {@code Attachments} class that will globally handle Ticks.
      * 
      * @throws NullPointerException
-     *             if the {@code Ticker} of this class is {@code null}
+     *             if the {@code TickThread} of this class is {@code null}
      * 
-     * @return the {@code Ticker} that has been attached
+     * @return the {@code TickThread} that has been attached
      */
-    public static Ticker getTicker() {
+    public static TickThread getTicker() {
 	if (Attachments.TICKER == null)
-	    throw new NullPointerException("There is not a Ticker attached");
+	    throw new NullPointerException("There is not a TickThread attached");
 	return Attachments.TICKER;
     }
 

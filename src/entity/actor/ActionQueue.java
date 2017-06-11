@@ -1,15 +1,15 @@
 package entity.actor;
 
-import infrastructure.timing.Tick;
+import infrastructure.Tick;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
  * Represents a type of 'Queue' for queuing {@code Action} types so they may be
- * cycled. {@code ActionQueue} extends the {@link infrastructure.timing.Tick} class so it may
- * cycle through actions continuously until all actions are gone and it will
- * stop itself from cycling anymore until another {@code Action} has been
+ * cycled. {@code ActionQueue} extends the {@link infrastructure.Tick} class so
+ * it may cycle through actions continuously until all actions are gone and it
+ * will stop itself from cycling anymore until another {@code Action} has been
  * queued.
  * 
  * @author Albert Beaupre
@@ -94,7 +94,7 @@ public final class ActionQueue<A extends Actor> extends Tick {
      * not</b> execute until the current entity.actor.action is completely
      * stopped.
      */
-    protected final void tick() {
+    public final void tick() {
 	if (this.actions.isEmpty())
 	    return;
 	Action<A> action = this.actions.peek();

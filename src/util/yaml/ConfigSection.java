@@ -13,12 +13,12 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * Represents a configuration section in YML. Internally, this class is simply a
- * map of <String, Object> where the objects are values or possibly, more
- * ConfigSections.
+ * Represents a util.configuration section in YML. Internally, this class is
+ * simply a map of <String, Object> where the objects are values or possibly,
+ * more ConfigSections.
  * 
- * This is an easy way of storing and loading data from configuration files. It
- * uses the SnakeYAML library, coupled with this project.
+ * This is an easy way of storing and loading data from util.configuration
+ * files. It uses the SnakeYAML library, coupled with this project.
  * 
  * @author Dirk Jamieson
  */
@@ -28,7 +28,7 @@ public class ConfigSection implements Map<String, Object> {
      * The map of <String, Object> contained in this section. This is the
      * key-values of the map. Note that the key cannot contain full stops ('.').
      */
-    protected Map<String, Object> map;
+    private Map<String, Object> map;
 
     /**
      * Constructs a new {@code ConfigSection} with no values within the
@@ -83,7 +83,7 @@ public class ConfigSection implements Map<String, Object> {
      */
     public ConfigSection(Map<String, Object> values) {
 	if (values == null)
-	    throw new NullPointerException("Config section may not have a null map.");
+	    throw new NullPointerException("Configurable section may not have a null map.");
 	this.map = values;
     }
 
@@ -290,7 +290,7 @@ public class ConfigSection implements Map<String, Object> {
 
     /**
      * Fetches the section under the given key, or returns fallback if there was
-     * an issue. If the section contains the key, but it is not a Config
+     * an issue. If the section contains the key, but it is not a Configurable
      * Section, then the fallback is returned.
      * 
      * @param key
@@ -625,5 +625,9 @@ public class ConfigSection implements Map<String, Object> {
      */
     public Set<Entry<String, Object>> entrySet() {
 	return map.entrySet();
+    }
+
+    public Map<String, Object> getMap() {
+	return map;
     }
 }

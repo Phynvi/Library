@@ -1,48 +1,48 @@
-package infrastructure.timing;
+package infrastructure.threads;
 
 import infrastructure.Attachments;
-import infrastructure.Core;
 import infrastructure.CoreThread;
+import infrastructure.Tick;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 /**
- * The {@code Ticker} class is used to handle any {@code Tick}. If a
+ * The {@code TickThread} class is used to handle any {@code Tick}. If a
  * {@code Tick} has been queued, it will be executed as soon as
  * {@link Tick#getDuration()} is greater or equal to {@link Tick#getPeriod()}
- * and then it will be stopped and removed from this {@code Ticker} until
+ * and then it will be stopped and removed from this {@code TickThread} until
  * {@link Tick#queue(long)} has been called again.
  * 
  * <p>
- * A {@code Ticker} should be constantly running in a {@code Thread} to
- * continuously handle Ticks:
+ * If you wish to use a TickThread separated from the
+ * {@link infrastructure.Attachments} class, then you must do something like
+ * this:
  * 
  * <pre>
  * {
- *     Ticker ticker = new Ticker();
+ *     TickThread ticker = new TickThread();
  * 
- *     ScheduledExecutorService SERVICE = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
- *     SERVICE.scheduleAtFixedRate(ticker, 1, 1, TimeUnit.MILLISECONDS); //This will schedule the ticker continuously at 1 millisecond delay
+ *     ExecutorService service = Executors.newCachedThreadPool();
+ *     service.submit(ticker);
  * }
  * </pre>
  * 
  * @author Albert Beaupre
  * 
- * @see infrastructure.timing.Tick
+ * @see infrastructure.Tick
  */
-public class Ticker extends CoreThread {
+public class TickThread extends CoreThread {
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private CopyOnWriteArrayList<Tick> list; // This list is filled by any incoming ticks to be executed
-    private boolean running;
 
     /**
-     * Constructs a new {@code Ticker} with an empty list of {@code Ticks}.
+     * Constructs a new {@code TickThread} with an empty list of {@code Ticks}.
      */
-    public Ticker() {
-	super("Ticker Thread" + Math.random(), Thread.NORM_PRIORITY, false);
+    public TickThread() {
+	super("Tick Thread", Thread.NORM_PRIORITY, false);
 	this.list = new CopyOnWriteArrayList<>();
     }
 
@@ -50,7 +50,7 @@ public class Ticker extends CoreThread {
      * Queues the specified {@code Tick} to be executed when
      * {@link Tick#getDuration()} is greater or equal to
      * {@link Tick#getPeriod()} and them it will be removed from this
-     * {@code Ticker} until this method is called again.
+     * {@code TickThread} until this method is called again.
      * 
      * @param tickable
      *            the {@code Tick} to be queued to execute
@@ -62,19 +62,15 @@ public class Ticker extends CoreThread {
 	}
 	tickable.startTicking();
 	this.list.add(tickable);
-	if (!running)
-	    Core.submit(Ticker.this);
-	running = true;
     }
 
     /**
      * This method should be run on a constant loop to continuously check,
-     * execute, and remove any {@code Tick} within this {@code Ticker}.
+     * execute, and remove any {@code Tick} within this {@code TickThread}.
      */
     public void run() {
 	try {
-	    while (list.size() > 0) {
-		running = true;
+	    if (list.size() > 0) {
 		for (int i = 0; i < list.size(); i++) {
 		    Tick tickable = list.get(i);
 		    if (tickable == null)
@@ -89,7 +85,6 @@ public class Ticker extends CoreThread {
 		    }
 		}
 	    }
-	    running = false;
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}

@@ -156,7 +156,7 @@ public class EncodedPacket extends Packet {
      *            the byte value to write
      * @return the instance of this {@code EncodedPacket} for chaining
      */
-    public EncodedPacket writeByte(byte b) {
+    public EncodedPacket writeByte(int b) {
 	this.bytes.writeByte(b);
 	return this;
     }
@@ -169,9 +169,14 @@ public class EncodedPacket extends Packet {
      *            the values to write
      * @return the instance of this {@code EncodedPacket} for chaining
      */
-    public EncodedPacket writeBytes(byte... b) {
+    public EncodedPacket writeBytes(int... b) {
 	for (int by : b)
 	    this.bytes.writeByte(by);
+	return this;
+    }
+
+    public EncodedPacket writeBytes(byte[] bytes) {
+	this.bytes.writeBytes(bytes);
 	return this;
     }
 

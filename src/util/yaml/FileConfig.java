@@ -49,7 +49,7 @@ public class FileConfig extends ConfigSection {
 	    InputStream in = new FileInputStream(file);
 	    Map<String, Object> data = (Map<String, Object>) parser.load(in);
 	    if (data != null)
-		this.map.putAll(data);
+		this.getMap().putAll(data);
 	    in.close();
 	} catch (Exception e) {
 	    // File does not exist, therefore it has no data to load.
@@ -68,7 +68,7 @@ public class FileConfig extends ConfigSection {
 	    InputStream in = new FileInputStream(from);
 	    Map<String, Object> data = (Map<String, Object>) parser.load(in);
 	    if (data != null)
-		this.map.putAll(data);
+		this.getMap().putAll(data);
 	    in.close();
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -115,6 +115,22 @@ public class FileConfig extends ConfigSection {
 		file.createNewFile();
 	    }
 	    PrintStream ps = new PrintStream(file);
+	    String out = parser.dump(getMap());
+	    ps.print(out);
+	    ps.close();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
+
+    public void save(Map<String, Object> map) {
+	try {
+	    if (!file.exists()) {
+		if (file.getParentFile() != null)
+		    file.getParentFile().mkdirs();
+		file.createNewFile();
+	    }
+	    PrintStream ps = new PrintStream(file);
 	    String out = parser.dump(map);
 	    ps.print(out);
 	    ps.close();
@@ -129,6 +145,6 @@ public class FileConfig extends ConfigSection {
      */
     @Override
     public String toString() {
-	return parser.dump(map);
+	return parser.dump(getMap());
     }
 }
