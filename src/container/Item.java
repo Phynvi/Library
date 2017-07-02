@@ -2,41 +2,41 @@ package container;
 
 /**
  * Represents an item with a specific id used within a
- * {@link container.Container}. A {@code BasicItem} can have a modifiable
- * amount, but not a modifiable id.
+ * {@link container.Container}. A {@code Item} can have a modifiable amount, but
+ * not a modifiable id.
  * 
  * @author Albert Beaupre
  */
-public class BasicItem {
+public class Item {
 
     private final short id; // This value should not be modifiable
     private int amount;
 
     /**
-     * Constructs a new {@code BasicItem} from the specified arguments.
+     * Constructs a new {@code Item} from the specified arguments.
      * 
      * @param id
      *            the id of the item
      * @param amount
      *            the amount of the item
      */
-    public BasicItem(int id, int amount) {
+    public Item(int id, int amount) {
 	this.id = (short) id;
 	this.amount = amount;
     }
 
     /**
-     * Constructs a new {@code BasicItem} from the specified arguments.
+     * Constructs a new {@code Item} from the specified arguments.
      * 
      * @param id
      *            the id of the item
      */
-    public BasicItem(int id) {
+    public Item(int id) {
 	this(id, 1);
     }
 
     /**
-     * Returns the id of this {@code BasicItem}.
+     * Returns the id of this {@code Item}.
      * 
      * @return the id
      */
@@ -45,7 +45,7 @@ public class BasicItem {
     }
 
     /**
-     * Returns the amount of this {@code BasicItem}.
+     * Returns the amount of this {@code Item}.
      * 
      * @return the amount
      */
@@ -54,13 +54,13 @@ public class BasicItem {
     }
 
     /**
-     * Sets the amount of this {@code BasicItem} to the specified value.
+     * Sets the amount of this {@code Item} to the specified value.
      * 
      * @param amount
      *            the amount to set
-     * @return the current {@code BasicItem} with the specific {@code amount}
+     * @return the current {@code Item} with the specific {@code amount}
      */
-    public BasicItem amount(int amount) {
+    public Item amount(int amount) {
 	this.amount = amount;
 	return this;
     }
@@ -68,5 +68,4 @@ public class BasicItem {
     public boolean isStackable() {
 	return false;
     }
-
 }

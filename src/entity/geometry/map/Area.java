@@ -1,4 +1,4 @@
-package entity.geometry.area;
+package entity.geometry.map;
 
 import entity.Entity;
 import entity.event.EntityLocationChangeEvent;
@@ -11,12 +11,12 @@ import event.EventMethod;
 /**
  * The {@code Area} class is used to handle a specific area based on the bounds
  * of a {@code Shape3D} object. The {@code Area} class is used by the
- * {@link entity.geometry.area.AreaManager} class to manage how the areas are
+ * {@link entity.geometry.map.AreaManager} class to manage how the areas are
  * handled.
  * 
  * @author Albert Beaupre
  * 
- * @see entity.geometry.area.AreaManager
+ * @see entity.geometry.map.AreaManager
  */
 public abstract class Area implements Shape3D, EventListener {
 

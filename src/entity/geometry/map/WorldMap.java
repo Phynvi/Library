@@ -1,4 +1,6 @@
-package entity.geometry;
+package entity.geometry.map;
+
+import infrastructure.Core;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,7 +11,9 @@ import entity.Entity;
 import entity.EntityList;
 import entity.actor.npc.NPC;
 import entity.actor.persona.Persona;
-import entity.geometry.area.AreaManager;
+import entity.geometry.Chunk;
+import entity.geometry.Point3D;
+import entity.geometry.Shape3D;
 
 /**
  * The {@code WorldMap} class is used to create maps that are either static
@@ -34,10 +38,10 @@ public abstract class WorldMap extends AreaManager {
 
     /**
      * The number of tiles that can be loaded by a viewer. This is hard coded to
-     * be 52 (104 / 2), which is the minimum view distance (104) of a viewer
+     * be 52 (104 / 2), which is the maximum view distance (104) of a viewer
      * divided by 2.
      */
-    public static final int LOAD_RADIUS = 52;
+    public static final int LOAD_RADIUS = 168 / 2;
 
     private final HashMap<Class<? extends Entity>, HashSet<Entity>> entities;
     private final EntityList<Persona> personas;
@@ -62,6 +66,7 @@ public abstract class WorldMap extends AreaManager {
      *            the height of the map by tile
      */
     public WorldMap(Point3D location, int width, int height) {
+	this.location = location;
 	this.entities = new HashMap<>();
 	this.personas = new EntityList<>(2048);
 	this.npcs = new EntityList<>(32767);
@@ -72,6 +77,23 @@ public abstract class WorldMap extends AreaManager {
 	if (width % CHUNK_SIZE != 0 || height % CHUNK_SIZE != 0)
 	    throw new IllegalArgumentException("Maps must be a multiple of chunk size.. given width: " + width + ", height: " + height);
 	this.chunks = new Chunk[width >> CHUNK_BITS][][];
+    }
+
+    public void load(int x, int y) {
+	for (int i = (x - LOAD_RADIUS - 7) >> 3; i < (x + LOAD_RADIUS + 7) >> 3; i++) {
+	    for (int j = (y - LOAD_RADIUS - 7) >> 3; j < (y + LOAD_RADIUS + 7) >> 3; j++) {
+		try {
+		    check(i, j);
+		    for (int z = 0; z < 4; z++) {
+			Chunk c = chunks[i - this.location.x][j - this.location.y][z];
+			if (c == null || c.isLoaded() == false)
+			    fetch(i, j, z);
+		    }
+		} catch (IndexOutOfBoundsException e) {
+		    //Near map edge
+		}
+	    }
+	}
     }
 
     /**
@@ -88,19 +110,17 @@ public abstract class WorldMap extends AreaManager {
     public abstract void fetch(int chunkX, int chunkY, int chunkZ);
 
     /**
-     * Constructs a new {@code Chunk} at the given
-     * {@code (chunkX, chunkY, chunkZ)} coordinates and returns the constructed
-     * {@code Chunk}.
+     * Creates the chunk at the given {@code (chunkX, chunkY, chunkZ)}
+     * coordinates.
      * 
      * @param chunkX
-     *            the x coordinate to construct the chunk at
+     *            the x coordinate to create the chunk at
      * @param chunkY
-     *            the y coordinate to construct the chunk at
+     *            the y coordinate to create the chunk at
      * @param chunkZ
-     *            the z coordinate to construct the chunk at
-     * @return the {@code Chunk} constructed
+     *            the z coordinate to create the chunk at
      */
-    public abstract Chunk construct(int chunkX, int chunkY, int chunkZ);
+    public abstract Chunk create(int chunkX, int chunkY, int chunkZ);
 
     /**
      * Checks if the chunks at the specified ({@code (cx, cy)} coordinates have
@@ -121,52 +141,6 @@ public abstract class WorldMap extends AreaManager {
     }
 
     /**
-     * Loads the required range around the given chunk coordinates.
-     * 
-     * @param x
-     *            the x coordinate of the center chunk
-     * @param y
-     *            the y coordinate of the center chunk
-     */
-    public void load(int x, int y) {
-	for (int i = (x - LOAD_RADIUS - 7) >> 3; i < (x + LOAD_RADIUS + 7) >> 3; i++) {
-	    for (int j = (y - LOAD_RADIUS - 7) >> 3; j < (y + LOAD_RADIUS + 7) >> 3; j++) {
-		try {
-		    check(i, j);
-		    for (int z = 0; z < 4; z++) {
-			Chunk c = chunks[i - this.location.x][j - this.location.y][z];
-			if (c == null || c.isLoaded() == false)
-			    fetch(i, j, z);
-		    }
-		} catch (IndexOutOfBoundsException e) {
-		    //Near map edge
-		}
-	    }
-	}
-    }
-
-    /**
-     * Sets the chunk at the given chunkX, chunkY coordinates to the given
-     * chunk. This does not currently remove entities etc.
-     * 
-     * @param chunkX
-     *            The chunkX
-     * @param chunkY
-     *            The chunkY
-     * @param c
-     *            the new chunk to set
-     */
-    protected void setChunk(int chunkX, int chunkY, int z, Chunk c) {
-	check(chunkX, chunkY);
-
-	if (chunks[chunkX - this.location.x][chunkY - this.location.y][z] == c)
-	    return; //Already set.
-
-	//TODO: Update players, remove items, etc.
-	chunks[chunkX - this.location.x][chunkY - this.location.y][z] = c;
-    }
-
-    /**
      * Fetches the chunk at the given chunk coordinates. A chunk coordinate is a
      * normal coordinate bitshifted right by WorldMap.CHUNK_BITS. (Eg pos.x >>
      * WorldMap.CHUNK_BITS)
@@ -183,16 +157,14 @@ public abstract class WorldMap extends AreaManager {
 
 	    Chunk c = chunks[chunkX - this.location.x][chunkY - this.location.y][z];
 	    if (c == null) {
-		c = construct(chunkX, chunkY, z);
-		if (c == null) {
-		    //Couldn't load a chunk, create a blank one
+		c = create(chunkX, chunkY, z);
+		if (c == null)
 		    c = new Chunk(0, 0, 0);
-		}
-		setChunk(chunkX, chunkY, z, c);
+		chunks[chunkX][chunkY][z] = c;
 		return c;
 	    }
 	    return c;
-	} catch (Exception e) {
+	} catch (IndexOutOfBoundsException e) {
 	    return null;
 	}
     }
@@ -220,8 +192,8 @@ public abstract class WorldMap extends AreaManager {
 	    if (c == null)
 		return;
 	    c.addClip(x % CHUNK_SIZE, y % CHUNK_SIZE, clip);
-	} catch (Exception e) {
-	    //We can probably ignore this.
+	} catch (ArrayIndexOutOfBoundsException e) {
+
 	}
     }
 
@@ -248,7 +220,9 @@ public abstract class WorldMap extends AreaManager {
 	    if (c == null)
 		return; //No chunk there.
 	    c.removeClip(x % CHUNK_SIZE, y % CHUNK_SIZE, clip);
-	} catch (Exception e) {}
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 
     /**
@@ -331,12 +305,15 @@ public abstract class WorldMap extends AreaManager {
      */
     public <E extends Entity> void put(E entity) {
 	if (!this.contains(entity.getLocation()))
-	    LOGGER.warning("There is no area defined where the specified entity is located");
+	    if (Core.debugging)
+		LOGGER.warning("There is no area defined where the specified entity is located");
 
 	if (entity instanceof Persona) {
 	    personas.add((Persona) entity);
+	    return;
 	} else if (entity instanceof NPC) {
 	    npcs.add((NPC) entity);
+	    return;
 	}
 	entity.create();
 
@@ -354,8 +331,10 @@ public abstract class WorldMap extends AreaManager {
     public void remove(Entity entity) {
 	if (entity instanceof Persona) {
 	    personas.remove((Persona) entity);
+	    return;
 	} else if (entity instanceof NPC) {
 	    npcs.remove((NPC) entity);
+	    return;
 	}
 	entity.destroy();
 
@@ -380,7 +359,8 @@ public abstract class WorldMap extends AreaManager {
 	HashSet<U> set = (HashSet<U>) entities.get(clazz);
 	HashSet<U> found = new HashSet<>();
 	if (set == null) {
-	    LOGGER.warning("No entities placed with class type: " + clazz.getSimpleName());
+	    if (Core.debugging)
+		LOGGER.warning("No entities placed with class type: " + clazz.getSimpleName());
 	    return found;
 	}
 	set.forEach(e -> {
@@ -429,16 +409,24 @@ public abstract class WorldMap extends AreaManager {
 	return entities.getOrDefault(clazz, new HashSet<>());
     }
 
+    /**
+     * Returns an {@code EntityList} of the {@code Persona} within this
+     * {@code WorldMap}.
+     * 
+     * @return the persona within this world map in an entity list
+     */
     public EntityList<Persona> getPersonas() {
 	return personas;
     }
 
+    /**
+     * Returns an {@code EntityList} of the {@code NPC} within this
+     * {@code WorldMap}.
+     * 
+     * @return the npcs within this world map in an entity list
+     */
     public EntityList<NPC> getNPCs() {
 	return npcs;
-    }
-
-    public Persona getPersona(int index) {
-	return this.personas.get(index);
     }
 
     /**

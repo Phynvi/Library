@@ -66,7 +66,7 @@ public class EventManager {
 
 	@Override
 	public boolean equals(Object obj) {
-	    return true;
+	    return listener.equals(obj);
 	}
 
 	@Override

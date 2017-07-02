@@ -2,8 +2,6 @@ package entity.actor.model;
 
 import infrastructure.Attachments;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.TreeSet;
 
 import entity.actor.Actor;
@@ -16,7 +14,7 @@ public abstract class Model {
     private final TreeSet<Mask> currentMasks;
     private int maskData;
 
-    private final Actor actor;
+    protected final Actor actor;
 
     /**
      * Constructs a new {@code Model}.
@@ -39,6 +37,15 @@ public abstract class Model {
     public abstract void reset();
 
     /**
+     * Returns true if this {@code Model} can be updated at all; return false
+     * otherwise. This method will usually check if the {@code Actor} of this
+     * {@code Model} is online or invisible etc.
+     * 
+     * @return true if can be updated; return false otherwise
+     */
+    public abstract boolean canBeUpdated();
+
+    /**
      * Registers the specified {@code mask} to be updated for this {@code Model}
      * 
      * @param mask
@@ -54,13 +61,13 @@ public abstract class Model {
     }
 
     /**
-     * Returns an unmodifiable {@code Collection} of the current masks within
-     * this {@code Model}.
+     * Returns a new {@code TreeSet} filled with the current masks of this
+     * {@code Model}.
      * 
-     * @return the unmodifiable collection of current masks
+     * @return the current masks
      */
-    public Collection<Mask> getCurrentMasks() {
-	return Collections.unmodifiableCollection(currentMasks);
+    public TreeSet<Mask> getCurrentMasks() {
+	return new TreeSet<>(this.currentMasks);
     }
 
     /**
@@ -99,14 +106,5 @@ public abstract class Model {
      */
     public int getMaskData() {
 	return maskData;
-    }
-
-    /**
-     * Returns the {@code Actor} using this {@code Model}.
-     * 
-     * @return the actor
-     */
-    public Actor getActor() {
-	return actor;
     }
 }

@@ -11,17 +11,22 @@ import io.netty.channel.Channel;
 public class Connection {
 
     private final Channel channel;
+    private final int revision;
     private Display display;
 
     /**
      * Constructs a new {@code Connection} based on the specified
-     * {@code channel}.
+     * {@code channel} that is associated with the specified {@code revision}.
      * 
      * @param channel
      *            the channel of this {@code Connection}.
+     * 
+     * @param revision
+     *            the revision of the server this connection is associated with
      */
-    public Connection(Channel channel) {
+    public Connection(Channel channel, int revision) {
 	this.channel = channel;
+	this.revision = revision;
     }
 
     /**
@@ -36,8 +41,7 @@ public class Connection {
     public void write(Object object) {
 	if (object == null)
 	    throw new NullPointerException("You cannot write a NULL object through a Connection");
-	if (channel.isActive())
-	    channel.writeAndFlush(object);
+	channel.writeAndFlush(object);
     }
 
     /**
@@ -67,6 +71,15 @@ public class Connection {
      */
     public void setDisplay(Display display) {
 	this.display = display;
+    }
+
+    /**
+     * Returns the server revision this {@code Connection} is associated with.
+     * 
+     * @return the revision
+     */
+    public int getRevision() {
+	return revision;
     }
 
 }

@@ -26,11 +26,13 @@ public class Core {
     private static final ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(7); //Plans to implement 7 threads
     private static long TASK_COUNT = 0;
 
+    public static boolean debugging = true;
+
     /**
      * Initializes the important variables and steps for this Library to
      * function properly and efficiently.
      */
-    public static void initialize() {
+    public static void initialize(String cacheRoot) {
 	try {
 	    Attachments.attachActorUpdator(new ActorUpdateThread());
 	    Attachments.attachTicker(new TickThread());

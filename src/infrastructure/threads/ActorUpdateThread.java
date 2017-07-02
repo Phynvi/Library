@@ -2,10 +2,10 @@ package infrastructure.threads;
 
 import infrastructure.CoreThread;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import entity.actor.Actor;
 
@@ -16,8 +16,8 @@ import entity.actor.Actor;
  */
 public class ActorUpdateThread extends CoreThread {
 
-    private HashSet<Actor> updated = new HashSet<>();
-    private CopyOnWriteArrayList<Actor> queued = new CopyOnWriteArrayList<>();
+    private HashSet<Actor> updating = new HashSet<>();
+    private ArrayList<Actor> queued = new ArrayList<>();
 
     /**
      * Constructs a new {@code ActorUpdateThread}.
@@ -34,20 +34,24 @@ public class ActorUpdateThread extends CoreThread {
     public final void run() {
 	try {
 	    if (queued.size() > 0) {
-		updated.addAll(queued);
+		updating.addAll(queued);
 		queued.clear();
 	    }
-	    if (updated.size() > 0) {
-		Iterator<Actor> iterator = updated.iterator();
-		while (iterator.hasNext()) {
+	    if (updating.size() > 0) {
+		Iterator<Actor> iterator = updating.iterator();
+		update: while (iterator.hasNext()) {
 		    Actor actor = iterator.next();
+		    if (!actor.getModel().canBeUpdated()) {
+			iterator.remove();
+			continue update;
+		    }
 		    actor.getModel().update();
 		}
-		iterator = updated.iterator();
+		iterator = updating.iterator();
 		while (iterator.hasNext()) {
 		    Actor actor = iterator.next();
 		    actor.getModel().reset();
-		    iterator.remove();
+		    actor.getModel().finishUpdate();
 		}
 	    }
 	} catch (Exception e) {
@@ -56,8 +60,8 @@ public class ActorUpdateThread extends CoreThread {
     }
 
     /**
-     * Allows the specified {@code Actor} to be updated by this
-     * {@code ActorUpdateThread}. It will be updated after it is removed from
+     * Allows the specified {@code Actor} to be updating by this
+     * {@code ActorUpdateThread}. It will be updating after it is removed from
      * the queue that the {@code Actor} is placed in.
      * 
      * @param actor

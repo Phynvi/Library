@@ -21,7 +21,6 @@ public class EntityList<E extends Entity> implements Iterable<E> {
     private Entity[] data;
     private float loadFactor;
     private int size;
-    private int lastOpenIndex = -1;
 
     /**
      * Constructs a new {@code EntityList} with a default capacity of 1000.
@@ -53,6 +52,13 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	    this.data = Arrays.copyOf(data, (int) (data.length + (data.length * loadFactor)));
     }
 
+    private int openIndex() {
+	for (int i = 1; i < data.length; i++)
+	    if (data[i] == null)
+		return i;
+	return -1;
+    }
+
     /**
      * Adds the specified {@code Entity} type to this {@code EntityList} and
      * sets its index value to the available index in this {@code EntityList}
@@ -67,37 +73,36 @@ public class EntityList<E extends Entity> implements Iterable<E> {
      */
     public boolean add(E entity) {
 	ensureCapacity();
-	if (lastOpenIndex != -1) {
-	    if (data[lastOpenIndex] == null)
-		size++;
-	    data[lastOpenIndex] = entity;
-	    entity.setIndex(lastOpenIndex + 1);
-	    lastOpenIndex = -1;
-	} else {
+
+	int index = openIndex();
+	if (index != -1) {
+	    data[index] = entity;
+	    entity.setIndex(index);
+	    entity.create();
 	    size++;
-	    data[size] = entity;
-	    entity.setIndex(size);
+	    return true;
 	}
 	return false;
     }
 
     /**
-     * Removes the specified {@code Entity} from this {@code EntityList}, sets
-     * the index of the {@code Entity} to -1, and returns {@code true} if the
-     * {@code Entity} was removed; otherwise {@code false} is returned.
+     * Removes the specified {@code Entity} from this {@code EntityList} and
+     * returns {@code true} if the {@code Entity} was removed; otherwise
+     * {@code false} is returned.
      * 
      * @param entity
      *            the entity to remove
      * @return true if the {@code Entity} was removed; return false otherwise
      */
     public boolean remove(E entity) {
-	if (entity == null || entity.getIndex() == -1 || entity.getIndex() >= data.length)
-	    return false;
-	this.lastOpenIndex = entity.getIndex();
-	data[entity.getIndex()] = null;
-	entity.setIndex(-1);
-	size--;
-	return true;
+	int index = entity.getIndex();
+	if (data[index] == entity) {
+	    data[index].destroy();
+	    data[index] = null;
+	    size--;
+	    return true;
+	}
+	return false;
     }
 
     /**
@@ -129,15 +134,13 @@ public class EntityList<E extends Entity> implements Iterable<E> {
     }
 
     /**
-     * Clears this {@code EntityList} of every contained {@code Entity}, sets
-     * the index of every {@code Entity} to -1.
+     * Clears this {@code EntityList} of every contained {@code Entity}.
      */
     public void clear() {
-	for (Entity e : this.data) {
-	    e.setIndex(-1);
-	}
+	for (Entity e : this.data)
+	    if (e != null)
+		e.destroy();
 	int length = data.length;
-	lastOpenIndex = -1;
 	data = new Entity[length];
 	size = 0;
     }
@@ -176,10 +179,10 @@ public class EntityList<E extends Entity> implements Iterable<E> {
     public boolean contains(Object o) {
 	if (!(o instanceof Entity))
 	    return false;
-	Entity index = (Entity) o;
-	if (index.getIndex() < 0 || index.getIndex() >= data.length)
+	Entity e = (Entity) o;
+	if (e.getIndex() < 0 || e.getIndex() >= data.length)
 	    return false;
-	return data[index.getIndex()] != null;
+	return data[e.getIndex()] != null && data[e.getIndex()].equals(o);
     }
 
     public Iterator<E> iterator() {

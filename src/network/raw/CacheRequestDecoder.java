@@ -61,7 +61,7 @@ public class CacheRequestDecoder extends ByteToMessageDecoder {
 		case 6: // Connection is being initiated
 		    break;
 		case 7: // Connection should be closed
-		    ctx.close();
+			//ctx.close();
 		    break;
 	    }
 	}

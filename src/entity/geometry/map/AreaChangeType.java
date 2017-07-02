@@ -1,4 +1,4 @@
-package entity.geometry.area;
+package entity.geometry.map;
 
 /**
  * Represents a type of state when an {@code Entity} changes location within an

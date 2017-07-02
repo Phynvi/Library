@@ -2,17 +2,17 @@ package container;
 
 /**
  * Represents a handler for a {@code Container} when making any changes with an
- * {@code BasicItem}.
+ * {@code Item}.
  * 
  * @author Albert Beaupre
  *
  * @param <E>
  *            the item element type
  * 
- * @see container.BasicItem
+ * @see container.Item
  * @see container.Container
  */
-public interface ContainerHandler<E extends BasicItem> {
+public interface ContainerHandler<E extends Item> {
 
     /**
      * Adds the specified {@code item} to the {@code container}, if possible,
@@ -20,11 +20,11 @@ public interface ContainerHandler<E extends BasicItem> {
      * 
      * @param container
      *            the container to add the item to
-     * @param basicItem
+     * @param item
      *            the item to add
      * @return true if the item was added; return false otherwise
      */
-    boolean add(Container<E> container, BasicItem basicItem);
+    boolean add(Container<E> container, Item item);
 
     /**
      * Removes the specified {@code item} from the {@code container}, if
@@ -32,11 +32,11 @@ public interface ContainerHandler<E extends BasicItem> {
      * 
      * @param container
      *            the container to remove the item from
-     * @param basicItem
+     * @param item
      *            the item to remove
      * @return true if the item was removed; return false otherwise
      */
-    boolean remove(Container<E> container, BasicItem basicItem);
+    boolean remove(Container<E> container, Item item);
 
     /**
      * Returns true if the specified {@code item} can be added to the
@@ -44,10 +44,10 @@ public interface ContainerHandler<E extends BasicItem> {
      * 
      * @param container
      *            the container to check
-     * @param basicItem
+     * @param item
      *            the item to use for checking
      * @return true if the item can be added; return false otherwise
      */
-    boolean addable(Container<E> container, BasicItem basicItem);
+    boolean addable(Container<E> container, Item item);
 
 }

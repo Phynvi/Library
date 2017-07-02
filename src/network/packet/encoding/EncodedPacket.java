@@ -263,8 +263,9 @@ public class EncodedPacket extends Packet {
      *            the values to write
      * @return the instance of this {@code EncodedPacket} for chaining
      */
-    public EncodedPacket writeInt(int i) {
-	this.bytes.writeInt(i);
+    public EncodedPacket writeInt(int... i) {
+	for (int in : i)
+	    this.bytes.writeInt(in);
 	return this;
     }
 

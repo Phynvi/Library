@@ -3,6 +3,7 @@ package entity.geometry;
 import java.util.HashSet;
 
 import entity.Entity;
+import entity.geometry.map.WorldMap;
 
 /**
  * Represents a position in a {@code WorldMap} to locate anything.
@@ -84,6 +85,14 @@ public class Location extends Point3D {
     public int get18BitsHash() {
 	int regionId = ((getRegionX() / 8) << 8) + (getRegionY() / 8);
 	return (((regionId & 0xff) << 6) >> 6) | (this.z << 16) | ((((regionId >> 8) << 6) >> 6) << 8);
+    }
+
+    public int getFlags() {
+	return map.getFlags(x, y, z);
+    }
+
+    public int getClip() {
+	return map.getClip(x, y, z);
     }
 
     /*

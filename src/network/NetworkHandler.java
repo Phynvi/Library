@@ -1,11 +1,11 @@
 package network;
 
-import network.event.ChannelActiveEvent;
-import network.event.ChannelInactiveEvent;
-import network.event.ChannelUnregisteredEvent;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import network.event.ChannelActiveEvent;
+import network.event.ChannelInactiveEvent;
+import network.event.ChannelUnregisteredEvent;
 
 /**
  * The {@code NetworkHandler} class handles all receiving, sending,
@@ -64,7 +64,7 @@ public class NetworkHandler extends ChannelInboundHandlerAdapter {
 	if (message == null)
 	    return;
 	if (message instanceof ByteBuf)
-	    ctx.channel().writeAndFlush(((ByteBuf) message));
+	    ctx.writeAndFlush(((ByteBuf) message));
     }
 
     /*

@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  * 
  * @see infrastructure.Tick
  */
-public class TickThread extends CoreThread {
+public final class TickThread extends CoreThread {
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

@@ -33,9 +33,9 @@ public class OutgoingPacketEncoder extends MessageToByteEncoder<EncodedPacket> {
 		response.writeShort(out.getLength());
 	    }
 	    response.writeBytes(out.getBytes());
-	    ctx.channel().writeAndFlush(response);
+	    ctx.writeAndFlush(response);
 	    return;
 	}
-	ctx.channel().writeAndFlush(out.getBytes());
+	ctx.writeAndFlush(out.getBytes());
     }
 }

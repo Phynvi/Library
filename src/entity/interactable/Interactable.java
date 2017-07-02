@@ -1,4 +1,4 @@
-package entity;
+package entity.interactable;
 
 /**
  * The {@code Interactable} implementation is used for any type of

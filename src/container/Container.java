@@ -5,37 +5,39 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.function.Consumer;
 
 /**
  * A {@code Container} has a specific number of slots (based on the capacity of
- * the {@code Container)} which are filled by {@code BasicItem} elements. Any
- * slot not used within this {@code Container} has a default value of null but
- * is still usable and is represented as an 'empty' slot.
+ * the {@code Container)} which are filled by {@code Item} elements. Any slot
+ * not used within this {@code Container} has a default value of null but is
+ * still usable and is represented as an 'empty' slot.
  * 
  * <p>
  * The {@code Container} class implements {@link java.util.Collection} for
  * easier references to collection classes and methods. The {@code Container}
  * class also implements {@link java.lang.Iterable} for much easier iterations,
- * especially through the {@code BasicItem} data of this {@code Container}.
- * 
+ * especially through the {@code Item} data of this {@code Container}.
  * 
  * @author Albert Beaupre
  *
  * @param <E>
- *            The type of {@code BasicItem} used within this collection
+ *            The type of {@code Item} used within this collection
  * 
- * @see container.BasicItem
+ * @see container.Item
  */
 @SuppressWarnings("unchecked")
-public class Container<E extends BasicItem> implements Collection<E>, Iterable<E> {
+public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 
     private final ContainerHandler<E> handler;
     private final short capacity; // Containers are not meant to have a large
 				  // capacity
-    private BasicItem[] data; // The items within this container
+    private Item[] data; // The items within this container
 
     private final int maximumStack; // The maximum amount of an item before it cannot be increase in size anymore
     private final int minimumStack; // The minimum amount of an item before it is destroyed
+
+    public ArrayList<Consumer<Container<E>>> refreshers;
 
     /**
      * Constructs a new {@code Container} from the specified arguments.
@@ -50,10 +52,11 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      *            the maximum stack an itme can be stacked to
      */
     public Container(ContainerHandler<E> handler, int capacity, int minimumStack, int maximumStack) {
-	this.data = new BasicItem[this.capacity = (short) capacity];
+	this.data = new Item[this.capacity = (short) capacity];
 	this.handler = handler;
 	this.minimumStack = minimumStack;
 	this.maximumStack = maximumStack;
+	this.refreshers = new ArrayList<>();
     }
 
     /**
@@ -79,7 +82,10 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      * This method is called when <b>any change</b> happens to this
      * {@code Container}.
      */
-    public void refresh() {}
+    private void refresh() {
+	for (Consumer<Container<E>> refresher : this.refreshers)
+	    refresher.accept(this);
+    }
 
     /**
      * Removes the specified {@code amount} from an item at the specified
@@ -162,13 +168,13 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      * @param comparator
      *            the comparator to sort this {@code Container}.
      */
-    public void sort(Comparator<BasicItem> comparator) {
+    public void sort(Comparator<Item> comparator) {
 	this.shift();
 	int size = this.size() - this.getFreeSlots();
 	for (int i = 0; i < size; i++) {
 	    for (int j = 0; j < size; j++) {
 		if (comparator.compare(this.get(i), this.get(j)) < 0) {
-		    BasicItem tmp = this.get(j);
+		    Item tmp = this.get(j);
 		    this.set(j, this.get(i));
 		    this.set(i, tmp);
 		}
@@ -182,9 +188,9 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      * no empty spaces in between each item.
      */
     public void shift() {
-	ArrayList<BasicItem> shifted = new ArrayList<BasicItem>();
+	ArrayList<Item> shifted = new ArrayList<Item>();
 	Arrays.asList(data).stream().filter(n -> n != null).forEach(n -> shifted.add(n));
-	this.data = shifted.toArray(new BasicItem[capacity]);
+	this.data = shifted.toArray(new Item[capacity]);
 	refresh();
     }
 
@@ -224,7 +230,7 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
 
     /**
      * Returns true if the specified {@code Object} is contained within this
-     * {@code Container} and is instance of {@code BasicItem}.
+     * {@code Container} and is instance of {@code Item}.
      * 
      * @param o
      *            the object to check if container within this {@code Container}
@@ -259,7 +265,7 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      *            the index to swap to
      */
     public void swap(int fromIndex, int toIndex) {
-	BasicItem old = get(toIndex);
+	Item old = get(toIndex);
 	set(toIndex, get(fromIndex));
 	set(fromIndex, old);
 	refresh();
@@ -286,10 +292,10 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      * @return the index retrieved; return -1 if not found
      */
     public int indexOf(Object object) {
-	if (object instanceof BasicItem) {
-	    BasicItem basicItem = (BasicItem) object;
+	if (object instanceof Item) {
+	    Item item = (Item) object;
 	    for (int i = 0; i < capacity; i++)
-		if (data[i] != null && data[i].getId() == basicItem.getId() && data[i].getAmount() >= basicItem.getAmount())
+		if (data[i] != null && data[i].getId() == item.getId() && data[i].getAmount() >= item.getAmount())
 		    return i;
 	} else if (object instanceof Integer) {
 	    for (int i = 0; i < capacity; i++)
@@ -309,10 +315,10 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      *            the item to be inserted
      * @return true if the item was inserted; return false otherwise
      */
-    public boolean insert(int index, BasicItem element) {
+    public boolean insert(int index, Item element) {
 	if (getFreeSlots() == 0)
 	    return false;
-	BasicItem[] items = Arrays.copyOf(data, data.length);
+	Item[] items = Arrays.copyOf(data, data.length);
 	for (int i = index + 1; i < capacity; i++)
 	    set(i, items[i - 1]);
 	data[index] = element;
@@ -331,7 +337,7 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      * @return the previous item which was placed at the index; return null if
      *         there wasn't one
      */
-    public E set(int index, BasicItem element) {
+    public E set(int index, Item element) {
 	E e = (E) (data[index] = element);
 	refresh();
 	return e;
@@ -351,7 +357,7 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      * contains nulled objects if there is no item within that place in the
      * array.
      */
-    public BasicItem[] toArray() {
+    public Item[] toArray() {
 	return Arrays.copyOf(data, data.length);
     }
 
@@ -372,7 +378,7 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
     /*
      * {@inheritDoc}
      */
-    public boolean add(BasicItem e) {
+    public boolean add(Item e) {
 	if (e == null)
 	    return false;
 	boolean added = handler.add(this, e);
@@ -384,9 +390,9 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      * {@inheritDoc}
      */
     public boolean remove(Object o) {
-	if (o == null || !(o instanceof BasicItem))
+	if (o == null || !(o instanceof Item))
 	    return false;
-	boolean removed = handler.remove(this, (BasicItem) o);
+	boolean removed = handler.remove(this, (Item) o);
 	refresh();
 	return removed;
     }
@@ -402,8 +408,8 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      * {@inheritDoc}
      */
     public boolean addAll(Collection<? extends E> c) {
-	for (BasicItem basicItem : c)
-	    if (basicItem != null && !add(basicItem))
+	for (Item item : c)
+	    if (item != null && !add(item))
 		return false;
 	return true;
     }
@@ -467,6 +473,10 @@ public class Container<E extends BasicItem> implements Collection<E>, Iterable<E
      */
     public int getMinimumStack() {
 	return minimumStack;
+    }
+
+    public void addRefresher(Consumer<Container<E>> refresher) {
+	this.refreshers.add(refresher);
     }
 
 }

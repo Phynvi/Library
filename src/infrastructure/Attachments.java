@@ -19,6 +19,10 @@ public class Attachments {
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); // This is used for any sort of console logging
 
+    static {
+
+    }
+
     private static TickThread TICKER; // This is an attached TickThread that will globally handle Ticks
     private static EventManager EVENT_MANAGER; // This is an attached EventManager that will globally handle Events
     private static ActorUpdateThread UPDATE_THREAD;

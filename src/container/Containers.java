@@ -6,7 +6,7 @@ package container;
  * @author Albert Beaupre
  * 
  * @see container.Container
- * @see container.BasicItem
+ * @see container.Item
  */
 public class Containers {
 
@@ -15,10 +15,10 @@ public class Containers {
      * {@code BasicItemStack} added to a {@code Container} will be stacked by
      * any possible means.
      */
-    public static ContainerHandler<BasicItem> ALWAYS_STACK = new ContainerHandler<BasicItem>() {
+    public static ContainerHandler<Item> ALWAYS_STACK = new ContainerHandler<Item>() {
 
 	@Override
-	public boolean add(Container<BasicItem> container, BasicItem item) {
+	public boolean add(Container<Item> container, Item item) {
 	    int id = item.getId();
 	    int amount = item.getAmount();
 	    int index = container.indexOf(item.getId());
@@ -26,20 +26,20 @@ public class Containers {
 	    if (index != -1) {
 		int there = container.get(index).getAmount();
 		int total = there + amount > maxStack ? maxStack : there + amount;
-		container.set(index, new BasicItem(id, total));
+		container.set(index, new Item(id, total));
 	    } else {
 		if (container.isFull())
 		    return false;
-		container.set(container.getFreeIndex(), new BasicItem(id, amount > maxStack ? maxStack : amount));
+		container.set(container.getFreeIndex(), new Item(id, amount > maxStack ? maxStack : amount));
 	    }
 	    return true;
 	}
 
 	@Override
-	public boolean remove(Container<BasicItem> container, BasicItem item) {
+	public boolean remove(Container<Item> container, Item item) {
 	    int index = container.indexOf(item.getId());
 	    if (index != -1) {
-		BasicItem previous = container.get(index);
+		Item previous = container.get(index);
 		previous.amount(previous.getAmount() - item.getAmount());
 		if (previous.getAmount() < container.getMinimumStack())
 		    container.set(index, null);
@@ -49,7 +49,7 @@ public class Containers {
 	}
 
 	@Override
-	public boolean addable(Container<BasicItem> container, BasicItem item) {
+	public boolean addable(Container<Item> container, Item item) {
 	    return false;
 	}
     };
@@ -59,10 +59,10 @@ public class Containers {
      * {@code BasicItemStack} is placed into a {@code Container} by a regular
      * stacking order.
      */
-    public static ContainerHandler<BasicItem> AVAILABLE_STACK = new ContainerHandler<BasicItem>() {
+    public static ContainerHandler<Item> AVAILABLE_STACK = new ContainerHandler<Item>() {
 
 	@Override
-	public boolean add(Container<BasicItem> container, BasicItem item) {
+	public boolean add(Container<Item> container, Item item) {
 	    int id = item.getId();
 	    int amount = item.getAmount();
 	    if (item.isStackable()) {
@@ -71,11 +71,11 @@ public class Containers {
 		if (index != -1) {
 		    int there = container.get(index).getAmount();
 		    int total = there + amount > maxStack ? maxStack : there + amount;
-		    container.set(index, new BasicItem(id, total));
+		    container.set(index, new Item(id, total));
 		} else {
 		    if (container.isFull())
 			return false;
-		    container.set(container.getFreeIndex(), new BasicItem(id, amount > maxStack ? maxStack : amount));
+		    container.set(container.getFreeIndex(), new Item(id, amount > maxStack ? maxStack : amount));
 		}
 		return true;
 	    } else {
@@ -84,7 +84,7 @@ public class Containers {
 		for (int i = 0; i < amount; i++) {
 		    int freeIndex = container.getFreeIndex();
 		    if (freeIndex != -1) {
-			container.set(freeIndex, new BasicItem(id, 1));
+			container.set(freeIndex, new Item(id, 1));
 		    } else {
 			return false;
 		    }
@@ -94,11 +94,11 @@ public class Containers {
 	}
 
 	@Override
-	public boolean remove(Container<BasicItem> container, BasicItem item) {
+	public boolean remove(Container<Item> container, Item item) {
 	    if (item.isStackable()) {
 		int index = container.indexOf(item.getId());
 		if (index != -1) {
-		    BasicItem previous = container.get(index);
+		    Item previous = container.get(index);
 		    previous.amount(previous.getAmount() - item.getAmount());
 		    if (previous.getAmount() < container.getMinimumStack())
 			container.set(index, null);
@@ -118,7 +118,7 @@ public class Containers {
 	}
 
 	@Override
-	public boolean addable(Container<BasicItem> container, BasicItem item) {
+	public boolean addable(Container<Item> container, Item item) {
 	    return false;
 	}
     };
@@ -127,16 +127,16 @@ public class Containers {
      * This {@code ContainerType} makes sure that every {@code BasicItemStack}
      * placed into a {@code Container} will never stack.
      */
-    public static ContainerHandler<BasicItem> NEVER_STACK = new ContainerHandler<BasicItem>() {
+    public static ContainerHandler<Item> NEVER_STACK = new ContainerHandler<Item>() {
 
 	@Override
-	public boolean add(Container<BasicItem> container, BasicItem item) {
+	public boolean add(Container<Item> container, Item item) {
 	    if (container.isFull())
 		return false;
 	    for (int i = 0; i < item.getAmount(); i++) {
 		int freeIndex = container.getFreeIndex();
 		if (freeIndex != -1) {
-		    container.set(freeIndex, new BasicItem(item.getId(), 1));
+		    container.set(freeIndex, new Item(item.getId(), 1));
 		} else {
 		    return false;
 		}
@@ -145,7 +145,7 @@ public class Containers {
 	}
 
 	@Override
-	public boolean remove(Container<BasicItem> container, BasicItem item) {
+	public boolean remove(Container<Item> container, Item item) {
 	    for (int i = 0; i < item.getAmount(); i++) {
 		int index_2 = container.indexOf(item.getId());
 		if (index_2 != -1) {
@@ -158,7 +158,7 @@ public class Containers {
 	}
 
 	@Override
-	public boolean addable(Container<BasicItem> container, BasicItem item) {
+	public boolean addable(Container<Item> container, Item item) {
 	    return false;
 	}
     };
@@ -173,7 +173,7 @@ public class Containers {
      *            the capacity of the container
      * @return the created container
      */
-    public static <E extends BasicItem> Container<E> create(ContainerHandler<E> handler, int capacity) {
+    public static <E extends Item> Container<E> create(ContainerHandler<E> handler, int capacity) {
 	return new Container<E>(handler, capacity, 0, Integer.MAX_VALUE);
     }
 

@@ -1,12 +1,11 @@
 package entity;
 
-import java.util.Objects;
-
 import util.ReflectUtil;
 import entity.event.EntityLocationChangeEvent;
 import entity.geometry.Locatable;
 import entity.geometry.Location;
-import entity.geometry.area.AreaChangeType;
+import entity.geometry.map.AreaChangeType;
+import entity.interactable.Interactable;
 
 /**
  * @author Albert Beaupre
@@ -22,13 +21,34 @@ public abstract class Entity implements Locatable, Interactable {
      * @param location
      *            the location to create the entity at
      */
-    public Entity(Location location) {
-	this.location = Objects.requireNonNull(location, "The location of an entity must not be NULL");
+    public Entity() {}
+
+    /**
+     * Sets the location of this {@code Entity} to the specified
+     * {@code Location}.
+     * 
+     * @param location
+     *            the location to set this {@code Entity}
+     */
+    public final void setLocation(Location location) {
+	this.location = location;
+	this.location.getMap().load(location.x, location.y);
     }
 
     /**
      * Sets the location of this {@code Entity} to the specified
      * {@code Location}.
+     * 
+     * <p>
+     * It would be best to use this method when walking an {@code Entity} as
+     * such:
+     * 
+     * <pre>
+     * int walkX;
+     * int walkY;
+     * 
+     * setLocation(location.translate(walkX, walkY, 0), AreaChangeType.WALK);
+     * </pre>
      * 
      * @param location
      *            the location to set this {@code Entity}
@@ -39,6 +59,8 @@ public abstract class Entity implements Locatable, Interactable {
 
 	EntityLocationChangeEvent event = new EntityLocationChangeEvent(this, type, this.location, previousLocation);
 	event.call();
+
+	this.location.getMap().load(location.x, location.y);
     }
 
     /**

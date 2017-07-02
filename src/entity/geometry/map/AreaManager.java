@@ -1,4 +1,4 @@
-package entity.geometry.area;
+package entity.geometry.map;
 
 import infrastructure.Attachments;
 
@@ -12,7 +12,7 @@ import entity.geometry.Shape3D;
  * 
  * @author Albert Beaupre
  * 
- * @see entity.geometry.area.Area
+ * @see entity.geometry.map.Area
  */
 public class AreaManager implements Shape3D {
 

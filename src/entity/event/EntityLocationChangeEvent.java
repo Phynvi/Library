@@ -2,7 +2,7 @@ package entity.event;
 
 import entity.Entity;
 import entity.geometry.Location;
-import entity.geometry.area.AreaChangeType;
+import entity.geometry.map.AreaChangeType;
 import event.Event;
 
 public class EntityLocationChangeEvent extends Event {

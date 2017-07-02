@@ -1,5 +1,7 @@
 package entity.geometry;
 
+import entity.geometry.map.WorldMap;
+
 /**
  * A {@code Chunk} is an 8x8 section of a {@code WorldMap} containing essential
  * clipping and flag information for a specific absolute location.
@@ -8,7 +10,7 @@ package entity.geometry;
  */
 public class Chunk {
 
-    private boolean loaded = false;
+    private boolean loaded = true;
     private int cacheX;
     private int cacheY;
     private int cacheZ;

@@ -19,7 +19,7 @@ import network.raw.handshake.HandshakeDecoder;
 /**
  * @author Albert Beaupre
  */
-public class ServerThread extends CoreThread {
+public final class ServerThread extends CoreThread {
 
     private final Logger logger = Logger.getLogger(getClass().getName());
 

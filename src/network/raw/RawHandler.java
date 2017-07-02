@@ -11,7 +11,7 @@ import network.packet.encoding.PacketEncoder;
  * The {@code RawHandler} class is used to handle the raw connections between
  * this server and the client. The {@code RawHandler} handles creating a cache
  * information response for the client to receive as well as handling the login
- * information, which is used to begin a player connection and start game-play.
+ * information, which is used to begin a holder connection and start game-play.
  * 
  * @author Albert Beaupre
  */
@@ -20,6 +20,8 @@ public abstract class RawHandler {
 
     private PacketDecoder<ConnectionHolder>[] decoders;
     private PacketEncoder<ConnectionHolder>[] encoders;
+
+    protected boolean loaded;
 
     /**
      * Constructs a new {@code RawHandler}.

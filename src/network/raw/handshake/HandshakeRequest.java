@@ -10,7 +10,7 @@ package network.raw.handshake;
 public enum HandshakeRequest {
 
     /**
-     * This type of request is sent when a player is trying to log into the
+     * This type of request is sent when a holder is trying to log into the
      * client.
      */
     LOGIN(14),

@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import util.yaml.ConfigSection;
 import util.yaml.YMLSerializable;
-import container.BasicItem;
+import container.Item;
 import container.Container;
 import container.Containers;
 import entity.Entity;
@@ -19,6 +19,8 @@ import entity.geometry.Location;
  */
 public abstract class Persona extends Entity implements Actor, YMLSerializable {
 
+    private final ActionQueue<Persona> actions = new ActionQueue<>();
+
     /**
      * The {@code attachments} map is used to attach any {@code YMLSerializable}
      * values to this {@code Persona}.
@@ -31,22 +33,24 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
      */
     protected ConfigSection config;
 
-    private final ActionQueue<Persona> actions = new ActionQueue<>();
-
-    private Container<BasicItem> inventory, equipment;
-    private final PersonaOption[] options;
-
     /**
-     * This flag must be set as true if this {@code Persona} is active in the
-     * game, otherwise set it to false.
+     * This method must be set to true if this {@code Persona} is active within
+     * the game; otherwise set it to false.
      */
     public boolean active;
 
+    private Container<Item> inventory, equipment;
+    private final PersonaOption[] options;
+
     /**
-     * Constructs a new {@code Persona}.
+     * Constructs a new {@code Persona} to be created at the specified
+     * {@code Location}.
+     * 
+     * @param location
+     *            the location to create the {@code Persona} at
      */
     public Persona(Location location) {
-	super(location);
+	super.setLocation(location);
 	this.inventory = new Container<>(Containers.AVAILABLE_STACK, 28, 1, Integer.MAX_VALUE);
 	this.config = new ConfigSection();
 	this.options = new PersonaOption[5];
@@ -73,7 +77,7 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
      * @param yml
      *            the object to deserialize/serialize.
      * @return true if the object was deserialized, false if the server is still
-     *         waiting for the player to load.
+     *         waiting for the holder to load.
      */
     public boolean register(String key, YMLSerializable yml) {
 	if (key == null)
@@ -112,7 +116,7 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
 	return this.config.getString("name");
     }
 
-    public Container<BasicItem> getEquipment() {
+    public Container<Item> getEquipment() {
 	return equipment;
     }
 
@@ -121,7 +125,7 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
      * 
      * @see entity.actor.Actor#getContainer()
      */
-    public Container<? extends BasicItem> getInventory() {
+    public Container<Item> getInventory() {
 	return inventory;
     }
 

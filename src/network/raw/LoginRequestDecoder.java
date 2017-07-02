@@ -15,7 +15,7 @@ import network.packet.decoding.IncomingPacketDecoder;
 /**
  * The {@code LoginRequestDecoder} decoded any information from the client after
  * it has requested information on logging in. The {@code LoginRequestDecoder}
- * responds by sending information of the player that is logging in.
+ * responds by sending information of the holder that is logging in.
  * 
  * @author Albert Beaupre
  */
@@ -23,7 +23,7 @@ public class LoginRequestDecoder extends ByteToMessageDecoder {
 
     /**
      * Decodes the login request made by the client. The information of the
-     * player logging in must be sent to the client in response.
+     * holder logging in must be sent to the client in response.
      */
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 	if (in.readableBytes() >= 3) {
@@ -37,9 +37,11 @@ public class LoginRequestDecoder extends ByteToMessageDecoder {
 	    RawHandler handler = NetworkRepository.getRawHandler(revision);
 	    if (handler == null)
 		throw new UnsupportedOperationException("Revision not supported for login: " + revision);
-	    handler.loadRawHandler();
-
-	    Connection connection = new Connection(ctx.channel());
+	    if (!handler.loaded) {
+		handler.loadRawHandler();
+		handler.loaded = true;
+	    }
+	    Connection connection = new Connection(ctx.channel(), revision);
 	    ConnectionHolder holder = handler.createConnectionHolder(connection, in, state);
 
 	    ctx.pipeline().replace("decoder", "decoder", new IncomingPacketDecoder(handler, holder));

@@ -1,4 +1,4 @@
-package entity;
+package entity.interactable;
 
 /**
  * Represents a type of {@code Option} used by an {@code Interactable}.

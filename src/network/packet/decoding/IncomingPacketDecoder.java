@@ -1,5 +1,6 @@
 package network.packet.decoding;
 
+import infrastructure.Core;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -48,7 +49,7 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
     }
 
     /**
-     * Decodes the bytes while a player is in-game and turns the decoded bytes
+     * Decodes the bytes while a holder is in-game and turns the decoded bytes
      * into a {@code DecodedPacket} for easier reading.
      * 
      * @param ctx
@@ -75,7 +76,8 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 		    if (processor != null) {
 			processor.process(holder, packet);
 		    } else {
-			LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
+			if (Core.debugging)
+			    LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
 		    }
 		    return;
 		}
@@ -87,7 +89,8 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 		if (processor != null) {
 		    processor.process(holder, packet);
 		} else {
-		    LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
+		    if (Core.debugging)
+			LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
 		}
 	    } else {}
 	}
