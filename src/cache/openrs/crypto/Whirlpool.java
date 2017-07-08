@@ -368,7 +368,7 @@ public class Whirlpool {
      * Delivers string input data to the hashing algorithm.
      *
      * @param source
-     *            plaintext data to hash (ASCII text string).
+     *            plaintext data to hash (ASCII name string).
      *
      *            This method maintains the invariant: bufferBits < 512
      */

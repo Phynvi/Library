@@ -12,6 +12,8 @@ import entity.interactable.Option;
  */
 public class GroundItem extends Entity {
 
+    private static final Option[] default_options = new Option[3];
+
     private Item parent;
     private Tick updateTick;
 
@@ -22,21 +24,19 @@ public class GroundItem extends Entity {
 
     @Override
     public Option[] options() {
-	return null;
+	return default_options;
     }
 
     @Override
     public String getName() {
-	return null;
+	return parent.toString();
     }
 
     @Override
     public void create() {
 	this.updateTick = new Tick() {
 	    @Override
-	    public void tick() {
-
-	    }
+	    public void tick() {}
 	};
 	this.updateTick.queue(600);
     }
