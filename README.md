@@ -50,7 +50,7 @@ Here is a brief list of things to complete:
   - [ ] Multiple Protocol Support
   - [ ] Easy packet reading/writing
 - [ ] Content Features
-  - [ ] Interface handling and functionalities
+  - [x] Interface handling and functionalities
   - [x] Action system
   - [ ] Entity design and interaction
   - [ ] Mini Game handling
