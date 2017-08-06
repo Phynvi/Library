@@ -1,39 +1,30 @@
 package entity;
 
 import util.ReflectUtil;
-import entity.event.EntityLocationChangeEvent;
+import util.yaml.ConfigSection;
+import entity.geometry.EntityLocationChangeEvent;
 import entity.geometry.Locatable;
 import entity.geometry.Location;
 import entity.geometry.map.AreaChangeType;
-import entity.interactable.Interactable;
 
 /**
  * @author Albert Beaupre
  */
-public abstract class Entity implements Locatable, Interactable {
+public abstract class Entity implements Locatable {
 
+    private ConfigSection temporary; //This value will be null until any temporary variables are set
     private Location location;
     private int index;
 
     /**
-     * Constructs a new {@code Entity} at the specified {@code Location}.
-     * 
-     * @param location
-     *            the location to create the entity at
+     * The {@code EntityOptions} placed on this {@code Entity}.
      */
-    public Entity() {}
+    public final EntityOptions options = new EntityOptions(this);
 
     /**
-     * Sets the location of this {@code Entity} to the specified
-     * {@code Location}.
-     * 
-     * @param location
-     *            the location to set this {@code Entity}
+     * Constructs a new {@code Entity} at the specified {@code Location}.
      */
-    public final void setLocation(Location location) {
-	this.location = location;
-	this.location.getMap().load(location.x, location.y);
-    }
+    public Entity() {}
 
     /**
      * Sets the location of this {@code Entity} to the specified
@@ -60,11 +51,29 @@ public abstract class Entity implements Locatable, Interactable {
 	EntityLocationChangeEvent event = new EntityLocationChangeEvent(this, type, this.location, previousLocation);
 	event.call();
 
-	this.location.getMap().load(location.x, location.y);
+	this.location.map.load(location.x, location.y);
     }
 
     /**
-     * This will trigger the {@link entity.event.EntityLocationChangeEvent}
+     * Sets the location of this {@code Entity} to the specified
+     * {@code Location}.
+     * 
+     * <p>
+     * This method is effectively equivalent to:
+     * 
+     * <pre>
+     * setLocation(location, {@link AreaChangeType#SERVER});
+     * </pre>
+     * 
+     * @param location
+     *            the location to set this {@code Entity}
+     */
+    public final void setLocation(Location location) {
+	this.setLocation(location, AreaChangeType.SERVER);
+    }
+
+    /**
+     * This will trigger the {@link entity.geometry.EntityLocationChangeEvent}
      * event with the {@link AreaChangeType#TELEPORT} as the type of location
      * change.
      * 
@@ -91,6 +100,28 @@ public abstract class Entity implements Locatable, Interactable {
     }
 
     /**
+     * Selects the {@code EntityOption} on this {@code Entity} associated with
+     * the specified {@code text}.
+     * 
+     * @param text
+     *            the text of the option
+     */
+    public final void selectOption(Entity interactor, String text) {
+	interactor.options.select(text, this);
+    }
+
+    /**
+     * Selects the {@code EntityOption} on this {@code Entity} associated with
+     * the specified {@code index}.
+     * 
+     * @param index
+     *            the index of the option
+     */
+    public final void selectOption(Entity interactor, int index) {
+	interactor.options.select(index, this);
+    }
+
+    /**
      * This method is called when this {@code Entity} is added to an
      * {@code EntityList}. It is used to initialize this {@code Entity}.
      * 
@@ -109,6 +140,13 @@ public abstract class Entity implements Locatable, Interactable {
     public abstract void destroy();
 
     /**
+     * Returns the name of this {@code Entity}.
+     * 
+     * @return the name
+     */
+    public abstract String getName();
+
+    /**
      * Returns the index value relating to an {@code EntityList} that this
      * {@code Entity} is stored. If this {@code Entity} is not within an
      * {@code EntityList}, its index value will return -1 by default.
@@ -118,6 +156,37 @@ public abstract class Entity implements Locatable, Interactable {
      */
     public final int getIndex() {
 	return index;
+    }
+
+    /**
+     * This method will set a temporary variable to this {@code Entity}. If the
+     * value is set to null, then it will remove the temporary variable.
+     * 
+     * @param name
+     *            the name of the variable
+     * @param value
+     *            the value of the variable
+     */
+    public void temporary(String name, Object value) {
+	if (this.temporary == null)
+	    this.temporary = new ConfigSection();
+	this.temporary.put(name, value);
+	if (value == null)
+	    this.temporary.remove(name);
+
+	if (this.temporary.isEmpty())
+	    this.temporary = null; //remove any unecessary memory
+    }
+
+    /**
+     * 
+     * 
+     * @param name
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T getTemporary(String name, T fallback) {
+	return this.temporary == null ? null : (T) this.temporary.get(name);
     }
 
     /**
@@ -136,9 +205,18 @@ public abstract class Entity implements Locatable, Interactable {
 	try {
 	    if (!ReflectUtil.getCallerClass(2).isAssignableFrom(EntityList.class))
 		throw new UnsupportedOperationException("The index of an Entity must only be modified by an EntityList instance");
+	    this.index = index;
 	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
-	this.index = index;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+	return "Entity[" + this.getName() + "]";
     }
 }

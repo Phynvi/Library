@@ -27,9 +27,9 @@ public class OptionPage extends Page {
     }
 
     /**
-     * Executes the option, if any
+     * Executes the entityOption, if any
      * 
-     * @param option
+     * @param entityOption
      */
     public final void execute(int option) {
 	if (options.length <= option)

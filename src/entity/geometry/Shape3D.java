@@ -1,5 +1,7 @@
 package entity.geometry;
 
+import java.util.List;
+
 /**
  * Represents a shape usable within a 3-dimensional plane.
  * 
@@ -39,5 +41,13 @@ public interface Shape3D {
     public default boolean contains(int x, int y, int z) {
 	return contains(new Point3D(x, y, z));
     }
+
+    /**
+     * Lists any {@code Point3D} point that is located within the bounds of this
+     * {@code Shape3D}.
+     * 
+     * @return the list of points within the bounds
+     */
+    public List<Point3D> listPoints();
 
 }

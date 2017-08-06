@@ -3,6 +3,7 @@ package util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * This class holds various methods to help with <b>Java Reflection</b>
@@ -30,6 +31,28 @@ public class ReflectUtil {
 	StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
 	String rawFQN = stElements[level + 1].toString().split("\\(")[0];
 	return Class.forName(rawFQN.substring(0, rawFQN.lastIndexOf('.')));
+    }
+
+    /**
+     * Creates a hash code based on the given {@code object} argument. The hash
+     * code created uses the declared fields within the specified {@code object}
+     * class to determine how the hash code is calculated.
+     * 
+     * @param object
+     *            the object to create the hash code for
+     * @return the hash code
+     */
+    public static int hashCode(Object object) {
+	Class<?> clazz = object.getClass();
+	Object[] values = new Object[clazz.getDeclaredFields().length];
+	for (int i = 0; i < clazz.getDeclaredFields().length; i++) {
+	    try {
+		values[i] = clazz.getDeclaredFields()[i].get(object);
+	    } catch (Exception e) {
+		continue;
+	    }
+	}
+	return Objects.hash(values);
     }
 
     /**

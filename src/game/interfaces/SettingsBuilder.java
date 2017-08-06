@@ -5,11 +5,12 @@ package game.interfaces;
  * available include enabling/disabling the primary left click, or right click
  * options, using items/spells/interface components on ground
  * items/npcs/objects/players/yourself/interface components, configuring the
- * interface event depth (how high up the hierarchy parents are notified of
+ * interface event height (how high up the hierarchy parents are notified of
  * clicks), and whether the interface components itself can be the target of a
  * 'use with' action
  * 
- * @author Albert Beaupre
+ * @author Mangis
+ * @autho Albert Beaupre
  */
 public class SettingsBuilder {
 
@@ -32,25 +33,25 @@ public class SettingsBuilder {
     private int value;
 
     /**
-     * True if the settings have a left click option
+     * True if the settings have a left click entityOption
      * 
-     * @return True if the settings have a left click option
+     * @return True if the settings have a left click entityOption
      */
     public boolean hasPrimaryOption() {
 	return (value & 0x1) != 0;
     }
 
     /**
-     * True if the settings have the right click option for the given id.
+     * True if the settings have the right click entityOption for the given id.
      * 
      * @param optionId
-     *            the option id, value is 0-9
-     * @return True if the settings have the right click option for the given
+     *            the entityOption id, value is 0-9
+     * @return True if the settings have the right click entityOption for the given
      *         id.
      */
     public boolean hasSecondaryOption(int optionId) {
 	if (optionId < 0 || optionId > 9)
-	    throw new IllegalArgumentException("Bad option requested: " + optionId);
+	    throw new IllegalArgumentException("Bad entityOption requested: " + optionId);
 	return (value & (0x1 << (optionId + 1))) != 0;
     }
 
@@ -113,11 +114,11 @@ public class SettingsBuilder {
     }
 
     /**
-     * 0-7, the depth up the chain to notify parent containers when a button is
+     * 0-7, the height up the chain to notify parent containers when a button is
      * clicked.
      * 
-     * @return 0-7, the depth up the chain to notify parent containers when a
-     *         button is clicked. The higher the depth, the further back the
+     * @return 0-7, the height up the chain to notify parent containers when a
+     *         button is clicked. The higher the height, the further back the
      *         parent.
      */
     public int getInterfaceDepth() {
@@ -138,8 +139,8 @@ public class SettingsBuilder {
     }
 
     /**
-     * Set's standard option settings. Great example of standard click option is
-     * the Continue button in dialog interface. If the option is not allowed the
+     * Set's standard entityOption settings. Great example of standard click entityOption is
+     * the Continue button in dialog interface. If the entityOption is not allowed the
      * packet won't be send to server.
      * 
      * @param allowed
@@ -152,8 +153,8 @@ public class SettingsBuilder {
     }
 
     /**
-     * Set's right click option settings. Great example of right click option is
-     * the Dismiss option in summoning orb. If specified option is not allowed ,
+     * Set's right click entityOption settings. Great example of right click entityOption is
+     * the Dismiss entityOption in summoning orb. If specified entityOption is not allowed ,
      * it will not appear in right click menu and the packet will not be send to
      * server when clicked.
      */
@@ -168,7 +169,7 @@ public class SettingsBuilder {
 
     /**
      * Sets use on settings. By use on , I mean the options such as Cast in
-     * spellbook or use in inventory. If nothing is allowed then 'use' option
+     * spellbook or use in inventory. If nothing is allowed then 'use' entityOption
      * will not appear in right click menu.
      */
     public SettingsBuilder setUseOnSettings(boolean canUseOnGroundItems, boolean canUseOnNpcs, boolean canUseOnObjects, boolean canUseOnNonselfPlayers, boolean canUseOnSelfPlayer, boolean canUseOnInterfaceComponent) {
@@ -191,14 +192,14 @@ public class SettingsBuilder {
     }
 
     /**
-     * Set's interface events depth. For example, we have inventory interface
-     * which is opened on gameframe interface (548 or 746). If depth is 1 , then
+     * Set's interface events height. For example, we have inventory interface
+     * which is opened on gameframe interface (548 or 746). If height is 1 , then
      * the clicks in inventory will also invoke click event handler scripts on
      * gameframe interface.
      */
     public SettingsBuilder setInterfaceDepth(int depth) {
 	if (depth < 0 || depth > 7)
-	    throw new IllegalArgumentException("depth must be 0-7.");
+	    throw new IllegalArgumentException("height must be 0-7.");
 	value &= ~(0x7 << 18);
 	value |= (depth << 18);
 	return this;

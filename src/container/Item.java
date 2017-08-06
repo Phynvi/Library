@@ -54,15 +54,39 @@ public class Item {
     }
 
     /**
-     * Sets the amount of this {@code Item} to the specified value.
+     * Returns a new {@code Item} with the same information but with amount of
+     * the item decreased by the given argument.
      * 
      * @param amount
      *            the amount to set
-     * @return the current {@code Item} with the specific {@code amount}
+     * @return the new {@code Item} with the decreased {@code amount}
+     */
+    public Item decrease(int amount) {
+	return new Item(id, this.amount - amount);
+    }
+
+    /**
+     * Returns a new {@code Item} with the same information but with amount of
+     * the item increased by the given argument.
+     * 
+     * @param amount
+     *            the amount to set
+     * @return the new {@code Item} with the increased {@code amount}
+     */
+    public Item increase(int amount) {
+	return new Item(id, this.amount + amount);
+    }
+
+    /**
+     * Returns a new {@code Item} with the same information but with amount of
+     * the item set to the given argument.
+     * 
+     * @param amount
+     *            the amount to set
+     * @return the new {@code Item} with the specified {@code amount}
      */
     public Item amount(int amount) {
-	this.amount = amount;
-	return this;
+	return new Item(id, amount);
     }
 
     public boolean isStackable() {

@@ -1,6 +1,5 @@
-package entity.geometry;
+package entity.geometry.map;
 
-import entity.geometry.map.WorldMap;
 
 /**
  * A {@code Chunk} is an 8x8 section of a {@code WorldMap} containing essential
@@ -10,7 +9,7 @@ import entity.geometry.map.WorldMap;
  */
 public class Chunk {
 
-    private boolean loaded = true;
+    private boolean loaded = false;
     private int cacheX;
     private int cacheY;
     private int cacheZ;
@@ -59,7 +58,7 @@ public class Chunk {
      */
     public void addClip(int x, int y, int clip) {
 	if (this.clip == null)
-	    this.clip = new int[WorldMap.CHUNK_SIZE][WorldMap.CHUNK_SIZE];
+	    this.clip = new int[RSMap.CHUNK_SIZE][RSMap.CHUNK_SIZE];
 	this.clip[x][y] |= clip;
     }
 
@@ -111,7 +110,7 @@ public class Chunk {
 	if (flag == 0 && this.flags == null)
 	    return; //It's assumed to be 0 already. This saves us allocating extra data.
 	if (this.flags == null)
-	    this.flags = new byte[WorldMap.CHUNK_SIZE][WorldMap.CHUNK_SIZE];
+	    this.flags = new byte[RSMap.CHUNK_SIZE][RSMap.CHUNK_SIZE];
 	this.flags[x][y] = (byte) flag;
     }
 
@@ -204,6 +203,6 @@ public class Chunk {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-	return "Chunk(" + cacheX + ", " + cacheY + ") isLoaded(" + isLoaded() + ")";
+	return String.format("Chunk[x=%s, y=%s, z=%s, loaded=%s]", cacheX, cacheY, cacheZ, loaded);
     }
 }

@@ -14,6 +14,9 @@ public abstract class Model {
     private final TreeSet<Mask> currentMasks;
     private int maskData;
 
+    /**
+     * The {@code Actor} used within this {@code Model} for updating.
+     */
     protected final Actor actor;
 
     /**

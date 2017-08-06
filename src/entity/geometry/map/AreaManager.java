@@ -2,7 +2,9 @@ package entity.geometry.map;
 
 import infrastructure.Attachments;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import entity.geometry.Point3D;
 import entity.geometry.Shape3D;
@@ -48,5 +50,17 @@ public class AreaManager implements Shape3D {
 	    if (shape.contains(point))
 		return true;
 	return false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see entity.geometry.Shape3D#listPoints()
+     */
+    public List<Point3D> listPoints() {
+	List<Point3D> allPoints = new ArrayList<>();
+	for (Area area : combinedArea)
+	    allPoints.addAll(area.listPoints());
+	return allPoints;
     }
 }

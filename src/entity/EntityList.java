@@ -78,7 +78,6 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	if (index != -1) {
 	    data[index] = entity;
 	    entity.setIndex(index);
-	    entity.create();
 	    size++;
 	    return true;
 	}
@@ -97,7 +96,6 @@ public class EntityList<E extends Entity> implements Iterable<E> {
     public boolean remove(E entity) {
 	int index = entity.getIndex();
 	if (data[index] == entity) {
-	    data[index].destroy();
 	    data[index] = null;
 	    size--;
 	    return true;
@@ -137,9 +135,6 @@ public class EntityList<E extends Entity> implements Iterable<E> {
      * Clears this {@code EntityList} of every contained {@code Entity}.
      */
     public void clear() {
-	for (Entity e : this.data)
-	    if (e != null)
-		e.destroy();
 	int length = data.length;
 	data = new Entity[length];
 	size = 0;
@@ -185,6 +180,9 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	return data[e.getIndex()] != null && data[e.getIndex()].equals(o);
     }
 
+    /**
+     * Creates a new {@code Iterator} for this {@code EntityList}.
+     */
     public Iterator<E> iterator() {
 	return new Iterator<E>() {
 	    private int index;

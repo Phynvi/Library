@@ -44,10 +44,10 @@ public abstract class Pane extends Window {
 	    throw new IllegalArgumentException("The parent to that interface is not open.");
 
 	Integer key = Integer.valueOf(iface.getChildId());
-	int pos = iface.childPos;
+	int pos = iface.position;
 
 	for (Interface i : getInterfaces()) {
-	    if (i.getParent() == iface.getParent() && i.childPos == pos) {
+	    if (i.getParent() == iface.getParent() && i.position == pos) {
 		i.onClose();
 		interfaces.remove(Integer.valueOf(i.getChildId()));
 	    }
@@ -66,7 +66,7 @@ public abstract class Pane extends Window {
 
 	interfaces.put(key, iface);
 
-	holder.getPanes().sendInterface(iface.isServerSidedClose(), iface.getParent().getChildId(), iface.childPos, iface.getChildId());
+	holder.sendInterface(iface.isServerSidedClose(), iface.getParent().getChildId(), iface.position, iface.getChildId());
 	iface.onOpen();
 
 	if (!iface.isMobile()) {
@@ -111,7 +111,7 @@ public abstract class Pane extends Window {
 	    interfaces.remove(key);
 	}
 
-	holder.getPanes().sendCloseInterface(iface.getParent().getChildId(), iface.childPos);
+	holder.sendCloseInterface(iface.getParent().getChildId(), iface.position);
 	iface.onClose();
     }
 

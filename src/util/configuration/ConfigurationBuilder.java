@@ -11,6 +11,10 @@ public class ConfigurationBuilder {
     private HashMap<String, Object> configurables;
     protected ConfigType type;
 
+    /**
+     * Constructs a new {@code ConfigurationBuilder}, which is unextendable and
+     * cannot be created as a new instance.
+     */
     private ConfigurationBuilder() {
 
     }

@@ -28,4 +28,16 @@ public class NPCDialog extends Dialog {
 	pages.add(page);
 	return this;
     }
+
+    /**
+     * 
+     * @param name
+     */
+    public NPCDialog npc(int expression, String text) {
+	Page page = new Page(text);
+	page.npcId = npcId;
+	page.expression = expression;
+	pages.add(page);
+	return this;
+    }
 }

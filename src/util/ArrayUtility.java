@@ -923,7 +923,7 @@ public final class ArrayUtility {
      * @return the array with the removed element
      */
     public static <T> T[] removeElement(T[] a, T element) {
-	return removeIndex(a, ArrayUtility.indexOf(element, a));
+	return removeIndex(a, indexOf(element, a));
     }
 
     /**
@@ -937,7 +937,7 @@ public final class ArrayUtility {
      * @return the array with the removed element
      */
     public static boolean[] removeElement(boolean[] a, boolean element) {
-	return removeIndex(a, ArrayUtility.indexOf(element, a));
+	return removeIndex(a, indexOf(element, a));
     }
 
     /**
@@ -951,7 +951,7 @@ public final class ArrayUtility {
      * @return the array with the removed element
      */
     public static byte[] removeElement(byte[] a, byte element) {
-	return removeIndex(a, ArrayUtility.indexOf(element, a));
+	return removeIndex(a, indexOf(element, a));
     }
 
     /**
@@ -965,7 +965,7 @@ public final class ArrayUtility {
      * @return the array with the removed element
      */
     public static char[] removeElement(char[] a, char element) {
-	return removeIndex(a, ArrayUtility.indexOf(element, a));
+	return removeIndex(a, indexOf(element, a));
     }
 
     /**
@@ -979,7 +979,7 @@ public final class ArrayUtility {
      * @return the array with the removed element
      */
     public static float[] removeElement(float[] a, float element) {
-	return removeIndex(a, ArrayUtility.indexOf(element, a));
+	return removeIndex(a, indexOf(element, a));
     }
 
     /**
@@ -993,7 +993,7 @@ public final class ArrayUtility {
      * @return the array with the removed element
      */
     public static double[] removeElement(double[] a, double element) {
-	return removeIndex(a, ArrayUtility.indexOf(element, a));
+	return removeIndex(a, indexOf(element, a));
     }
 
     /**
@@ -1007,7 +1007,7 @@ public final class ArrayUtility {
      * @return the array with the removed element
      */
     public static long[] removeElement(long[] a, long element) {
-	return removeIndex(a, ArrayUtility.indexOf(element, a));
+	return removeIndex(a, indexOf(element, a));
     }
 
     /**
@@ -1021,7 +1021,7 @@ public final class ArrayUtility {
      * @return the array with the removed element
      */
     public static short[] removeElement(short[] a, short element) {
-	return removeIndex(a, ArrayUtility.indexOf(element, a));
+	return removeIndex(a, indexOf(element, a));
     }
 
     /**
@@ -1035,7 +1035,7 @@ public final class ArrayUtility {
      * @return the array with the removed element
      */
     public static int[] removeElement(int[] a, int element) {
-	return removeIndex(a, ArrayUtility.indexOf(element, a));
+	return removeIndex(a, indexOf(element, a));
     }
 
     /**

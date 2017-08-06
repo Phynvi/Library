@@ -76,7 +76,7 @@ public class EventManager {
 
 	@Override
 	public String toString() {
-	    return listener.toString();
+	    return listener.getClass().getSimpleName();
 	}
 
     }

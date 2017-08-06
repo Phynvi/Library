@@ -34,6 +34,9 @@ public class Core {
      */
     public static void initialize(String cacheRoot) {
 	try {
+	    /**
+	     * Attach all essential attachments
+	     */
 	    Attachments.attachActorUpdator(new ActorUpdateThread());
 	    Attachments.attachTicker(new TickThread());
 	    Attachments.attachEventManager(new EventManager());

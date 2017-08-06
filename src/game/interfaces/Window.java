@@ -14,6 +14,12 @@ public abstract class Window {
 
     private int interfaceId = -1;
 
+    /**
+     * Constructs a new {@code Window}.
+     * 
+     * @param holder
+     *            the pane holder holding the window
+     */
     public Window(PaneHolder holder) {
 	this.holder = Objects.requireNonNull(holder, "A PaneHolder cannot equal NULL");
     }
@@ -52,7 +58,7 @@ public abstract class Window {
 	int hash = 0;
 	for (int o : options)
 	    hash |= 2 << o;
-	holder.getPanes().setAccessMask(this.interfaceId, hash, offset, length, componentId);
+	holder.setAccessMask(this.interfaceId, hash, offset, length, componentId);
     }
 
     /**
@@ -78,8 +84,8 @@ public abstract class Window {
      * Called when the owner of this interface clicks on a button in this
      * interface
      * 
-     * @param option
-     *            the option number that was used. Eg, right click provides
+     * @param entityOption
+     *            the entityOption number that was used. Eg, right click provides
      *            multiple options
      * @param buttonId
      *            the buttonId that was clicked

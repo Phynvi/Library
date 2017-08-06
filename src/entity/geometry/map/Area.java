@@ -1,7 +1,9 @@
 package entity.geometry.map;
 
+import java.util.List;
+
 import entity.Entity;
-import entity.event.EntityLocationChangeEvent;
+import entity.geometry.EntityLocationChangeEvent;
 import entity.geometry.Location;
 import entity.geometry.Point3D;
 import entity.geometry.Shape3D;
@@ -55,6 +57,15 @@ public abstract class Area implements Shape3D, EventListener {
     /*
      * (non-Javadoc)
      * 
+     * @see entity.geometry.Shape3D#listPoints()
+     */
+    public List<Point3D> listPoints() {
+	return bounds.listPoints();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see geometry.Shape3D#contains(geometry.Point3D)
      */
     public boolean contains(Point3D point) {
@@ -62,16 +73,20 @@ public abstract class Area implements Shape3D, EventListener {
     }
 
     @EventMethod
-    private void onAreaChange(EntityLocationChangeEvent event) {
-	Location current = event.getCurrentLocation();
-	Location previous = event.getPreviousLocation();
-	if (previous.equals(current))
+    public void onAreaChange(EntityLocationChangeEvent event) {
+	Location current = event.currentLocation;
+	Location previous = event.previousLocation;
+
+	if (previous == null) {
+	    if (contains(current))
+		onEnter(event.entity, event.type);
 	    return;
+	}
 
 	if (contains(current) && !contains(previous)) {
-	    onEnter(event.getEntity(), event.getType());
+	    onEnter(event.entity, event.type);
 	} else if (!contains(current) && contains(previous)) {
-	    onLeave(event.getEntity(), event.getType());
+	    onLeave(event.entity, event.type);
 	}
     }
 }

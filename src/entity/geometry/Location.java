@@ -1,9 +1,7 @@
 package entity.geometry;
 
-import java.util.HashSet;
-
-import entity.Entity;
-import entity.geometry.map.WorldMap;
+import entity.geometry.map.Chunk;
+import entity.geometry.map.RSMap;
 
 /**
  * Represents a position in a {@code WorldMap} to locate anything.
@@ -12,7 +10,10 @@ import entity.geometry.map.WorldMap;
  */
 public class Location extends Point3D {
 
-    private final WorldMap map;
+    /**
+     * The {@code RSMap} in relation to what this location is placed.
+     */
+    public final RSMap map;
 
     /**
      * Constructs a new {@code Location} from the specified coordinates.
@@ -27,7 +28,7 @@ public class Location extends Point3D {
      * @param z
      *            the z coordinate of the location
      */
-    public Location(WorldMap map, int x, int y, int z) {
+    public Location(RSMap map, int x, int y, int z) {
 	super(x, y, z);
 	this.map = map;
     }
@@ -78,6 +79,18 @@ public class Location extends Point3D {
     }
 
     /**
+     * Returns the current {@code Chunk} of the {@code RSMap} this
+     * {@code Location} is in.
+     * 
+     * @return the current chunk
+     */
+    public Chunk getCurrentChunk() {
+	if (map == null)
+	    throw new NullPointerException("The RSMap is not defined for this location");
+	return map.getChunk(getChunkX(), getChunkY(), z);
+    }
+
+    /**
      * Returns the 18 bit hash of this {@code Location}.
      * 
      * @return the 18 bit hash
@@ -95,15 +108,6 @@ public class Location extends Point3D {
 	return map.getClip(x, y, z);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode() {
-	return z << 30 | x << 15 | y;
-    }
-
     /**
      * Returns the 30 bit hash of this {@code Location}.
      * 
@@ -111,29 +115,6 @@ public class Location extends Point3D {
      */
     public int get30BitsHash() {
 	return this.y | this.z << 28 | this.x << 14;
-    }
-
-    /**
-     * Returns a {@code HashSet} filled with entities of the specified
-     * {@code clazz} type within the radius of this {@code Location}.
-     * 
-     * @param clazz
-     *            the class type of the entities
-     * @param radius
-     *            the radius to search for the entities
-     * @return the {@code HashSet} filled with the entities within the radius
-     */
-    public <E extends Entity> HashSet<E> getEntities(Class<E> clazz, int radius) {
-	return this.map.getEntities(e -> e.getLocation().inRange(Location.this, radius), clazz);
-    }
-
-    /**
-     * Returns the {@code WorldMap} that this {@code Location} is relative to.
-     * 
-     * @return the world map
-     */
-    public WorldMap getMap() {
-	return map;
     }
 
     /*
@@ -145,6 +126,9 @@ public class Location extends Point3D {
 	if (obj instanceof Location) {
 	    Location l = (Location) obj;
 	    return l.x == x && l.y == y && l.z == z && l.map == map;
+	}
+	if (obj instanceof Point3D) {
+	    return super.equals(obj);
 	}
 	return super.equals(obj);
     }
@@ -158,4 +142,12 @@ public class Location extends Point3D {
 	return String.format("Location[x=%s, y=%s, z=%s]", this.x, this.y, this.z);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+	return super.hashCode();
+    }
 }

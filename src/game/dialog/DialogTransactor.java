@@ -9,6 +9,12 @@ package game.dialog;
 public interface DialogTransactor {
 
     /**
+     * 
+     * @param dialog
+     */
+    public abstract void initializeDialog(Dialog dialog);
+
+    /**
      * Displays the given {@code OptionPage} to the screen of the
      * DialogTransactor.
      * 

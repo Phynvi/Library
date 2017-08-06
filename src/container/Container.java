@@ -99,7 +99,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
      */
     public boolean remove(int index, int amount) {
 	if (data[index] != null) {
-	    data[index].amount(data[index].getAmount() - amount);
+	    data[index] = data[index].decrease(amount);
 	    if (data[index].getAmount() < minimumStack) // TODO < 1 should be < minStack
 		data[index] = null;
 	    refresh();
@@ -386,6 +386,22 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	return added;
     }
 
+    /**
+     * Adds a new {@code Item} to this {@code Container} with the specified
+     * {@code id} and {@code amount}.
+     */
+    public boolean add(int id, int amount) {
+	return this.add(new Item(id, amount));
+    }
+
+    /**
+     * Adds 1 new {@code Item} to this {@code Container} with the specified
+     * {@code id}.
+     */
+    public boolean add(int id) {
+	return this.add(new Item(id, 1));
+    }
+
     /*
      * {@inheritDoc}
      */
@@ -475,7 +491,11 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	return minimumStack;
     }
 
-    public void addRefresher(Consumer<Container<E>> refresher) {
+    /**
+     * 
+     * @param refresher
+     */
+    public void addRefreshListener(Consumer<Container<E>> refresher) {
 	this.refreshers.add(refresher);
     }
 

@@ -1,5 +1,7 @@
 package entity.geometry;
 
+import java.util.Objects;
+
 import util.yaml.ConfigSection;
 import util.yaml.YMLSerializable;
 
@@ -29,12 +31,8 @@ public class Point3D implements YMLSerializable {
      */
     public int z;
 
-    /**
-     * Constructs and initializes a point at the origin (0, 0, 0) of the
-     * coordinate space.
-     */
-    public Point3D() {
-	this(0, 0, 0);
+    public Point3D(Point3D point) {
+	this(point.x, point.y, point.z);
     }
 
     /**
@@ -164,5 +162,23 @@ public class Point3D implements YMLSerializable {
 	this.x = section.getInt("x");
 	this.y = section.getInt("y");
 	this.z = section.getInt("z");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+	return String.format("Point3D[x=%s, y=%s, z=%s]", x, y, z);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+	return Objects.hash(x, y, z);
     }
 }

@@ -64,6 +64,14 @@ public abstract class Action<A extends Actor> {
     }
 
     /**
+     * Queues this {@code Action} to the {@code ActionQueue} of the
+     * {@code Actor} controlling this {@code Action}.
+     */
+    public final void queue() {
+	this.actor.queue(this);
+    }
+
+    /**
      * Sets the state of this {@code Action} to the specified {@code state}
      * argument.
      * 

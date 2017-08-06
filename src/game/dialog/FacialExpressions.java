@@ -25,7 +25,7 @@ public interface FacialExpressions {
     int CONFUSED = 9830;
     int DRUNK_HAPPY_T = 9835;
     int TALKING_FAST = 9845;
-    int TALKING_HAPPY = 9850;
+    int HAPPY = 9850;
     int BAD_ASS = 9855;
     int THINKING = 9860;
     int COOL_YES = 9864;

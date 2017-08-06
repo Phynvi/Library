@@ -17,4 +17,10 @@ public interface Locatable {
      */
     public Location getLocation();
 
+    /**
+     * 
+     * @param location
+     */
+    public void setLocation(Location location);
+
 }

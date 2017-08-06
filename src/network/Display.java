@@ -17,10 +17,10 @@ public class Display implements YMLSerializable {
      * 
      * @param mode
      *            the display mode
+     * @param length
+     *            the length of the display
      * @param width
      *            the width of the display
-     * @param height
-     *            the height of the display
      */
     public Display(int mode, int width, int height) {
 	this.mode = mode;
@@ -36,8 +36,8 @@ public class Display implements YMLSerializable {
     public ConfigSection serialize() {
 	ConfigSection config = new ConfigSection();
 	config.put("mode", mode);
-	config.put("width", width);
-	config.put("height", height);
+	config.put("length", width);
+	config.put("width", height);
 	return config;
     }
 
@@ -50,8 +50,8 @@ public class Display implements YMLSerializable {
 	if (section.isEmpty())
 	    return;
 	this.mode = section.getInt("mode");
-	this.width = section.getInt("width");
-	this.height = section.getInt("height");
+	this.width = section.getInt("length");
+	this.height = section.getInt("width");
     }
 
     /**
@@ -70,30 +70,30 @@ public class Display implements YMLSerializable {
     }
 
     /**
-     * @return the width
+     * @return the length
      */
     public int getWidth() {
 	return width;
     }
 
     /**
-     * @param width
-     *            the width to set
+     * @param length
+     *            the length to set
      */
     public void setWidth(int width) {
 	this.width = width;
     }
 
     /**
-     * @return the height
+     * @return the width
      */
     public int getHeight() {
 	return height;
     }
 
     /**
-     * @param height
-     *            the height to set
+     * @param width
+     *            the width to set
      */
     public void setHeight(int height) {
 	this.height = height;

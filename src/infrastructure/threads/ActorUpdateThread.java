@@ -60,8 +60,8 @@ public class ActorUpdateThread extends CoreThread {
     }
 
     /**
-     * Allows the specified {@code Actor} to be updating by this
-     * {@code ActorUpdateThread}. It will be updating after it is removed from
+     * Allows the specified {@code Actor} to be updated by this
+     * {@code ActorUpdateThread}. It will be updated after it is removed from
      * the queue that the {@code Actor} is placed in.
      * 
      * @param actor

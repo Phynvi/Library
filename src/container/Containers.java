@@ -39,8 +39,7 @@ public class Containers {
 	public boolean remove(Container<Item> container, Item item) {
 	    int index = container.indexOf(item.getId());
 	    if (index != -1) {
-		Item previous = container.get(index);
-		previous.amount(previous.getAmount() - item.getAmount());
+		Item previous = container.get(index).decrease(item.getAmount());
 		if (previous.getAmount() < container.getMinimumStack())
 		    container.set(index, null);
 		return true;
@@ -98,8 +97,7 @@ public class Containers {
 	    if (item.isStackable()) {
 		int index = container.indexOf(item.getId());
 		if (index != -1) {
-		    Item previous = container.get(index);
-		    previous.amount(previous.getAmount() - item.getAmount());
+		    Item previous = container.get(index).decrease(item.getAmount());
 		    if (previous.getAmount() < container.getMinimumStack())
 			container.set(index, null);
 		    return true;

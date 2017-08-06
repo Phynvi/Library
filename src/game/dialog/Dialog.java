@@ -1,6 +1,8 @@
 package game.dialog;
 
 import java.util.ArrayDeque;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * The {@code Dialog} class is used to create a conversation between any player
@@ -32,79 +34,52 @@ public class Dialog implements FacialExpressions {
     }
 
     /**
-     * 
-     * @param optionName
-     * @param i
+     * Displays 1 option with 1 action.
      */
     public Dialog options(String optionName, Runnable i) {
 	DialogOption option1 = new DialogOption(optionName, i);
-	pages.add(new OptionPage("Choose an option", option1));
+	pages.add(new OptionPage("Choose an Option", option1));
 	return this;
     }
 
     /**
      * 
-     * @param optionName
-     * @param i
-     * @param optionName2
-     * @param i2
+     * Displays 2 options with 2 actions.
      */
     public Dialog options(String optionName, Runnable i, String optionName2, Runnable i2) {
 	DialogOption option1 = new DialogOption(optionName, i);
 	DialogOption option2 = new DialogOption(optionName2, i2);
-	pages.add(new OptionPage("Choose an option", option1, option2));
+	pages.add(new OptionPage("Choose an Option", option1, option2));
 	return this;
     }
 
     /**
      * 
-     * @param optionName
-     * @param i
-     * @param optionName2
-     * @param i2
-     * @param optionName3
-     * @param i3
+     * Displays 3 options with 3 actions.
      */
     public Dialog options(String optionName, Runnable i, String optionName2, Runnable i2, String optionName3, Runnable i3) {
 	DialogOption option1 = new DialogOption(optionName, i);
 	DialogOption option2 = new DialogOption(optionName2, i2);
 	DialogOption option3 = new DialogOption(optionName3, i3);
-	pages.add(new OptionPage("Choose an option", option1, option2, option3));
+	pages.add(new OptionPage("Choose an Option", option1, option2, option3));
 	return this;
     }
 
     /**
      * 
-     * @param optionName
-     * @param i
-     * @param optionName2
-     * @param i2
-     * @param optionName3
-     * @param i3
-     * @param optionName4
-     * @param i4
+     * Displays 4 options with 4 actions.
      */
     public Dialog options(String optionName, Runnable i, String optionName2, Runnable i2, String optionName3, Runnable i3, String optionName4, Runnable i4) {
 	DialogOption option1 = new DialogOption(optionName, i);
 	DialogOption option2 = new DialogOption(optionName2, i2);
 	DialogOption option3 = new DialogOption(optionName3, i3);
 	DialogOption option4 = new DialogOption(optionName4, i4);
-	pages.add(new OptionPage("Choose an option", option1, option2, option3, option4));
+	pages.add(new OptionPage("Choose an Option", option1, option2, option3, option4));
 	return this;
     }
 
     /**
-     * 
-     * @param optionName
-     * @param i
-     * @param optionName2
-     * @param i2
-     * @param optionName3
-     * @param i3
-     * @param optionName4
-     * @param i4
-     * @param optionName5
-     * @param i5
+     * Displays 5 options with 5 actions.
      */
     public Dialog options(String optionName, Runnable i, String optionName2, Runnable i2, String optionName3, Runnable i3, String optionName4, Runnable i4, String optionName5, Runnable i5) {
 	DialogOption option1 = new DialogOption(optionName, i);
@@ -112,7 +87,7 @@ public class Dialog implements FacialExpressions {
 	DialogOption option3 = new DialogOption(optionName3, i3);
 	DialogOption option4 = new DialogOption(optionName4, i4);
 	DialogOption option5 = new DialogOption(optionName5, i5);
-	pages.add(new OptionPage("Choose an option", option1, option2, option3, option4, option5));
+	pages.add(new OptionPage("Choose an Option", option1, option2, option3, option4, option5));
 	return this;
     }
 
@@ -121,9 +96,37 @@ public class Dialog implements FacialExpressions {
      * 
      * @param the
      *            text to display on the page
+     * @return a chain of this instance
      */
     public Dialog info(String text) {
 	pages.add(new InformationPage(text));
+	return this;
+    }
+
+    /**
+     * Removes the last {@code Page} queued to this {@code Dialog} if the
+     * specified {@code predicate} does not return true in its
+     * {@link Predicate#test(Object)} function.
+     * 
+     * @param predicate
+     *            the predicate to test
+     * @return a chain of this instance
+     */
+    public Dialog when(Predicate<DialogTransactor> predicate) {
+	if (!predicate.test(transactor))
+	    pages.pollLast();
+	return this;
+    }
+
+    /**
+     * Writes an action to the last {@code Page} written to this {@code Dialog}.
+     * 
+     * @param consumer
+     *            the action to execute when the {@code Page} is opened.
+     * @return a chain of this instance
+     */
+    public Dialog then(Consumer<DialogTransactor> consumer) {
+	pages.peekLast().action = () -> consumer.accept(transactor);
 	return this;
     }
 
@@ -133,6 +136,7 @@ public class Dialog implements FacialExpressions {
      * 
      * @param runnables
      *            the actions to execute when the {@code Page} is opened.
+     * @return a chain of this instance
      */
     public Dialog then(Runnable... runnables) {
 	pages.peekLast().action = () -> {
@@ -155,6 +159,7 @@ public class Dialog implements FacialExpressions {
      * 
      * @param name
      *            the name that is spoken
+     * @return a chain of this instance
      */
     public Dialog player(String text) {
 	return this.player(CALM_TALK, text);
@@ -168,6 +173,7 @@ public class Dialog implements FacialExpressions {
      *            the expression id value of the player speaking
      * @param name
      *            the name that is spoken
+     * @return a chain of this instance
      */
     public Dialog player(int expression, String text) {
 	Page page = new Page(text);
@@ -175,6 +181,41 @@ public class Dialog implements FacialExpressions {
 	page.expression = expression;
 	pages.add(page);
 	return this;
+    }
+
+    /**
+     * Selects the entityOption from an {@code OptionPage} and executes the
+     * action within the entityOption.
+     * 
+     * @param index
+     *            the index of the entityOption to select
+     * 
+     * @throws UnsupportedOperationException
+     *             if an {@code OptionPage} is not the current page or if the
+     *             specified index of the entityOption is not available
+     * @return a chain of this instance
+     */
+    public Dialog selectOption(int index) {
+	Page last = pages.peekLast();
+	if (!(last instanceof OptionPage))
+	    throw new UnsupportedOperationException("The page selected is not an OptionPage");
+	OptionPage page = (OptionPage) last;
+	if (index >= page.options.length)
+	    throw new UnsupportedOperationException("The Option on the page does not exist: " + index);
+	page.options[index].action.run();
+	if (pages.isEmpty()) {
+	    finish();
+	    transactor.exitDialog();
+	    return null;
+	}
+	return this;
+    }
+
+    /**
+     * Starts this {@code Dialog}.
+     */
+    public void start() {
+	transactor.initializeDialog(this);
     }
 
     /**
@@ -190,6 +231,7 @@ public class Dialog implements FacialExpressions {
      */
     public Page continueDialog() {
 	if (pages.isEmpty()) {
+	    finish();
 	    transactor.exitDialog();
 	    return null;
 	}
@@ -208,29 +250,10 @@ public class Dialog implements FacialExpressions {
     }
 
     /**
-     * Selects the option from an {@code OptionPage} and executes the action
-     * within the option.
-     * 
-     * @param index
-     *            the index of the option to select
-     * 
-     * @throws UnsupportedOperationException
-     *             if an {@code OptionPage} is not the current page or if the
-     *             specified index of the option is not available
+     * Finalizes anything with this {@code Dialog}.
      */
-    public Dialog selectOption(int index) {
-	Page last = pages.peekLast();
-	if (!(last instanceof OptionPage))
-	    throw new UnsupportedOperationException("The page selected is not an OptionPage");
-	OptionPage page = (OptionPage) last;
-	if (index >= page.options.length)
-	    throw new UnsupportedOperationException("The option on the page does not exist");
-	page.options[index].action.run();
-	if (pages.isEmpty()) {
-	    transactor.exitDialog();
-	    return null;
-	}
-	return this;
+    public final void finish() {
+	this.pages.clear();
     }
 
 }

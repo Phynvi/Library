@@ -5,9 +5,9 @@ import java.util.Map.Entry;
 
 import util.yaml.ConfigSection;
 import util.yaml.YMLSerializable;
-import container.Item;
 import container.Container;
 import container.Containers;
+import container.Item;
 import entity.Entity;
 import entity.actor.ActionQueue;
 import entity.actor.Actor;
@@ -25,13 +25,13 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
      * The {@code attachments} map is used to attach any {@code YMLSerializable}
      * values to this {@code Persona}.
      */
-    protected HashMap<String, YMLSerializable> attachments = new HashMap<>();
+    private HashMap<String, YMLSerializable> attachments = new HashMap<>();
 
     /**
      * The {@code config} variable is used to store any configurations to this
      * {@code Persona} that can be serialized.
      */
-    protected ConfigSection config;
+    public ConfigSection config = new ConfigSection();
 
     /**
      * This method must be set to true if this {@code Persona} is active within
@@ -39,22 +39,13 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
      */
     public boolean active;
 
-    private Container<Item> inventory, equipment;
-    private final PersonaOption[] options;
+    public final Container<Item> inventory = new Container<>(Containers.AVAILABLE_STACK, 28, 1, Integer.MAX_VALUE);
+    public final Container<Item> equipment = new Container<>(Containers.AVAILABLE_STACK, 14, 1, Integer.MAX_VALUE);
 
     /**
-     * Constructs a new {@code Persona} to be created at the specified
-     * {@code Location}.
-     * 
-     * @param location
-     *            the location to create the {@code Persona} at
+     * Constructs a new {@code Persona} to be created.
      */
-    public Persona(Location location) {
-	super.setLocation(location);
-	this.inventory = new Container<>(Containers.AVAILABLE_STACK, 28, 1, Integer.MAX_VALUE);
-	this.config = new ConfigSection();
-	this.options = new PersonaOption[5];
-    }
+    public Persona() {}
 
     /**
      * This registers the given serializable object with this Persona. If the
@@ -94,39 +85,13 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
 	return false;
     }
 
-    public ConfigSection getConfig() {
-	return config;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see entity.Interactable#options()
-     */
-    public PersonaOption[] options() {
-	return options;
-    }
-
     /*
      * (non-Javadoc)
      * 
      * @see entity.Interactable#getName()
      */
     public String getName() {
-	return this.config.getString("name");
-    }
-
-    public Container<Item> getEquipment() {
-	return equipment;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see entity.actor.Actor#getContainer()
-     */
-    public Container<Item> getInventory() {
-	return inventory;
+	return this.config.getString("name", "N/A");
     }
 
     /*

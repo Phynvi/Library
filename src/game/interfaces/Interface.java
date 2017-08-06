@@ -21,7 +21,7 @@ public abstract class Interface extends Window {
      * neither the parent nor the child interface ID, it is not an interface at
      * all. It has a unique ID for each position inside the parent.
      */
-    protected short childPos;
+    protected short position;
 
     /**
      * Constructs a new {@code Interface}.
@@ -31,19 +31,19 @@ public abstract class Interface extends Window {
      * @param parent
      *            the parenting {@code Window} this {@code Interface} is placed
      *            on
-     * @param childPos
+     * @param position
      *            the position of this {@code Interface}
      * @param clickable
      *            the flag to check if this {@code Interface} can be clicked
      */
-    public Interface(PaneHolder p, Window parent, int childPos, boolean clickable) {
+    public Interface(PaneHolder p, Window parent, int position, boolean clickable) {
 	super(p);
 	this.parent = parent;
 	this.clickable = clickable;
 
-	if (childPos > 0xFFFF)
-	    throw new IllegalArgumentException("Bad childPos " + childPos);
-	this.childPos = (short) childPos;
+	if (position > 0xFFFF)
+	    throw new IllegalArgumentException("Bad position " + position);
+	this.position = (short) position;
     }
 
     /**
@@ -105,6 +105,18 @@ public abstract class Interface extends Window {
      */
     public Window getParent() {
 	return parent;
+    }
+
+    public final void open() {
+	this.holder.getGamePane().open(this);
+    }
+
+    public final void close() {
+	this.holder.getGamePane().close(this);
+    }
+
+    public void setString(int child, String string) {
+	this.holder.setString(this.getChildId(), child, string);
     }
 
     /*
