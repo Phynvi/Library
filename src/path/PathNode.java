@@ -8,23 +8,23 @@ import java.awt.Point;
  */
 public class PathNode {
 
-    public Point point;
+	public Point point;
 
-    /**
-     * 
-     * @param x
-     * @param y
-     */
-    public PathNode(int x, int y) {
-	this(new Point(x, y));
-    }
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public PathNode(int x, int y) {
+		this(new Point(x, y));
+	}
 
-    /**
-     * 
-     * @param point
-     */
-    public PathNode(Point point) {
-	this.point = point;
-    }
+	/**
+	 * 
+	 * @param point
+	 */
+	public PathNode(Point point) {
+		this.point = point;
+	}
 
 }

@@ -11,28 +11,26 @@ package entity.actor;
  */
 public enum ActionState {
 
-    /**
-     * The starting cycle of an {@code Action}, which is the beginning state of
-     * the {@code Action}.
-     */
-    START,
+	/**
+	 * The starting cycle of an {@code Action}, which is the beginning state of the {@code Action}.
+	 */
+	START,
 
-    /**
-     * The state of an {@code Action} where it is just "running through" or
-     * "cycling through" the {@code Action}.
-     */
-    RUNNING,
+	/**
+	 * The state of an {@code Action} where it is just "running through" or "cycling through" the
+	 * {@code Action}.
+	 */
+	RUNNING,
 
-    /**
-     * The finishing state of an {@code Action} that is called when the
-     * {@code Action} is "finishing up" or finalizing things.
-     */
-    FINISH,
+	/**
+	 * The finishing state of an {@code Action} that is called when the {@code Action} is "finishing
+	 * up" or finalizing things.
+	 */
+	FINISH,
 
-    /**
-     * The state of an {@code Action} where it has been cancelled by an
-     * {@code ActionQueue}.
-     */
-    CANCEL;
+	/**
+	 * The state of an {@code Action} where it has been cancelled by an {@code ActionQueue}.
+	 */
+	CANCEL;
 
 }

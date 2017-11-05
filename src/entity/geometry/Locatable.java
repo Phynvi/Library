@@ -1,8 +1,7 @@
 package entity.geometry;
 
 /**
- * Represents a type of Object that can be locatable by a specific
- * {@code Location}.
+ * Represents a type of Object that can be locatable by a specific {@code Location}.
  * 
  * @author Albert Beaupre
  *
@@ -10,17 +9,17 @@ package entity.geometry;
  */
 public interface Locatable {
 
-    /**
-     * Returns the {@code Location} of this {@code locatable} object.
-     * 
-     * @return the {@code Location}
-     */
-    public Location getLocation();
+	/**
+	 * Returns the {@code Location} of this {@code locatable} object.
+	 * 
+	 * @return the {@code Location}
+	 */
+	public Location getLocation();
 
-    /**
-     * 
-     * @param location
-     */
-    public void setLocation(Location location);
+	/**
+	 * 
+	 * @param location
+	 */
+	public void setLocation(Location location);
 
 }

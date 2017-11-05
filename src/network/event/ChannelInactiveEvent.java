@@ -5,14 +5,14 @@ import event.Event;
 
 public class ChannelInactiveEvent extends Event {
 
-    private final ChannelHandlerContext context;
+	private final ChannelHandlerContext context;
 
-    public ChannelInactiveEvent(ChannelHandlerContext context) {
-	this.context = context;
-    }
+	public ChannelInactiveEvent(ChannelHandlerContext context) {
+		this.context = context;
+	}
 
-    public ChannelHandlerContext getContext() {
-	return context;
-    }
+	public ChannelHandlerContext getContext() {
+		return context;
+	}
 
 }
