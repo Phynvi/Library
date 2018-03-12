@@ -65,15 +65,13 @@ public abstract class Interface extends Window {
 	 * Opens this interface, but does not notify the player's windows. Overriding this method would
 	 * be useful if actions need to be taken when this {@code Interface} is being opened.
 	 */
-	public void onOpen() {
-	}
+	public void onOpen() {}
 
 	/**
 	 * Closes this interface, but does not notify the player's windows. Overriding this method would
 	 * be useful if actions need to be taken when this {@code Interface} is being closed.
 	 */
-	public void onClose() {
-	}
+	public void onClose() {}
 
 	/**
 	 * Returns true if this {@code Interface} is open o within the {@code PaneSet} of the

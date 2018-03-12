@@ -7,6 +7,11 @@ package entity.geometry.map;
  * @author Albert Beaupre
  */
 public class Chunk {
+	public static final int FLAG_BRIDGE = 0x2;
+	public static final int FLAG_CLIP = 0x1;
+	public static final int FLAG_ROOF = 0x4;
+	public static final int FLAG_UNKNOWN = 0x8;
+	public static final int FLAG_UNKNOWN2 = 0x10;
 
 	private boolean loaded = false;
 	private int cacheX;

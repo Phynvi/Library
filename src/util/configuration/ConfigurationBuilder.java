@@ -1,7 +1,6 @@
 package util.configuration;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 
 /**
  * 
@@ -9,7 +8,7 @@ import java.util.HashMap;
  */
 public final class ConfigurationBuilder {
 
-	private HashMap<String, ConfigSection> configurables;
+	private ConfigSection configurables;
 	protected ConfigType type;
 
 	private ConfigSection currentSection;
@@ -19,7 +18,7 @@ public final class ConfigurationBuilder {
 	 * as a new instance.
 	 */
 	private ConfigurationBuilder() {
-		this.configurables = new HashMap<>();
+		this.configurables = new ConfigSection();
 	}
 
 	/**
@@ -69,7 +68,7 @@ public final class ConfigurationBuilder {
 	 *           the object to configure
 	 * @return this current {@code ConfigurationBuilder} instance for chaining
 	 */
-	public ConfigurationBuilder configureObjectToSection(String sectionKey, Object object) {
+	public ConfigurationBuilder configureObjectToSection(Object sectionKey, Object object) {
 		section(sectionKey);
 		for (Field field : object.getClass().getFields()) {
 			if (field.isAnnotationPresent(Configurable.class)) {

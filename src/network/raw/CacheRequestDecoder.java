@@ -46,23 +46,23 @@ public class CacheRequestDecoder extends ByteToMessageDecoder {
 			final int file = in.readShort() & 0xFFFF;
 
 			switch (opcode) {
-			case 1:
-			case 0:
-				Core.submitRegularTask(() -> ctx.writeAndFlush(handler.createCacheResponse(idx, file, opcode)));
-				break;
-			case 2: // The client is connected
-				break;
-			case 3: // The client is logged out
-				// TODO create a type of log out event alongside the
-				// ChannelUnregistered/ChannelInactive event
-				break;
-			case 4: // A new encryption byte is being used
-				break;
-			case 6: // Connection is being initiated
-				break;
-			case 7: // Connection should be closed
-				// ctx.close();
-				break;
+				case 1:
+				case 0:
+					Core.submitRegularTask(() -> ctx.writeAndFlush(handler.createCacheResponse(idx, file, opcode)));
+					break;
+				case 2: // The client is connected
+					break;
+				case 3: // The client is logged out
+					// TODO create a type of log out event alongside the
+					// ChannelUnregistered/ChannelInactive event
+					break;
+				case 4: // A new encryption byte is being used
+					break;
+				case 6: // Connection is being initiated
+					break;
+				case 7: // Connection should be closed
+					// ctx.close();
+					break;
 			}
 		}
 	}

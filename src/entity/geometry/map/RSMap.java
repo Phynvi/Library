@@ -1,6 +1,5 @@
 package entity.geometry.map;
 
-import infrastructure.Attachments;
 import java.util.HashSet;
 import org.apache.commons.collections4.map.MultiKeyMap;
 import entity.Entity;
@@ -9,6 +8,7 @@ import entity.geometry.Point3D;
 import entity.geometry.Shape3D;
 import event.EventListener;
 import event.EventMethod;
+import infrastructure.GlobalAttachments;
 
 /**
  * 
@@ -62,7 +62,7 @@ public abstract class RSMap extends AreaManager implements EventListener {
 			throw new IllegalArgumentException("Maps must be a multiple of chunk size.. given length: " + width + ", width: " + height);
 		this.chunks = new Chunk[width >> CHUNK_BITS][][];
 
-		Attachments.getEventManager().registerEventListener(this);
+		GlobalAttachments.getEventManager().registerEventListener(this);
 	}
 
 	@EventMethod
@@ -81,8 +81,7 @@ public abstract class RSMap extends AreaManager implements EventListener {
 				fromSet = new HashSet<>();
 			fromSet.remove(entity);
 			this.entities.put(entity.getClass(), event.previousLocation, fromSet);
-		} else
-			entity.create();
+		} else entity.create();
 		HashSet<Entity> toSet = this.entities.get(entity.getClass(), event.currentLocation);
 		if (toSet == null)
 			toSet = new HashSet<>();
@@ -151,8 +150,7 @@ public abstract class RSMap extends AreaManager implements EventListener {
 				this.chunks[chunkX - this.offset.x] = new Chunk[height >> CHUNK_BITS][];
 			if (this.chunks[chunkX - this.offset.x][chunkY - this.offset.y] == null)
 				this.chunks[chunkX - this.offset.x][chunkY - this.offset.y] = new Chunk[4];
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 	}
 
 	/**

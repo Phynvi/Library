@@ -90,8 +90,7 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 					if (Core.debugging)
 						LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
 				}
-			} else {
-			}
+			} else {}
 		}
 	}
 }

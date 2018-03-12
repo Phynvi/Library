@@ -66,7 +66,7 @@ public abstract class Tick {
 		this.period = period;
 		if (queued)
 			return;
-		Attachments.getTicker().queue(this);
+		GlobalAttachments.getTicker().queue(this);
 		queued = true;
 		cancelled = false;
 	}

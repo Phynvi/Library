@@ -1,8 +1,8 @@
 package entity.actor.model;
 
-import infrastructure.Attachments;
 import java.util.TreeSet;
 import entity.actor.Actor;
+import infrastructure.GlobalAttachments;
 
 /**
  * @author Albert Beaupre
@@ -56,7 +56,7 @@ public abstract class Model {
 		maskData |= mask.data();
 		currentMasks.add(mask);
 
-		Attachments.getActorUpdator().setForUpdating(actor);
+		GlobalAttachments.getActorUpdator().setForUpdating(actor);
 	}
 
 	/**

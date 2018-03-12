@@ -25,8 +25,7 @@ public abstract class Entity implements Locatable {
 	/**
 	 * Constructs a new {@code Entity} at the specified {@code Location}.
 	 */
-	public Entity() {
-	}
+	public Entity() {}
 
 	/**
 	 * Sets the location of this {@code Entity} to the specified {@code Location}.

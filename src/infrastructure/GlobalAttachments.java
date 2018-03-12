@@ -1,11 +1,13 @@
 package infrastructure;
 
-import infrastructure.threads.ActorUpdateThread;
-import infrastructure.threads.TickThread;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import cache.data.ItemData;
 import event.EventManager;
+import infrastructure.threads.ActorUpdateThread;
+import infrastructure.threads.TickThread;
+import io.netty.util.AttributeKey;
 
 /**
  * The {@code Attachments} class is meant to hold a various amount of attachments that help the
@@ -13,13 +15,16 @@ import event.EventManager;
  * 
  * @author Albert Beaupre
  */
-public class Attachments {
+public class GlobalAttachments {
+
+	public static AttributeKey<World> WORLD_KEY = AttributeKey.valueOf("world");
 
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); // This is used for any sort of console logging
 
-	private static TickThread TICKER; // This is an attached TickThread that will globally handle Ticks
-	private static EventManager EVENT_MANAGER; // This is an attached EventManager that will globally handle Events
+	private static TickThread TICKER;
+	private static EventManager EVENT_MANAGER;
 	private static ActorUpdateThread UPDATE_THREAD;
+	private static ItemData ITEM_DATA;
 
 	/**
 	 * Attaches the specified {@code ActorUpdateThread} to this {@code Attachments} class.
@@ -28,11 +33,11 @@ public class Attachments {
 	 *           the {@code ActorUpdateThread} to attach
 	 */
 	public static void attachActorUpdator(ActorUpdateThread updateThread) {
-		if (Attachments.UPDATE_THREAD != null) {
+		if (GlobalAttachments.UPDATE_THREAD != null) {
 			LOGGER.warning("An ActorUpdateThread has already been attached");
 			return;
 		}
-		Attachments.UPDATE_THREAD = Objects.requireNonNull(updateThread, "The ActorUpdateThread cannot be attached as NULL");
+		GlobalAttachments.UPDATE_THREAD = Objects.requireNonNull(updateThread, "The ActorUpdateThread cannot be attached as NULL");
 		Core.scheduleFixedTask(UPDATE_THREAD, 0, 30, TimeUnit.MILLISECONDS);
 		LOGGER.info("An ActorUpdateThread has successfully been attached");
 	}
@@ -44,9 +49,9 @@ public class Attachments {
 	 * @return the {@code ActorUpdateThread} attached to this class
 	 */
 	public static ActorUpdateThread getActorUpdator() {
-		if (Attachments.UPDATE_THREAD == null)
+		if (GlobalAttachments.UPDATE_THREAD == null)
 			throw new NullPointerException("There is not an ActorUpdateThread attached");
-		return Attachments.UPDATE_THREAD;
+		return GlobalAttachments.UPDATE_THREAD;
 	}
 
 	/**
@@ -56,11 +61,11 @@ public class Attachments {
 	 *           the ticker to attach
 	 */
 	public static void attachTicker(TickThread tickThread) {
-		if (Attachments.TICKER != null) {
+		if (GlobalAttachments.TICKER != null) {
 			LOGGER.warning("A TickThread has already been attached");
 			return;
 		}
-		Attachments.TICKER = Objects.requireNonNull(tickThread, "The TickThread cannot be attached as NULL");
+		GlobalAttachments.TICKER = Objects.requireNonNull(tickThread, "The TickThread cannot be attached as NULL");
 		Core.scheduleFixedTask(TICKER, 0, 1, TimeUnit.MILLISECONDS);
 		LOGGER.info("A TickThread has successfully been attached");
 	}
@@ -75,9 +80,9 @@ public class Attachments {
 	 * @return the {@code TickThread} that has been attached
 	 */
 	public static TickThread getTicker() {
-		if (Attachments.TICKER == null)
+		if (GlobalAttachments.TICKER == null)
 			throw new NullPointerException("There is not a TickThread attached");
-		return Attachments.TICKER;
+		return GlobalAttachments.TICKER;
 	}
 
 	/**
@@ -88,11 +93,11 @@ public class Attachments {
 	 *           the {@code EventMaanger} to attach
 	 */
 	public static void attachEventManager(EventManager eventManager) {
-		if (Attachments.EVENT_MANAGER != null) {
+		if (GlobalAttachments.EVENT_MANAGER != null) {
 			LOGGER.warning("An EventManager has already been attached");
 			return;
 		}
-		Attachments.EVENT_MANAGER = Objects.requireNonNull(eventManager, "The EventManager cannot be attached as NULL");
+		GlobalAttachments.EVENT_MANAGER = Objects.requireNonNull(eventManager, "The EventManager cannot be attached as NULL");
 		LOGGER.info("An EventManager has successfully been attached");
 	}
 
@@ -106,8 +111,38 @@ public class Attachments {
 	 * @return the {@code EventManager} that has been attached
 	 */
 	public static EventManager getEventManager() {
-		if (Attachments.EVENT_MANAGER == null)
+		if (GlobalAttachments.EVENT_MANAGER == null)
 			throw new NullPointerException("There is not an EventManager attached");
-		return Attachments.EVENT_MANAGER;
+		return GlobalAttachments.EVENT_MANAGER;
+	}
+
+	/**
+	 * Attaches the specified {@code data} to this {@code Attachments} class to keep a global field
+	 * of item information to be used around the server.
+	 * 
+	 * @param data
+	 *           the information to attach
+	 */
+	public static void attachItemData(ItemData data) {
+		if (GlobalAttachments.ITEM_DATA != null) {
+			LOGGER.warning("Item information has already been attached");
+			return;
+		}
+		GlobalAttachments.ITEM_DATA = Objects.requireNonNull(data, "The Item information cannot equal NULL");
+		LOGGER.info("Item information has been successfully attached");
+	}
+
+	/**
+	 * Returns the {@code ItemData} attached to this {@code Attachments} class.
+	 * 
+	 * @throws NullPointerException
+	 *            if the {@code ItemData} has not been attached
+	 * 
+	 * @return the {@code ItemData} that has been attached
+	 */
+	public static ItemData getItemData() {
+		if (GlobalAttachments.ITEM_DATA == null)
+			throw new NullPointerException("There is not any Item information attached");
+		return GlobalAttachments.ITEM_DATA;
 	}
 }

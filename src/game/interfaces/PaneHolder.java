@@ -1,5 +1,8 @@
 package game.interfaces;
 
+import container.Container;
+import container.Item;
+
 /**
  * 
  * @author Albert Beaupre
@@ -84,4 +87,12 @@ public interface PaneHolder {
 	 *           the flag to set as visible or not
 	 */
 	public abstract void setComponentVisible(int interfaceId, int componentId, boolean visible);
+
+	/**
+	 * 
+	 * @param interfaceId
+	 * @param split
+	 * @param container
+	 */
+	public abstract void sendItems(int interfaceId, boolean split, Container<Item> container);
 }

@@ -63,14 +63,12 @@ public abstract class Window {
 	/**
 	 * This method is called when this {@code Window} is opened.
 	 */
-	public void onOpen() {
-	}
+	public void onOpen() {}
 
 	/**
 	 * This method is called when this {@code Window} is closed.
 	 */
-	public void onClose() {
-	}
+	public void onClose() {}
 
 	/**
 	 * Returns true if this {@code Window} is opened; returns false otherwise

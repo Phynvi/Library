@@ -1,7 +1,10 @@
 package infrastructure.threads;
 
+import java.util.logging.Logger;
 import infrastructure.Core;
 import infrastructure.CoreThread;
+import infrastructure.GlobalAttachments;
+import infrastructure.World;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,7 +12,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import java.util.logging.Logger;
 import network.NetworkHandler;
 import network.packet.encoding.OutgoingPacketEncoder;
 import network.raw.handshake.HandshakeDecoder;
@@ -17,7 +19,7 @@ import network.raw.handshake.HandshakeDecoder;
 /**
  * @author Albert Beaupre
  */
-public final class ServerThread extends CoreThread {
+public class ServerThread extends CoreThread {
 
 	private final Logger logger = Logger.getLogger(getClass().getName());
 
@@ -28,14 +30,17 @@ public final class ServerThread extends CoreThread {
 	private final int port;
 	private boolean running;
 
+	private final World world;
+
 	/**
 	 * Constructs a new {@code ServerThread} from the specified {@code port}.
 	 * 
 	 * @param port
 	 *           the port of this server
 	 */
-	public ServerThread(int port) {
+	public ServerThread(World world, int port) {
 		super("Server Thread", Thread.NORM_PRIORITY, false);
+		this.world = world;
 		this.port = port;
 		this.bootstrap = new ServerBootstrap();
 		this.bossGroup = new NioEventLoopGroup();
@@ -60,12 +65,12 @@ public final class ServerThread extends CoreThread {
 					ch.pipeline().addLast("encoder", new OutgoingPacketEncoder());
 					ch.pipeline().addLast("decoder", new HandshakeDecoder());
 					ch.pipeline().addLast("handler", new NetworkHandler());
+					ch.attr(GlobalAttachments.WORLD_KEY).set(world);
 				}
 			}).option(ChannelOption.SO_KEEPALIVE, true).option(ChannelOption.TCP_NODELAY, true);
 			ChannelFuture f = bootstrap.bind(port).sync();
 
-			while (!f.isSuccess()) {
-			} // wait until it is successfull
+			while (!f.isSuccess()) {} // wait until it is successfull
 
 			running = f.isSuccess();
 
@@ -80,5 +85,9 @@ public final class ServerThread extends CoreThread {
 			workerGroup.shutdownGracefully();
 			bossGroup.shutdownGracefully();
 		}
+	}
+
+	public World getWorld() {
+		return world;
 	}
 }

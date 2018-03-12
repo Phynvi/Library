@@ -1,11 +1,11 @@
 package entity.geometry.map;
 
-import infrastructure.Attachments;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import entity.geometry.Point3D;
 import entity.geometry.Shape3D;
+import infrastructure.GlobalAttachments;
 
 /**
  * The {@code AreaManager} holds
@@ -34,7 +34,7 @@ public class AreaManager implements Shape3D {
 	public void combine(Area area) {
 		this.combinedArea.add(area);
 
-		Attachments.getEventManager().registerEventListener(area);
+		GlobalAttachments.getEventManager().registerEventListener(area);
 	}
 
 	/*

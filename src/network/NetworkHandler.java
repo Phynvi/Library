@@ -62,7 +62,6 @@ public class NetworkHandler extends ChannelInboundHandlerAdapter {
 	 * @see io.netty.channel.ChannelInboundHandlerAdapter#channelReadComplete(io.
 	 * netty.channel.ChannelHandlerContext)
 	 */
-	public void channelReadComplete(ChannelHandlerContext ctx) {
-	}
+	public void channelReadComplete(ChannelHandlerContext ctx) {}
 
 }

@@ -44,8 +44,7 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
 	/**
 	 * Constructs a new {@code Persona} to be created.
 	 */
-	public Persona() {
-	}
+	public Persona() {}
 
 	/**
 	 * This registers the given serializable object with this Persona. If the config has already been

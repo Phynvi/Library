@@ -1,10 +1,8 @@
 package infrastructure.threads;
 
-import infrastructure.Attachments;
+import java.util.concurrent.CopyOnWriteArrayList;
 import infrastructure.CoreThread;
 import infrastructure.Tick;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Logger;
 
 /**
  * The {@code TickThread} class is used to handle any {@code Tick}. If a {@code Tick} has been
@@ -13,7 +11,7 @@ import java.util.logging.Logger;
  * until {@link Tick#queue(long)} has been called again.
  * 
  * <p>
- * If you wish to use a TickThread separated from the {@link infrastructure.Attachments} class, then
+ * If you wish to use a TickThread separated from the {@link infrastructure.GlobalAttachments} class, then
  * you must do something like this:
  * 
  * <pre>
@@ -30,8 +28,6 @@ import java.util.logging.Logger;
  * @see infrastructure.Tick
  */
 public final class TickThread extends CoreThread {
-
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private CopyOnWriteArrayList<Tick> list; // This list is filled by any
 															// incoming ticks to be executed
@@ -53,10 +49,6 @@ public final class TickThread extends CoreThread {
 	 *           the {@code Tick} to be queued to execute
 	 */
 	public void queue(Tick tickable) {
-		if (Attachments.getTicker() == null) {
-			LOGGER.severe("There is not a ticker attached to queue this Tick: " + tickable);
-			return;
-		}
 		tickable.startTicking();
 		this.list.add(tickable);
 	}
@@ -68,6 +60,7 @@ public final class TickThread extends CoreThread {
 	public void run() {
 		try {
 			if (list.size() > 0) {
+
 				for (int i = 0; i < list.size(); i++) {
 					Tick tickable = list.get(i);
 					if (tickable == null)

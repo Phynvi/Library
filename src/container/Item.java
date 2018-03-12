@@ -1,5 +1,8 @@
 package container;
 
+import infrastructure.GlobalAttachments;
+import util.configuration.ConfigSection;
+
 /**
  * Represents an item with a specific id used within a {@link container.Container}. A {@code Item}
  * can have a modifiable amount, but not a modifiable id.
@@ -10,6 +13,8 @@ public class Item {
 
 	private final short id; // This value should not be modifiable
 	private int amount;
+
+	private ConfigSection attributes;
 
 	/**
 	 * Constructs a new {@code Item} from the specified arguments.
@@ -53,6 +58,27 @@ public class Item {
 	}
 
 	/**
+	 * Sets an attribute to this {@code Item} with the specified {@code attributeName}.
+	 * 
+	 * @param attributeName
+	 *           the name of the attribute
+	 * @param value
+	 *           the value of the attribute
+	 */
+	public void attribute(String attributeName, Object value) {
+		if (attributes == null)
+			attributes = new ConfigSection();
+		if (attributes.containsKey(attributeName)) {
+			if (value == null)
+				attributes.remove(attributeName);
+		} else {
+			attributes.put(attributeName, value);
+		}
+		if (attributes.isEmpty())
+			attributes = null;
+	}
+
+	/**
 	 * Returns a new {@code Item} with the same information but with amount of the item decreased by
 	 * the given argument.
 	 * 
@@ -89,6 +115,6 @@ public class Item {
 	}
 
 	public boolean isStackable() {
-		return false;
+		return GlobalAttachments.getItemData().isStackable(id) && attributes == null;
 	}
 }

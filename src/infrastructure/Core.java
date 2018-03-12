@@ -1,7 +1,5 @@
 package infrastructure;
 
-import infrastructure.threads.ActorUpdateThread;
-import infrastructure.threads.TickThread;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -9,6 +7,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import event.EventManager;
+import infrastructure.threads.ActorUpdateThread;
+import infrastructure.threads.TickThread;
 
 /**
  * TheAJ has very good information on threads for a RuneScape Private ServerThread
@@ -35,9 +35,9 @@ public class Core {
 			/**
 			 * Attach all essential attachments
 			 */
-			Attachments.attachActorUpdator(new ActorUpdateThread());
-			Attachments.attachTicker(new TickThread());
-			Attachments.attachEventManager(new EventManager());
+			GlobalAttachments.attachActorUpdator(new ActorUpdateThread());
+			GlobalAttachments.attachTicker(new TickThread());
+			GlobalAttachments.attachEventManager(new EventManager());
 		} catch (Exception e) {
 			System.err.println("Error initializing Core...");
 			e.printStackTrace();

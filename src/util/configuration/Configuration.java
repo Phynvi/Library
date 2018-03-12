@@ -1,17 +1,16 @@
 package util.configuration;
 
-import java.util.HashMap;
-
 /**
  * The {@code Configuration} class is used to create configurable objects that can be written in a
  * specific format, which is based on the {@link Configuration#getType()} method.
  * 
  * @author Albert Beaupre
  */
+
 public class Configuration {
 
 	private final ConfigType type;
-	private final HashMap<String, ConfigSection> sections;
+	private final ConfigSection sections;
 
 	/**
 	 * Constructs a new {@code Configuration} with the specified {@code ConfigType} to use as writing
@@ -22,12 +21,12 @@ public class Configuration {
 	 * @param sections
 	 *           the objects that are configurable
 	 */
-	public Configuration(ConfigType type, HashMap<String, ConfigSection> sections) {
+	public Configuration(ConfigType type, ConfigSection sections) {
 		this.type = type;
 		if (sections != null) {
-			this.sections = new HashMap<>(sections);
+			this.sections = new ConfigSection(sections);
 		} else {
-			this.sections = new HashMap<>();
+			this.sections = new ConfigSection();
 		}
 	}
 
@@ -39,8 +38,8 @@ public class Configuration {
 	 *           the key associated with the section
 	 * @return the {@code ConfigSection} associated with the {@code key}; return null otherwise
 	 */
-	public ConfigSection getSection(String key) {
-		return sections.get(key);
+	public ConfigSection getSection(Object key) {
+		return (ConfigSection) sections.getUnderlyingSection("" + key);
 	}
 
 	/**
@@ -55,7 +54,7 @@ public class Configuration {
 	 * @return the data retrieved; return null otherwise
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T retrieveData(String sectionKey, String sectionLocation, Class<T> cast) {
+	public <T> T retrieveData(Object sectionKey, Object sectionLocation, Class<T> cast) {
 		return (T) getSection(sectionKey).get(sectionLocation);
 	}
 
@@ -74,7 +73,8 @@ public class Configuration {
 	 * 
 	 * @return the new map of configurable objects
 	 */
-	public HashMap<String, ConfigSection> getConfigurables() {
-		return new HashMap<>(sections);
+
+	public ConfigSection getConfigurables() {
+		return new ConfigSection(sections);
 	}
 }

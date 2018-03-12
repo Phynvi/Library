@@ -1,6 +1,6 @@
 package event;
 
-import infrastructure.Attachments;
+import infrastructure.GlobalAttachments;
 
 /**
  * The {@code Event} class represents an actual event occurring. Events are used to help organize
@@ -26,7 +26,7 @@ public class Event {
 
 	/**
 	 * Calls this {@code Event} for the {@code EventManager} within the
-	 * {@link infrastructure.Attachments} to have any {@code EventListener} listen for this
+	 * {@link infrastructure.GlobalAttachments} to have any {@code EventListener} listen for this
 	 * {@code Event}.
 	 * 
 	 * <p>
@@ -37,7 +37,7 @@ public class Event {
 	 * </pre>
 	 */
 	public void call() {
-		Attachments.getEventManager().callEvent(this);
+		GlobalAttachments.getEventManager().callEvent(this);
 	}
 
 	/**

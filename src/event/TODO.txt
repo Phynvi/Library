@@ -1,0 +1,27 @@
+1. Tasks in quests can be in relation to other task completion, meaning if you complete certain tasks, then the current task can be completed; otherwise it cannot.
+	-So, we have 'locked' tasks which do not have an activated EventListener until its required tasks are completed, then the task is 'unlocked'.
+	-Task relation can be numerical. So for example a woodcutting task can be #3 and firemaking task can be #4 and you cannot complete WoodMaster Task without task 3 and 4 being complete/
+	
+
+2. Task 'callbacks', which are actions executed when the task is completed.
+
+3. 
+
+
+
+___________________________________________________________________________________________________________________________________________________________________________________________________________
+
+You have a list which contains a set of 'tasks'. On creation of the quest or achievement, you can add to the set of tasks an 'EventListener' which listens for any events and flags if the task is complete.
+
+For example:
+
+Quest: Woodcutting Adventure (Tasks completed in any order)
+Task 1: Chop an oak tree -> Add Listener to listen for oak tree chopped, if it has been then flag this task complete
+Task 2: Set oak log on fire -> Add listener to listen for an oak log set on fire, if it has been then flag this task complete
+QUEST COMPLETE!
+
+Quest: Monster Slayer (Tasks must be completed chronologically)
+Task 1: Defeat man
+Task 2: Defeat women
+Task 3: Defeat monster (after task 1 and 2)
+QUEST COMPLETE!

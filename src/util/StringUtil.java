@@ -21,6 +21,7 @@ public class StringUtil {
 	}
 
 	/**
+	 * Wraps
 	 * 
 	 * @param lineWidth
 	 * @param wrapWords
@@ -38,8 +39,7 @@ public class StringUtil {
 				if (currentLine.length() + w.length() > lineWidth) {
 					builder.append('\n');
 					currentLine = "";
-				} else
-					currentLine += w;
+				} else currentLine += w;
 			}
 			return builder.toString().trim().split("\n");
 		} else {

@@ -9,7 +9,7 @@ import java.util.function.Predicate;
  * @author Albert Beaupre
  */
 @SuppressWarnings("unchecked")
-public final class ArrayUtility {
+public final class ArrayUtil {
 
 	/** A pseudorandom number generator **/
 	private static Random r = new Random();

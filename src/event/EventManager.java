@@ -1,9 +1,9 @@
 package event;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -82,13 +82,13 @@ public class EventManager {
 	/**
 	 * This map is used to store event listener methods based on their relevant event.
 	 */
-	private final HashMap<Class<? extends Event>, HashSet<EventExecutor>> eventExecutors;
+	private final ConcurrentHashMap<Class<? extends Event>, HashSet<EventExecutor>> eventExecutors;
 
 	/**
 	 * Constructs a new {@code EventManager} with no {@code EventListener} registered.
 	 */
 	public EventManager() {
-		this.eventExecutors = new HashMap<>();
+		this.eventExecutors = new ConcurrentHashMap<>();
 	}
 
 	/**

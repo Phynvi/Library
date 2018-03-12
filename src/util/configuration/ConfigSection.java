@@ -26,7 +26,7 @@ public class ConfigSection implements Map<String, Object> {
 	 * The map of <String, Object> contained in this section. This is the key-values of the map. Note
 	 * that the key cannot contain full stops ('.').
 	 */
-	private Map<String, Object> map;
+	protected Map<String, Object> map;
 
 	/**
 	 * Constructs a new {@code ConfigSection} with no values within the {@code Map}.
@@ -295,8 +295,7 @@ public class ConfigSection implements Map<String, Object> {
 				Map<String, Object> map = (Map<String, Object>) o;
 				return new ConfigSection(map);
 			}
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 		return fallback;
 	}
 
