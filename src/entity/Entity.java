@@ -118,6 +118,20 @@ public abstract class Entity implements Locatable {
 	}
 
 	/**
+	 * Returns the size in which the entity expands down the x-axis.
+	 * 
+	 * @return the x size
+	 */
+	public abstract int sizeX();
+
+	/**
+	 * Returns the size in which the entity expands down the y-axis.
+	 * 
+	 * @return the y size
+	 */
+	public abstract int sizeY();
+
+	/**
 	 * This method is called when this {@code Entity} is added to an {@code EntityList}. It is used
 	 * to initialize this {@code Entity}.
 	 * 

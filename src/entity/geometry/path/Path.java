@@ -61,4 +61,8 @@ public class Path {
 		return failed;
 	}
 
+	public boolean isEmpty() {
+		return directions.isEmpty();
+	}
+
 }
