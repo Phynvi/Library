@@ -2,6 +2,7 @@ bin/
 .classpath
 .project
 .settings/
-tests/
 dependencies/
 src/cache/
+tests/*
+tests/
