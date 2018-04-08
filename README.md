@@ -46,7 +46,7 @@ Here is a brief list of things to complete:
   - [ ] Region Management (Dynamic/Static Map Building)
   - [x] Flexible Tick System
   - [x] Event Listening/Managing
-  - [ ] Easy Mask/Update handling
+  - [X] Easy Mask/Update handling
   - [ ] Multiple Protocol Support
   - [ ] Easy packet reading/writing
 - [ ] Content Features
