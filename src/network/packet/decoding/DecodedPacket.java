@@ -16,11 +16,11 @@ public class DecodedPacket extends Packet {
 	 * Constructs a new {@code DecodedPacket} based on the specified arguments.
 	 * 
 	 * @param type
-	 *           the {@code PacketType} of this {@code DecodedPacket}
+	 *            the {@code PacketType} of this {@code DecodedPacket}
 	 * @param bytes
-	 *           the information in bytes of this {@code DecodedPacket}
+	 *            the information in bytes of this {@code DecodedPacket}
 	 * @param opcode
-	 *           the opcode of this {@code DecodedPacket}
+	 *            the opcode of this {@code DecodedPacket}
 	 */
 	public DecodedPacket(PacketType type, ByteBuf bytes, int opcode) {
 		super(type, bytes, opcode);

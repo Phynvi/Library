@@ -28,7 +28,7 @@ public interface ConnectionHolder {
 	 * Writes the specified {@code object} upstream to the client.
 	 * 
 	 * @param object
-	 *           the object to write
+	 *            the object to write
 	 */
 	public default void write(Object object) {
 		getConnection().write(object);

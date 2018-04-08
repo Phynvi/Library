@@ -36,13 +36,13 @@ public abstract class RawHandler {
 	 * information to the client with the specified {@code opcode} to correlate it to.
 	 * 
 	 * @throws NullPointerException
-	 *            if the sender is null
+	 *             if the sender is null
 	 * @throws UnsupportedOperationException
-	 *            if the opcode is less than 0
+	 *             if the opcode is less than 0
 	 * @param encoder
-	 *           the {@code PacketEncoder} to register
+	 *            the {@code PacketEncoder} to register
 	 * @param opcode
-	 *           the opcode to correlate the {@code PacketEncoder} to
+	 *            the opcode to correlate the {@code PacketEncoder} to
 	 */
 	public <C extends ConnectionHolder> void registerEncoder(PacketEncoder<C> encoder, int opcode) {
 		if (encoder == null)
@@ -53,17 +53,17 @@ public abstract class RawHandler {
 	}
 
 	/**
-	 * Registers the specified {@code PacketDecoder} to this {@code RawHandler} to handle for
-	 * processing with the specified {@code opcode} to correlate it to.
+	 * Registers the specified {@code PacketDecoder} to this {@code RawHandler} to handle for processing
+	 * with the specified {@code opcode} to correlate it to.
 	 * 
 	 * @throws NullPointerException
-	 *            if the processor is null
+	 *             if the processor is null
 	 * @throws UnsupportedOperationException
-	 *            if the opcode is less than 0
+	 *             if the opcode is less than 0
 	 * @param processor
-	 *           the {@code PacketDecoder} to register
+	 *            the {@code PacketDecoder} to register
 	 * @param opcode
-	 *           the opcode to correlate the {@code PacketDecoder} to
+	 *            the opcode to correlate the {@code PacketDecoder} to
 	 */
 	public <C extends ConnectionHolder> void registerDecoder(PacketDecoder<C> processor, int opcode) {
 		if (processor == null)
@@ -78,7 +78,7 @@ public abstract class RawHandler {
 	 * specified {@code opcode}.
 	 * 
 	 * @param opcode
-	 *           the opcode of the correlating {@code PacketDecoder}
+	 *            the opcode of the correlating {@code PacketDecoder}
 	 * @return the {@code PacketDecoder} if existing; return null otherwise
 	 */
 	public PacketDecoder<ConnectionHolder> getPacketDecoder(int opcode) {
@@ -90,7 +90,7 @@ public abstract class RawHandler {
 	 * specified {@code opcode}.
 	 * 
 	 * @param opcode
-	 *           the opcode of the correlating {@code PacketEncoder}
+	 *            the opcode of the correlating {@code PacketEncoder}
 	 * @return the {@code PacketEncoder} if existing; return null otherwise
 	 */
 	public PacketEncoder<ConnectionHolder> getPacketEncoder(int opcode) {
@@ -102,11 +102,11 @@ public abstract class RawHandler {
 	 * registered to this {@code RawHandler}; returns null otherwise.
 	 * 
 	 * @param holder
-	 *           the {@code ConnectionHolder} to retrieve the {@code EncodedPacket}
+	 *            the {@code ConnectionHolder} to retrieve the {@code EncodedPacket}
 	 * @param opcode
-	 *           the opcode of the packet
+	 *            the opcode of the packet
 	 * @param args
-	 *           the arguments to use to encode the packet
+	 *            the arguments to use to encode the packet
 	 * @return the {@code EncodedPacket}, if registered; returns null otherwise
 	 */
 	public <C extends ConnectionHolder> EncodedPacket getEncodedPacket(ConnectionHolder holder, int opcode, Object... args) {
@@ -114,21 +114,21 @@ public abstract class RawHandler {
 	}
 
 	/**
-	 * This method is called before this {@code RawHandler} is used to load any important variables
-	 * for this {@code RawHandler} to use.
+	 * This method is called before this {@code RawHandler} is used to load any important variables for
+	 * this {@code RawHandler} to use.
 	 */
 	public abstract void loadRawHandler();
 
 	/**
-	 * Creates a response to the cache request made by the client. The response <b>must</b> contain
-	 * the requested information, otherwise the client will not respond correctly.
+	 * Creates a response to the cache request made by the client. The response <b>must</b> contain the
+	 * requested information, otherwise the client will not respond correctly.
 	 * 
 	 * @param idx
-	 *           the index of the cache information to be sent
+	 *            the index of the cache information to be sent
 	 * @param file
-	 *           the file containing the information to be sent
+	 *            the file containing the information to be sent
 	 * @param opcode
-	 *           the priority opcode
+	 *            the priority opcode
 	 * @return the cache response in bytes wrapped by a {@code ByteBuf}
 	 */
 	public abstract ByteBuf createCacheResponse(int idx, int file, int opcode);
@@ -140,11 +140,11 @@ public abstract class RawHandler {
 	 * {@code ConnectionHolder}.
 	 * 
 	 * @param connection
-	 *           the connection trying to log in
+	 *            the connection trying to log in
 	 * @param in
-	 *           the bytes of information to use for creating the {@code ConnectionHolder}
+	 *            the bytes of information to use for creating the {@code ConnectionHolder}
 	 * @param state
-	 *           the state of login
+	 *            the state of login
 	 * @return the new {@code ConnectionHolder} that was created based on the arguments
 	 */
 	public abstract ConnectionHolder createConnectionHolder(Connection connection, ByteBuf in, int state);

@@ -19,9 +19,9 @@ public abstract class Pane extends Window {
 	 * Represents an interface for a single player.
 	 * 
 	 * @param p
-	 *           The player
+	 *            The player
 	 * @param childId
-	 *           The unique id for this interface, this is actually unique.
+	 *            The unique id for this interface, this is actually unique.
 	 */
 	public Pane(PaneHolder paneHolder, int childId) {
 		super(paneHolder);
@@ -32,7 +32,7 @@ public abstract class Pane extends Window {
 	 * Adds the given child to this Pane. The child then has open() called on it.
 	 * 
 	 * @param child
-	 *           the child to add and open
+	 *            the child to add and open
 	 * @return true if the child replaced a previously existing child
 	 */
 	public void open(Interface iface) {
@@ -91,11 +91,11 @@ public abstract class Pane extends Window {
 	}
 
 	/**
-	 * Removes the given child from this Pane. The child then has close() called on it. If the child
-	 * was not found, it is not closed.
+	 * Removes the given child from this Pane. The child then has close() called on it. If the child was
+	 * not found, it is not closed.
 	 * 
 	 * @param child
-	 *           The child to remove
+	 *            The child to remove
 	 * @return true if the child was removed and closed, else false.
 	 */
 	public void close(Interface iface) {
@@ -128,7 +128,7 @@ public abstract class Pane extends Window {
 	 * Returns true if the given interface is a direct child of this Pane.
 	 * 
 	 * @param child
-	 *           the child interface
+	 *            the child interface
 	 * @return true if it is a direct child, false if it is not
 	 */
 	public boolean isOpen(Interface iface) {
@@ -142,7 +142,7 @@ public abstract class Pane extends Window {
 	 * Fetches the interface for the given ID
 	 * 
 	 * @param id
-	 *           the interface id
+	 *            the interface id
 	 * @return the interface or null if not found.
 	 */
 	public Interface getInterface(int id) {
@@ -153,7 +153,7 @@ public abstract class Pane extends Window {
 	 * Fetches the given interface by type
 	 * 
 	 * @param type
-	 *           the type, may not be null
+	 *            the type, may not be null
 	 * @return the interface or null if not found
 	 */
 	@SuppressWarnings("unchecked")

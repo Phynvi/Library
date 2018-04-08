@@ -20,12 +20,12 @@ import util.configuration.ConfigSection;
 public class ModuleLoader {
 
 	/**
-	 * Retrieves a list of jar files from the specified {@code folder} and checks if they can be
-	 * loaded as a {@code Module}. If so, they are placed within a {@code Collection}. A
-	 * {@code Collection} of the modules loaded are then returned once the folder has been searched.
+	 * Retrieves a list of jar files from the specified {@code folder} and checks if they can be loaded
+	 * as a {@code Module}. If so, they are placed within a {@code Collection}. A {@code Collection} of
+	 * the modules loaded are then returned once the folder has been searched.
 	 * 
 	 * @param folder
-	 *           the folder to search for modules
+	 *            the folder to search for modules
 	 * @return a {@code Collection} of {@code Module} loaded from the {@code folder}
 	 */
 	public static Collection<Module> getModulesFromFolder(File folder) {
@@ -52,15 +52,14 @@ public class ModuleLoader {
 
 	/**
 	 * Checks the information within the specified {@code file} to see if it can be loaded as a
-	 * {@code Module}, and if it can't, then {@link IOException} will be thrown. If the {@code file}
-	 * can be loaded as a {@code Module}, then it will parse the file and return the parsed
-	 * {@code Module}.
+	 * {@code Module}, and if it can't, then {@link IOException} will be thrown. If the {@code file} can
+	 * be loaded as a {@code Module}, then it will parse the file and return the parsed {@code Module}.
 	 * 
 	 * @param file
-	 *           the file to load the {@code Module} from
+	 *            the file to load the {@code Module} from
 	 * @return the {@code Module} loaded, if successful; otherwise returns null
 	 * @throws Exception
-	 *            if an error occurs at any state of loading the module
+	 *             if an error occurs at any state of loading the module
 	 */
 	public static Module getModuleFromFile(File file) throws Exception {
 		URLClassLoader classLoader = new URLClassLoader(new URL[] { file.toURI().toURL() }, ClassLoader.getSystemClassLoader());

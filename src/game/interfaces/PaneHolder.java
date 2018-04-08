@@ -57,13 +57,13 @@ public interface PaneHolder {
 	 * childId1 is our componentId<br>
 	 * 
 	 * @param flags
-	 *           The flags. Use a SettingsBuilder to generate these easily
+	 *            The flags. Use a SettingsBuilder to generate these easily
 	 * @param offset
-	 *           the starting index of the containers items. Eg for inventory this is 0.
+	 *            the starting index of the containers items. Eg for inventory this is 0.
 	 * @param length
-	 *           the number of items. Eg for inventory this is 27
+	 *            the number of items. Eg for inventory this is 27
 	 * @param componentId
-	 *           the child ID of the interface to modify. This is frequently 0.
+	 *            the child ID of the interface to modify. This is frequently 0.
 	 */
 	public abstract void setAccessMask(int interfaceId, int flags, int offset, int length, int componentId);
 
@@ -71,9 +71,9 @@ public interface PaneHolder {
 	 * Sets the String overlay for the given component for this interface.
 	 * 
 	 * @param componentId
-	 *           the ID, these start at 0
+	 *            the ID, these start at 0
 	 * @param s
-	 *           the String to set
+	 *            the String to set
 	 */
 	public abstract void setString(int interfaceId, int componentId, String s);
 
@@ -82,9 +82,9 @@ public interface PaneHolder {
 	 * argument.
 	 * 
 	 * @param componentId
-	 *           the component to change visibility
+	 *            the component to change visibility
 	 * @param visible
-	 *           the flag to set as visible or not
+	 *            the flag to set as visible or not
 	 */
 	public abstract void setComponentVisible(int interfaceId, int componentId, boolean visible);
 

@@ -2,6 +2,7 @@ package entity.actor.persona;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
+
 import container.Container;
 import container.Containers;
 import container.Item;
@@ -27,14 +28,14 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
 	private HashMap<String, YMLSerializable> attachments = new HashMap<>();
 
 	/**
-	 * The {@code config} variable is used to store any configurations to this {@code Persona} that
-	 * can be serialized.
+	 * The {@code config} variable is used to store any configurations to this {@code Persona} that can
+	 * be serialized.
 	 */
 	public ConfigSection config = new ConfigSection();
 
 	/**
-	 * This method must be set to true if this {@code Persona} is active within the game; otherwise
-	 * set it to false.
+	 * This method must be set to true if this {@code Persona} is active within the game; otherwise set
+	 * it to false.
 	 */
 	public boolean active;
 
@@ -49,22 +50,22 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
 	/**
 	 * This registers the given serializable object with this Persona. If the config has already been
 	 * loaded, then the deserialize() method is called on the given object, using the ConfigSection
-	 * available in this Persona's config at the given key. If the config has not yet been loaded
-	 * (This is done in the load(File f) call), then the serializable object is still registered
-	 * under the given key, and then when the config is loaded, the deserialize() method is called
-	 * with the appropriate ConfigSection as an argument.
+	 * available in this Persona's config at the given key. If the config has not yet been loaded (This
+	 * is done in the load(File f) call), then the serializable object is still registered under the
+	 * given key, and then when the config is loaded, the deserialize() method is called with the
+	 * appropriate ConfigSection as an argument.
 	 * 
 	 * Calling this method also means that when this Persona has serialize() called, it will call the
 	 * serialize() method on the given YML object and set the ConfigSection at the given key to the
-	 * result. The result of this serialization is then written to disk, allowing persistant data to
-	 * be stored across Personas.
+	 * result. The result of this serialization is then written to disk, allowing persistant data to be
+	 * stored across Personas.
 	 * 
 	 * @param key
-	 *           the key for the config section.
+	 *            the key for the config section.
 	 * @param yml
-	 *           the object to deserialize/serialize.
-	 * @return true if the object was deserialized, false if the server is still waiting for the
-	 *         holder to load.
+	 *            the object to deserialize/serialize.
+	 * @return true if the object was deserialized, false if the server is still waiting for the holder
+	 *         to load.
 	 */
 	public boolean register(String key, YMLSerializable yml) {
 		if (key == null)
@@ -83,6 +84,7 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see entity.Interactable#getName()
 	 */
 	public String getName() {
@@ -91,6 +93,7 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see entity.actor.Actor#getActions()
 	 */
 	public ActionQueue<Persona> getActions() {
@@ -99,6 +102,7 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see util.yaml.YMLSerializable#serialize()
 	 */
 	public ConfigSection serialize() {
@@ -112,6 +116,7 @@ public abstract class Persona extends Entity implements Actor, YMLSerializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see util.yaml.YMLSerializable#deserialize(util.yaml.ConfigSection)
 	 */
 	public void deserialize(ConfigSection section) {

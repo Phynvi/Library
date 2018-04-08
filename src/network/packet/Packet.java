@@ -18,15 +18,15 @@ public abstract class Packet {
 	protected final int opcode;
 
 	/**
-	 * Constructs a new {@code Packet} with the bytes of data from the specified {@code bytes} which
-	 * is identified by the specified {@code opcode}.
+	 * Constructs a new {@code Packet} with the bytes of data from the specified {@code bytes} which is
+	 * identified by the specified {@code opcode}.
 	 * 
 	 * @param type
-	 *           the type of packet
+	 *            the type of packet
 	 * @param bytes
-	 *           the bytes of data for this packet
+	 *            the bytes of data for this packet
 	 * @param opcode
-	 *           the opcode of this packet
+	 *            the opcode of this packet
 	 */
 	public Packet(PacketType type, ByteBuf bytes, int opcode) {
 		this.type = type;
@@ -38,9 +38,9 @@ public abstract class Packet {
 	 * Constructs a new {@code Packet} with the specified {@code opcode} and {@code type}.
 	 * 
 	 * @param type
-	 *           the type of packet
+	 *            the type of packet
 	 * @param opcode
-	 *           the opcode of this packet
+	 *            the opcode of this packet
 	 */
 	public Packet(PacketType type, int opcode) {
 		this(type, Unpooled.buffer(), opcode);
@@ -51,7 +51,7 @@ public abstract class Packet {
 	 * {@code PacketType} of {@value PacketType#STANDARD}
 	 * 
 	 * @param opcode
-	 *           the opcode of this packet
+	 *            the opcode of this packet
 	 */
 	public Packet(int opcode) {
 		this(PacketType.STANDARD, opcode);
@@ -93,8 +93,7 @@ public abstract class Packet {
 	}
 
 	/**
-	 * Returns true if this {@code Packet} is represents as a 'raw' packet--meaning without an
-	 * opcode;
+	 * Returns true if this {@code Packet} is represents as a 'raw' packet--meaning without an opcode;
 	 * 
 	 * <p>
 	 * This method is effectively equivalent to:

@@ -53,7 +53,7 @@ public class ReferenceTable {
 		 * Sets the identifier of this entry.
 		 * 
 		 * @param identifier
-		 *           The identifier.
+		 *            The identifier.
 		 */
 		public void setIdentifier(int identifier) {
 			this.identifier = identifier;
@@ -106,7 +106,7 @@ public class ReferenceTable {
 		 * Sets the identifier of this entry.
 		 * 
 		 * @param identifier
-		 *           The identifier.
+		 *            The identifier.
 		 */
 		public void setIdentifier(int identifier) {
 			this.identifier = identifier;
@@ -125,7 +125,7 @@ public class ReferenceTable {
 		 * Sets the CRC32 checksum of this entry.
 		 * 
 		 * @param crc
-		 *           The CRC32 checksum.
+		 *            The CRC32 checksum.
 		 */
 		public void setCrc(int crc) {
 			this.crc = crc;
@@ -144,9 +144,9 @@ public class ReferenceTable {
 		 * Sets the whirlpool digest of this entry.
 		 * 
 		 * @param whirlpool
-		 *           The whirlpool digest.
+		 *            The whirlpool digest.
 		 * @throws IllegalArgumentException
-		 *            if the digest is not 64 bytes long.
+		 *             if the digest is not 64 bytes long.
 		 */
 		public void setWhirlpool(byte[] whirlpool) {
 			if (whirlpool.length != 64)
@@ -168,7 +168,7 @@ public class ReferenceTable {
 		 * Sets the version of this entry.
 		 * 
 		 * @param version
-		 *           The version.
+		 *            The version.
 		 */
 		public void setVersion(int version) {
 			this.version = version;
@@ -199,7 +199,7 @@ public class ReferenceTable {
 		 * Gets the child entry with the specified id.
 		 * 
 		 * @param id
-		 *           The id.
+		 *            The id.
 		 * @return The entry, or {@code null} if it does not exist.
 		 */
 		public ChildEntry getEntry(int id) {
@@ -210,9 +210,9 @@ public class ReferenceTable {
 		 * Replaces or inserts the child entry with the specified id.
 		 * 
 		 * @param id
-		 *           The id.
+		 *            The id.
 		 * @param entry
-		 *           The entry.
+		 *            The entry.
 		 */
 		public void putEntry(int id, ChildEntry entry) {
 			entries.put(id, entry);
@@ -222,9 +222,9 @@ public class ReferenceTable {
 		 * Removes the entry with the specified id.
 		 * 
 		 * @param id
-		 *           The id.
+		 *            The id.
 		 * @param entry
-		 *           The entry.
+		 *            The entry.
 		 */
 		public void removeEntry(int id, ChildEntry entry) {
 			entries.remove(id);
@@ -236,7 +236,7 @@ public class ReferenceTable {
 	 * Decodes the slave checksum table contained in the specified {@link ByteBuffer}.
 	 * 
 	 * @param buffer
-	 *           The buffer.
+	 *            The buffer.
 	 * @return The slave checksum table.
 	 */
 	public static ReferenceTable decode(ByteBuffer buffer) {
@@ -365,7 +365,7 @@ public class ReferenceTable {
 	 * Sets the format of this table.
 	 * 
 	 * @param format
-	 *           The format.
+	 *            The format.
 	 */
 	public void setFormat(int format) {
 		this.format = format;
@@ -384,7 +384,7 @@ public class ReferenceTable {
 	 * Sets the version of this table.
 	 * 
 	 * @param version
-	 *           The version.
+	 *            The version.
 	 */
 	public void setVersion(int version) {
 		this.version = version;
@@ -403,7 +403,7 @@ public class ReferenceTable {
 	 * Sets the flags of this table.
 	 * 
 	 * @param flags
-	 *           The flags.
+	 *            The flags.
 	 */
 	public void setFlags(int flags) {
 		this.flags = flags;
@@ -413,7 +413,7 @@ public class ReferenceTable {
 	 * Gets the entry with the specified id, or {@code null} if it does not exist.
 	 * 
 	 * @param id
-	 *           The id.
+	 *            The id.
 	 * @return The entry.
 	 */
 	public Entry getEntry(int id) {
@@ -424,9 +424,9 @@ public class ReferenceTable {
 	 * Gets the child entry with the specified id, or {@code null} if it does not exist.
 	 * 
 	 * @param id
-	 *           The parent id.
+	 *            The parent id.
 	 * @param child
-	 *           The child id.
+	 *            The child id.
 	 * @return The entry.
 	 */
 	public ChildEntry getEntry(int id, int child) {
@@ -441,9 +441,9 @@ public class ReferenceTable {
 	 * Replaces or inserts the entry with the specified id.
 	 * 
 	 * @param id
-	 *           The id.
+	 *            The id.
 	 * @param entry
-	 *           The entry.
+	 *            The entry.
 	 */
 	public void putEntry(int id, Entry entry) {
 		entries.put(id, entry);
@@ -453,7 +453,7 @@ public class ReferenceTable {
 	 * Removes the entry with the specified id.
 	 * 
 	 * @param id
-	 *           The id.
+	 *            The id.
 	 */
 	public void removeEntry(int id) {
 		entries.remove(id);
@@ -485,12 +485,11 @@ public class ReferenceTable {
 	 * 
 	 * @return The {@link ByteBuffer}.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public ByteBuffer encode() throws IOException {
 		/*
-		 * we can't (easily) predict the size ahead of time, so we write to a stream and then to the
-		 * buffer
+		 * we can't (easily) predict the size ahead of time, so we write to a stream and then to the buffer
 		 */
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		DataOutputStream os = new DataOutputStream(bout);

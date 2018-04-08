@@ -9,11 +9,10 @@ import java.text.NumberFormat;
 public class StringUtil {
 
 	/**
-	 * Formats a number to add any commas needed. For example, 1000000 would be converted to
-	 * 1,000,000.
+	 * Formats a number to add any commas needed. For example, 1000000 would be converted to 1,000,000.
 	 * 
 	 * @param number
-	 *           the number to format with commas
+	 *            the number to format with commas
 	 * @return the formatted number with commas
 	 */
 	public static String formatNumber(double number) {
@@ -39,7 +38,8 @@ public class StringUtil {
 				if (currentLine.length() + w.length() > lineWidth) {
 					builder.append('\n');
 					currentLine = "";
-				} else currentLine += w;
+				} else
+					currentLine += w;
 			}
 			return builder.toString().trim().split("\n");
 		} else {

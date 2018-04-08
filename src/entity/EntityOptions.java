@@ -81,7 +81,7 @@ public class EntityOptions {
 			if (entityOptions[i] == entityOption) {
 				set(i, null);
 				break; // There really should only be one occurrence, I don't see
-							// how another can exist
+						// how another can exist
 			}
 		}
 	}
@@ -127,6 +127,7 @@ public class EntityOptions {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {

@@ -28,9 +28,9 @@ public class Cache {
 	 * while being constructed.
 	 * 
 	 * @param cacheFolder
-	 *           the folder the cache files are contained in
+	 *            the folder the cache files are contained in
 	 * @throws IOException
-	 *            if there is a problem initializing the {@code CacheStore}.
+	 *             if there is a problem initializing the {@code CacheStore}.
 	 */
 	public Cache(File cacheFolder) throws IOException {
 		this.store = new CacheStore(cacheFolder);
@@ -141,8 +141,7 @@ public class Cache {
 	public static void main(String[] args) throws Exception {
 		Cache cache = new Cache(new File("./cache/"));
 		cache.load();
-		
-		
+
 		ByteBuffer archive = cache.getArchiveData(19, 11694 >> 8);
 		System.out.println(archive.capacity());
 	}

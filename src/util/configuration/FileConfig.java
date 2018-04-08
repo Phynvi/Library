@@ -22,11 +22,10 @@ public class FileConfig extends ConfigSection {
 
 	/**
 	 * Creates a new FileConfig based on the given file. This method does not load the data from the
-	 * file. Instead you should call FileConfig.reload() if you wish to view previously stored
-	 * values.
+	 * file. Instead you should call FileConfig.reload() if you wish to view previously stored values.
 	 * 
 	 * @param file
-	 *           the file to base this config on.
+	 *            the file to base this config on.
 	 */
 	public FileConfig(File file) {
 		this.file = file;
@@ -39,21 +38,21 @@ public class FileConfig extends ConfigSection {
 			Map<String, Object> data = null;
 
 			switch (type) {
-				case BINARY:
-					break;
-				case JSON:
-					break;
-				case TXT:
-					break;
-				case YAML:
-					DumperOptions options = new DumperOptions();
-					options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-					Yaml parser = new Yaml(options);
-					data = (Map<String, Object>) parser.load(in);
-					this.map.putAll(data);
-					break;
-				default:
-					break;
+			case BINARY:
+				break;
+			case JSON:
+				break;
+			case TXT:
+				break;
+			case YAML:
+				DumperOptions options = new DumperOptions();
+				options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+				Yaml parser = new Yaml(options);
+				data = (Map<String, Object>) parser.load(in);
+				this.map.putAll(data);
+				break;
+			default:
+				break;
 			}
 
 			in.close();
@@ -67,7 +66,7 @@ public class FileConfig extends ConfigSection {
 	 * folders.
 	 * 
 	 * @throws IOException
-	 *            if an IO error occured.
+	 *             if an IO error occured.
 	 */
 	public void save(ConfigType type) {
 		try {
@@ -79,20 +78,20 @@ public class FileConfig extends ConfigSection {
 			PrintStream ps = new PrintStream(file);
 			String out = null;
 			switch (type) {
-				case BINARY:
-					break;
-				case JSON:
-					break;
-				case TXT:
-					break;
-				case YAML:
-					DumperOptions options = new DumperOptions();
-					options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-					Yaml parser = new Yaml(options);
-					out = parser.dump(map);
-					break;
-				default:
-					break;
+			case BINARY:
+				break;
+			case JSON:
+				break;
+			case TXT:
+				break;
+			case YAML:
+				DumperOptions options = new DumperOptions();
+				options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+				Yaml parser = new Yaml(options);
+				out = parser.dump(map);
+				break;
+			default:
+				break;
 			}
 			ps.print(out);
 			ps.close();

@@ -3,7 +3,7 @@ package infrastructure.threads;
 import java.util.logging.Logger;
 import infrastructure.Core;
 import infrastructure.CoreThread;
-import infrastructure.GlobalAttachments;
+import infrastructure.GlobalVariables;
 import infrastructure.World;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -36,7 +36,7 @@ public class ServerThread extends CoreThread {
 	 * Constructs a new {@code ServerThread} from the specified {@code port}.
 	 * 
 	 * @param port
-	 *           the port of this server
+	 *            the port of this server
 	 */
 	public ServerThread(World world, int port) {
 		super("Server Thread", Thread.NORM_PRIORITY, false);
@@ -65,7 +65,7 @@ public class ServerThread extends CoreThread {
 					ch.pipeline().addLast("encoder", new OutgoingPacketEncoder());
 					ch.pipeline().addLast("decoder", new HandshakeDecoder());
 					ch.pipeline().addLast("handler", new NetworkHandler());
-					ch.attr(GlobalAttachments.WORLD_KEY).set(world);
+					ch.attr(GlobalVariables.WORLD_KEY).set(world);
 				}
 			}).option(ChannelOption.SO_KEEPALIVE, true).option(ChannelOption.TCP_NODELAY, true);
 			ChannelFuture f = bootstrap.bind(port).sync();

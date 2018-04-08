@@ -164,9 +164,9 @@ public class Containers {
 	 * {@link Integer#MAX_VALUE}.
 	 * 
 	 * @param handler
-	 *           the handler to set for the container
+	 *            the handler to set for the container
 	 * @param capacity
-	 *           the capacity of the container
+	 *            the capacity of the container
 	 * @return the created container
 	 */
 	public static <E extends Item> Container<E> create(ContainerHandler<E> handler, int capacity) {

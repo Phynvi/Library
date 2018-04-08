@@ -27,11 +27,11 @@ public class HandshakeDecoder extends ByteToMessageDecoder {
 	 * {@code ByteBuf}.
 	 * 
 	 * @param ctx
-	 *           the context of the channel handler
+	 *            the context of the channel handler
 	 * @param in
-	 *           the bytes incoming
+	 *            the bytes incoming
 	 * @param out
-	 *           the bytes outgoing
+	 *            the bytes outgoing
 	 */
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		int requestId = in.readByte() & 0xff;
@@ -41,24 +41,24 @@ public class HandshakeDecoder extends ByteToMessageDecoder {
 			return;
 		}
 		switch (request) {
-			case UPDATE:
-				int revision = in.readInt();
+		case UPDATE:
+			int revision = in.readInt();
 
-				RawHandler handler = NetworkRepository.getRawHandler(revision);
-				if (handler == null)
-					throw new NullPointerException("Unsupported revision on handshake: " + revision);
-				int[] data = handler.getKeys();
-				ByteBuf buffer = Unpooled.buffer(data.length + 1);
-				buffer.writeByte(0);
-				for (int a : data)
-					buffer.writeInt(a);
-				ctx.writeAndFlush(buffer);
-				ctx.pipeline().replace("decoder", "decoder", new CacheRequestDecoder(handler));
-				break;
-			case LOGIN:
-				ctx.writeAndFlush(Unpooled.wrappedBuffer(new byte[] { 0 }));
-				ctx.pipeline().replace("decoder", "decoder", new LoginRequestDecoder());
-				break;
+			RawHandler handler = NetworkRepository.getRawHandler(revision);
+			if (handler == null)
+				throw new NullPointerException("Unsupported revision on handshake: " + revision);
+			int[] data = handler.getKeys();
+			ByteBuf buffer = Unpooled.buffer(data.length + 1);
+			buffer.writeByte(0);
+			for (int a : data)
+				buffer.writeInt(a);
+			ctx.writeAndFlush(buffer);
+			ctx.pipeline().replace("decoder", "decoder", new CacheRequestDecoder(handler));
+			break;
+		case LOGIN:
+			ctx.writeAndFlush(Unpooled.wrappedBuffer(new byte[] { 0 }));
+			ctx.pipeline().replace("decoder", "decoder", new LoginRequestDecoder());
+			break;
 		}
 	}
 }

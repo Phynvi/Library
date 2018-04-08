@@ -38,9 +38,9 @@ public class EventManager {
 		 * specified {@code method} for execution.
 		 * 
 		 * @param listener
-		 *           the event listener with the underlying method
+		 *            the event listener with the underlying method
 		 * @param method
-		 *           the method to use for execution
+		 *            the method to use for execution
 		 */
 		public EventExecutor(EventListener listener, Method method) {
 			this.listener = listener;
@@ -48,11 +48,11 @@ public class EventManager {
 		}
 
 		/**
-		 * Executes the specified {@code event} using the {@code EventListener} and {@code Method}
-		 * attached to this {@code EventExecutor.}
+		 * Executes the specified {@code event} using the {@code EventListener} and {@code Method} attached
+		 * to this {@code EventExecutor.}
 		 * 
 		 * @param event
-		 *           the event to execute
+		 *            the event to execute
 		 */
 		public void execute(Event event) {
 			try {
@@ -96,7 +96,7 @@ public class EventManager {
 	 * relevant to the methods the {@code listener} has.
 	 * 
 	 * @param listener
-	 *           the listener to be registered
+	 *            the listener to be registered
 	 * 
 	 * @see event.EventListener
 	 */
@@ -116,11 +116,11 @@ public class EventManager {
 	}
 
 	/**
-	 * Unregisters the specified {@code listener} from this {@code EventManager} if it is existing,
-	 * so it cannot listen for any events.
+	 * Unregisters the specified {@code listener} from this {@code EventManager} if it is existing, so
+	 * it cannot listen for any events.
 	 * 
 	 * @param listener
-	 *           the listener to be unregistered, if existing
+	 *            the listener to be unregistered, if existing
 	 * 
 	 * @see event.EventListener
 	 */
@@ -139,7 +139,7 @@ public class EventManager {
 	 * the call and be executed upon receiving the call.
 	 * 
 	 * @param event
-	 *           the event to be called for listening
+	 *            the event to be called for listening
 	 * 
 	 * @see event.Event
 	 */

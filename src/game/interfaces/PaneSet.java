@@ -26,12 +26,12 @@ public class PaneSet {
 	}
 
 	/**
-	 * Adds the given Pane to this PaneSet. The given Pane is added to the top of the list of panes,
-	 * and the player is informed of the new pane. If the pane is not yet visible, pane.open() is
-	 * called on it.
+	 * Adds the given Pane to this PaneSet. The given Pane is added to the top of the list of panes, and
+	 * the player is informed of the new pane. If the pane is not yet visible, pane.open() is called on
+	 * it.
 	 * 
 	 * @param pane
-	 *           the pane to open
+	 *            the pane to open
 	 */
 	public void add(Pane pane) {
 		if (!pane.isOpen())
@@ -43,12 +43,12 @@ public class PaneSet {
 	}
 
 	/**
-	 * Removes the given Pane from this PaneSet. If the Pane is visible, pane.close() is called on
-	 * it. If the given Pane is the last Pane in this PaneSet, an IllegalStateException is thrown, as
-	 * a client must always have a Pane open. This method notifies the player through the protocol
+	 * Removes the given Pane from this PaneSet. If the Pane is visible, pane.close() is called on it.
+	 * If the given Pane is the last Pane in this PaneSet, an IllegalStateException is thrown, as a
+	 * client must always have a Pane open. This method notifies the player through the protocol
 	 * 
 	 * @param pane
-	 *           the Pane to remove
+	 *            the Pane to remove
 	 */
 	public void remove(Pane pane) {
 		if (panes.size() == 1 && panes.contains(pane))
@@ -80,7 +80,7 @@ public class PaneSet {
 	 * returned.
 	 * 
 	 * @param id
-	 *           the id associated with the window
+	 *            the id associated with the window
 	 * @return the window associated with the id
 	 */
 	public Window get(int id) {

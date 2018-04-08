@@ -1,6 +1,6 @@
 package event;
 
-import infrastructure.GlobalAttachments;
+import infrastructure.GlobalVariables;
 
 /**
  * The {@code Event} class represents an actual event occurring. Events are used to help organize
@@ -26,7 +26,7 @@ public class Event {
 
 	/**
 	 * Calls this {@code Event} for the {@code EventManager} within the
-	 * {@link infrastructure.GlobalAttachments} to have any {@code EventListener} listen for this
+	 * {@link infrastructure.GlobalVariables} to have any {@code EventListener} listen for this
 	 * {@code Event}.
 	 * 
 	 * <p>
@@ -37,7 +37,7 @@ public class Event {
 	 * </pre>
 	 */
 	public void call() {
-		GlobalAttachments.getEventManager().callEvent(this);
+		GlobalVariables.getEventManager().callEvent(this);
 	}
 
 	/**
@@ -61,8 +61,7 @@ public class Event {
 
 	/**
 	 * This will switch the {@code cancelled} flag of this {@code Event} to be on so the
-	 * {@link event.EventManager} will know it has been cancelled and will <b>not be called at
-	 * all.</b>
+	 * {@link event.EventManager} will know it has been cancelled and will <b>not be called at all.</b>
 	 */
 	public void cancel() {
 		this.cancelled = true;

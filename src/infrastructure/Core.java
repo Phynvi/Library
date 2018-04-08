@@ -35,9 +35,9 @@ public class Core {
 			/**
 			 * Attach all essential attachments
 			 */
-			GlobalAttachments.attachActorUpdator(new ActorUpdateThread());
-			GlobalAttachments.attachTicker(new TickThread());
-			GlobalAttachments.attachEventManager(new EventManager());
+			GlobalVariables.setActorUpdator(new ActorUpdateThread());
+			GlobalVariables.setTicker(new TickThread());
+			GlobalVariables.setEventManager(new EventManager());
 		} catch (Exception e) {
 			System.err.println("Error initializing Core...");
 			e.printStackTrace();
@@ -49,7 +49,7 @@ public class Core {
 	 * Submits the specified {@code CoreThread} to the thread pool of this {@code Core} class.
 	 * 
 	 * @param thread
-	 *           the thread to submit to the thread pool
+	 *            the thread to submit to the thread pool
 	 * @return the Future representing pending completion of the thread
 	 */
 	public static Future<?> submitThread(CoreThread thread) {
@@ -57,17 +57,17 @@ public class Core {
 	}
 
 	/**
-	 * Submits the specified {@code Runnable} object to the thread pool of this {@code Core} class.
-	 * The priority of the submitted task is set to {@link Thread#MIN_PRIORITY} and it is also set as
-	 * a daemon thread.
+	 * Submits the specified {@code Runnable} object to the thread pool of this {@code Core} class. The
+	 * priority of the submitted task is set to {@link Thread#MIN_PRIORITY} and it is also set as a
+	 * daemon thread.
 	 * 
 	 * <p>
 	 * This method is meant to execute any short and simple tasks that do not stress the CPU or take
-	 * much time. Tasks submitted using this method are usually not as important as any other
-	 * submitted using the {@link Core#submitThread(CoreThread)} method.
+	 * much time. Tasks submitted using this method are usually not as important as any other submitted
+	 * using the {@link Core#submitThread(CoreThread)} method.
 	 * 
 	 * @param r
-	 *           the task to submit to the thread pool
+	 *            the task to submit to the thread pool
 	 * @return the Future representing pending completion of the task
 	 */
 	public static Future<?> submitSimpleTask(Runnable r) {
@@ -79,11 +79,11 @@ public class Core {
 	}
 
 	/**
-	 * Submits the specified {@code Runnable} object to the thread pool of this {@code Core} class.
-	 * No changes are made to the task.
+	 * Submits the specified {@code Runnable} object to the thread pool of this {@code Core} class. No
+	 * changes are made to the task.
 	 * 
 	 * @param r
-	 *           the task to submit to the thread pool
+	 *            the task to submit to the thread pool
 	 * @return the Future representing pending completion of the task
 	 */
 	public static Future<?> submitRegularTask(Runnable r) {
@@ -91,17 +91,17 @@ public class Core {
 	}
 
 	/**
-	 * Schedules the specified {@code thread} with the delay and period from the given arguments
-	 * based on the specified {@code TimeUnit}.
+	 * Schedules the specified {@code thread} with the delay and period from the given arguments based
+	 * on the specified {@code TimeUnit}.
 	 * 
 	 * @param thread
-	 *           the thread to schedule
+	 *            the thread to schedule
 	 * @param delay
-	 *           the delay before the schedule will be scheduled
+	 *            the delay before the schedule will be scheduled
 	 * @param period
-	 *           the period the thread is run for
+	 *            the period the thread is run for
 	 * @param unit
-	 *           the {@code TimeUnit} at which the delay and period are calculated
+	 *            the {@code TimeUnit} at which the delay and period are calculated
 	 * @return a {@code ScheduledFuture} representing pending completion of the task
 	 */
 	public static ScheduledFuture<?> scheduleFixedTask(CoreThread thread, long delay, long period, TimeUnit unit) {

@@ -2,7 +2,7 @@ package entity.geometry.map;
 
 /**
  * 
- * @author Albert Beaupre
+ * @author netherfoam
  */
 public class ClipMasks {
 

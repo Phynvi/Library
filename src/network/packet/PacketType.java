@@ -28,7 +28,7 @@ public enum PacketType {
 	 * Constructs a new {@code PacketType} from the specified {@code size}.
 	 * 
 	 * @param size
-	 *           the size of this message type
+	 *            the size of this message type
 	 */
 	private PacketType(int size) {
 		this.size = size;

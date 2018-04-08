@@ -17,8 +17,8 @@ public class DialogOption {
 	public final String name;
 
 	/**
-	 * This is the action taken when the entityOption is selected, which cannot be null. It must
-	 * either end or continue the dialog in some way.
+	 * This is the action taken when the entityOption is selected, which cannot be null. It must either
+	 * end or continue the dialog in some way.
 	 */
 	public final Runnable action;
 
@@ -27,9 +27,9 @@ public class DialogOption {
 	 * and uses the specified {@code action} to execute when the entityOption is selected.
 	 * 
 	 * @param name
-	 *           the entityOption name
+	 *            the entityOption name
 	 * @param action
-	 *           the action taken when the entityOption is selected
+	 *            the action taken when the entityOption is selected
 	 */
 	public DialogOption(String name, Runnable action) {
 		this.name = name;

@@ -19,14 +19,14 @@ public class Location extends Point3D {
 	 * Constructs a new {@code Location} from the specified coordinates.
 	 * 
 	 * @param map
-	 *           the {@code WorldMap} that this location is relative to
+	 *            the {@code WorldMap} that this location is relative to
 	 * 
 	 * @param x
-	 *           the x coordinate of the location
+	 *            the x coordinate of the location
 	 * @param y
-	 *           the y coordinate of the location
+	 *            the y coordinate of the location
 	 * @param z
-	 *           the z coordinate of the location
+	 *            the z coordinate of the location
 	 */
 	public Location(RSMap map, int x, int y, int z) {
 		super(x, y, z);
@@ -35,6 +35,7 @@ public class Location extends Point3D {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see entity.geometry.Point3D#translate(int, int, int)
 	 */
 	public Location translate(int dx, int dy, int dz) {
@@ -98,10 +99,20 @@ public class Location extends Point3D {
 		return (((regionId & 0xff) << 6) >> 6) | (this.z << 16) | ((((regionId >> 8) << 6) >> 6) << 8);
 	}
 
+	/**
+	 * Returns the flags at this {@code Location} in the correlating {@code RSMap}.
+	 * 
+	 * @return the flags of this location
+	 */
 	public int getFlags() {
 		return map.getFlags(x, y, z);
 	}
 
+	/**
+	 * Returns the clip at this {@code Location} in the correlating {@code RSMap}.
+	 * 
+	 * @return the clip of this location
+	 */
 	public int getClip() {
 		return map.getClip(x, y, z);
 	}
@@ -117,6 +128,7 @@ public class Location extends Point3D {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see entity.geometry.Point3D#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj) {
@@ -132,6 +144,7 @@ public class Location extends Point3D {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
@@ -140,6 +153,7 @@ public class Location extends Point3D {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {

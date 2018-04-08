@@ -33,10 +33,10 @@ public final class Container {
 	 * Decodes and decompresses the container.
 	 * 
 	 * @param buffer
-	 *           The buffer.
+	 *            The buffer.
 	 * @return The decompressed container.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public static Container decode(ByteBuffer buffer) throws IOException {
 		/* decode the type and length */
@@ -111,9 +111,9 @@ public final class Container {
 	 * Creates a new unversioned container.
 	 * 
 	 * @param type
-	 *           The type of compression.
+	 *            The type of compression.
 	 * @param data
-	 *           The decompressed data.
+	 *            The decompressed data.
 	 */
 	public Container(int type, ByteBuffer data) {
 		this(type, data, -1);
@@ -123,11 +123,11 @@ public final class Container {
 	 * Creates a new versioned container.
 	 * 
 	 * @param type
-	 *           The type of compression.
+	 *            The type of compression.
 	 * @param data
-	 *           The decompressed data.
+	 *            The decompressed data.
 	 * @param version
-	 *           The version of the file within this container.
+	 *            The version of the file within this container.
 	 */
 	public Container(int type, ByteBuffer data, int version) {
 		this.type = type;
@@ -149,7 +149,7 @@ public final class Container {
 	 * 
 	 * @return The version of the file.
 	 * @throws IllegalArgumentException
-	 *            if this container is not versioned.
+	 *             if this container is not versioned.
 	 */
 	public int getVersion() {
 		if (!isVersioned())
@@ -162,7 +162,7 @@ public final class Container {
 	 * Sets the version of this container.
 	 * 
 	 * @param version
-	 *           The version.
+	 *            The version.
 	 */
 	public void setVersion(int version) {
 		this.version = version;
@@ -179,7 +179,7 @@ public final class Container {
 	 * Sets the type of this container.
 	 * 
 	 * @param type
-	 *           The compression type.
+	 *            The compression type.
 	 */
 	public void setType(int type) {
 		this.type = type;
@@ -208,7 +208,7 @@ public final class Container {
 	 * 
 	 * @return The buffer.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public ByteBuffer encode() throws IOException {
 		ByteBuffer data = getData(); // so we have a read only view, making this method thread safe

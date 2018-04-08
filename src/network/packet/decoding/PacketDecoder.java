@@ -9,7 +9,7 @@ import network.ConnectionHolder;
  * @author Albert Beaupre
  * 
  * @param <C>
- *           The {@code ConnectionHolder} type
+ *            The {@code ConnectionHolder} type
  */
 public interface PacketDecoder<C extends ConnectionHolder> {
 
@@ -17,9 +17,9 @@ public interface PacketDecoder<C extends ConnectionHolder> {
 	 * Processes the specified {@code DecodedPacket} using the specified {@code holder}.
 	 * 
 	 * @param holder
-	 *           the {@code ConnectionHolder} to process the packet
+	 *            the {@code ConnectionHolder} to process the packet
 	 * @param packet
-	 *           the {@code DecodedPacket} to process
+	 *            the {@code DecodedPacket} to process
 	 */
 	public void process(C holder, DecodedPacket packet);
 

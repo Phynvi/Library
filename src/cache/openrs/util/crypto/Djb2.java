@@ -13,7 +13,7 @@ public final class Djb2 {
 	 * Instead of the initial hash being 5381, it is zero.
 	 * 
 	 * @param str
-	 *           The string to hash.
+	 *            The string to hash.
 	 * @return The hash code.
 	 */
 	public static int djb2(String str) {

@@ -14,8 +14,8 @@ public final class ConfigurationBuilder {
 	private ConfigSection currentSection;
 
 	/**
-	 * Constructs a new {@code ConfigurationBuilder}, which is not inheritable and cannot be created
-	 * as a new instance.
+	 * Constructs a new {@code ConfigurationBuilder}, which is not inheritable and cannot be created as
+	 * a new instance.
 	 */
 	private ConfigurationBuilder() {
 		this.configurables = new ConfigSection();
@@ -36,7 +36,7 @@ public final class ConfigurationBuilder {
 	 * Sets the {@code ConfigType} of the {@code Configuration} to be built.
 	 * 
 	 * @param type
-	 *           {@code ConfigType}
+	 *            {@code ConfigType}
 	 * @return this current {@code ConfigurationBuilder} instance for chaining
 	 */
 	public ConfigurationBuilder type(ConfigType type) {
@@ -48,7 +48,7 @@ public final class ConfigurationBuilder {
 	 * Starts a new section to build on with data for the {@code Configuration}.
 	 * 
 	 * @param key
-	 *           the key of the new section
+	 *            the key of the new section
 	 * @return this current {@code ConfigurationBuilder} instance for chaining
 	 */
 	public ConfigurationBuilder section(Object key) {
@@ -57,15 +57,15 @@ public final class ConfigurationBuilder {
 	}
 
 	/**
-	 * Takes the fields within the specified {@code object} (if accessible) that are annotated with
-	 * the {@link util.configuration.Configurable} class, and stores them as a single section with
-	 * the fields as the data within the section. The specified {@code sectionKey} is the
-	 * corresponding key to the section.
+	 * Takes the fields within the specified {@code object} (if accessible) that are annotated with the
+	 * {@link util.configuration.Configurable} class, and stores them as a single section with the
+	 * fields as the data within the section. The specified {@code sectionKey} is the corresponding key
+	 * to the section.
 	 * 
 	 * @param sectionKey
-	 *           the corresponding key to the section
+	 *            the corresponding key to the section
 	 * @param object
-	 *           the object to configure
+	 *            the object to configure
 	 * @return this current {@code ConfigurationBuilder} instance for chaining
 	 */
 	public ConfigurationBuilder configureObjectToSection(Object sectionKey, Object object) {
@@ -83,13 +83,13 @@ public final class ConfigurationBuilder {
 	}
 
 	/**
-	 * Adds the specified {@code value} with a corresponding {@code name} to the current section
-	 * being built on the {@code Configuration}.
+	 * Adds the specified {@code value} with a corresponding {@code name} to the current section being
+	 * built on the {@code Configuration}.
 	 * 
 	 * @param name
-	 *           the corresponding name of the value
+	 *            the corresponding name of the value
 	 * @param value
-	 *           the value to add
+	 *            the value to add
 	 * @return this current {@code ConfigurationBuilder} instance for chaining
 	 */
 	public ConfigurationBuilder add(String name, Object value) {

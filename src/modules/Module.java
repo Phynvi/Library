@@ -10,12 +10,12 @@ package modules;
 public abstract class Module {
 
 	/**
-	 * Loads this {@code Module}, which is meant to take first-step preparation for the
-	 * {@code Module}, such as registering {@code EventListeners} or {@code Areas}, or any kind of
-	 * beginning for systems that are going to be within this {@code Module}.
+	 * Loads this {@code Module}, which is meant to take first-step preparation for the {@code Module},
+	 * such as registering {@code EventListeners} or {@code Areas}, or any kind of beginning for systems
+	 * that are going to be within this {@code Module}.
 	 * 
 	 * @throws Exception
-	 *            if a problem occurs whilst loading this {@code Module}
+	 *             if a problem occurs whilst loading this {@code Module}
 	 */
 	public abstract void load() throws Exception;
 
@@ -25,7 +25,7 @@ public abstract class Module {
 	 * beginning for systems that had been within this {@code Module}.
 	 * 
 	 * @throws Exception
-	 *            if a problem occurs whilst unloading this {@code Module}
+	 *             if a problem occurs whilst unloading this {@code Module}
 	 */
 	public abstract void unload() throws Exception;
 

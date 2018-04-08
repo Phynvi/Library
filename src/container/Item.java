@@ -1,6 +1,6 @@
 package container;
 
-import infrastructure.GlobalAttachments;
+import infrastructure.GlobalVariables;
 import util.configuration.ConfigSection;
 
 /**
@@ -20,9 +20,9 @@ public class Item {
 	 * Constructs a new {@code Item} from the specified arguments.
 	 * 
 	 * @param id
-	 *           the id of the item
+	 *            the id of the item
 	 * @param amount
-	 *           the amount of the item
+	 *            the amount of the item
 	 */
 	public Item(int id, int amount) {
 		this.id = (short) id;
@@ -33,7 +33,7 @@ public class Item {
 	 * Constructs a new {@code Item} from the specified arguments.
 	 * 
 	 * @param id
-	 *           the id of the item
+	 *            the id of the item
 	 */
 	public Item(int id) {
 		this(id, 1);
@@ -61,9 +61,9 @@ public class Item {
 	 * Sets an attribute to this {@code Item} with the specified {@code attributeName}.
 	 * 
 	 * @param attributeName
-	 *           the name of the attribute
+	 *            the name of the attribute
 	 * @param value
-	 *           the value of the attribute
+	 *            the value of the attribute
 	 */
 	public void attribute(String attributeName, Object value) {
 		if (attributes == null)
@@ -79,11 +79,11 @@ public class Item {
 	}
 
 	/**
-	 * Returns a new {@code Item} with the same information but with amount of the item decreased by
-	 * the given argument.
+	 * Returns a new {@code Item} with the same information but with amount of the item decreased by the
+	 * given argument.
 	 * 
 	 * @param amount
-	 *           the amount to set
+	 *            the amount to set
 	 * @return the new {@code Item} with the decreased {@code amount}
 	 */
 	public Item decrease(int amount) {
@@ -91,11 +91,11 @@ public class Item {
 	}
 
 	/**
-	 * Returns a new {@code Item} with the same information but with amount of the item increased by
-	 * the given argument.
+	 * Returns a new {@code Item} with the same information but with amount of the item increased by the
+	 * given argument.
 	 * 
 	 * @param amount
-	 *           the amount to set
+	 *            the amount to set
 	 * @return the new {@code Item} with the increased {@code amount}
 	 */
 	public Item increase(int amount) {
@@ -103,18 +103,23 @@ public class Item {
 	}
 
 	/**
-	 * Returns a new {@code Item} with the same information but with amount of the item set to the
-	 * given argument.
+	 * Returns a new {@code Item} with the same information but with amount of the item set to the given
+	 * argument.
 	 * 
 	 * @param amount
-	 *           the amount to set
+	 *            the amount to set
 	 * @return the new {@code Item} with the specified {@code amount}
 	 */
 	public Item amount(int amount) {
 		return new Item(id, amount);
 	}
 
+	/**
+	 * Returns true if this {@code Item} can be stacked with the an {@code Item} with the same id.
+	 * 
+	 * @return true if it can stack with the same item
+	 */
 	public boolean isStackable() {
-		return GlobalAttachments.getItemData().isStackable(id) && attributes == null;
+		return GlobalVariables.getItemData().isStackable(id) && attributes == null;
 	}
 }

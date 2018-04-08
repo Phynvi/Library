@@ -36,11 +36,11 @@ public class Point3D implements YMLSerializable {
 	 * space.
 	 * 
 	 * @param x
-	 *           the X coordinate of the newly constructed {@code Point}
+	 *            the X coordinate of the newly constructed {@code Point}
 	 * @param y
-	 *           the Y coordinate of the newly constructed {@code Point}
+	 *            the Y coordinate of the newly constructed {@code Point}
 	 * @param z
-	 *           the Z coordinate of the newly constructed {@code Point}
+	 *            the Z coordinate of the newly constructed {@code Point}
 	 */
 	public Point3D(int x, int y, int z) {
 		this.x = x;
@@ -53,9 +53,9 @@ public class Point3D implements YMLSerializable {
 	 * {@code range} argument. If it does not, then {@code false} is returned.
 	 * 
 	 * @param point
-	 *           the point to check if this {@code Point3D} is in range
+	 *            the point to check if this {@code Point3D} is in range
 	 * @param range
-	 *           the range distance to check
+	 *            the range distance to check
 	 * @return true if within range; return false otherwise
 	 */
 	public boolean inRange(Point3D point, int range) {
@@ -64,15 +64,15 @@ public class Point3D implements YMLSerializable {
 
 	/**
 	 * Returns a new translated {@code Point3D}, at location {@code (x,y,z)}, by {@code dx} along the
-	 * {@code x} axis and {@code dy} along the {@code y} axis and {@code dz} along the {@code z} axis
-	 * so that it now represents the point {@code (x+dx,y+dy, z+dz)}.
+	 * {@code x} axis and {@code dy} along the {@code y} axis and {@code dz} along the {@code z} axis so
+	 * that it now represents the point {@code (x+dx,y+dy, z+dz)}.
 	 *
 	 * @param dx
-	 *           the distance to move this point along the X axis
+	 *            the distance to move this point along the X axis
 	 * @param dy
-	 *           the distance to move this point along the Y axis
+	 *            the distance to move this point along the Y axis
 	 * @param dz
-	 *           the distance to move this point along the Z axis
+	 *            the distance to move this point along the Z axis
 	 * 
 	 * @return the {@code Point3D} with the translated coordinates
 	 */
@@ -85,7 +85,7 @@ public class Point3D implements YMLSerializable {
 	 * coordinate values.
 	 * 
 	 * @param point
-	 *           the {@code Point3D} to compare the coordinates to
+	 *            the {@code Point3D} to compare the coordinates to
 	 * 
 	 * @return the distance between this point and the specific {@code Point3D}
 	 */
@@ -101,11 +101,11 @@ public class Point3D implements YMLSerializable {
 	 * coordinate values.
 	 * 
 	 * @param x
-	 *           the X coordinate of the coordinates to compare
+	 *            the X coordinate of the coordinates to compare
 	 * @param y
-	 *           the Y coordinate of the coordinates to compare
+	 *            the Y coordinate of the coordinates to compare
 	 * @param z
-	 *           the Z coordinate of the coordinates to compare
+	 *            the Z coordinate of the coordinates to compare
 	 * 
 	 * @return the distance between this point and the specific coordinates
 	 */
@@ -114,12 +114,12 @@ public class Point3D implements YMLSerializable {
 	}
 
 	/**
-	 * Determines whether or not three coordinates are equal. Two instances of {@code Point3D} are
-	 * equal if the coordinate values of their {@code code x}, {@code y}, and {@code z} member
-	 * fields, representing their position in the coordinate space, are the same.
+	 * Determines whether or not three coordinates are equal. Two instances of {@code Point3D} are equal
+	 * if the coordinate values of their {@code code x}, {@code y}, and {@code z} member fields,
+	 * representing their position in the coordinate space, are the same.
 	 * 
 	 * @param obj
-	 *           an object to be compared with this {@code Point3D}
+	 *            an object to be compared with this {@code Point3D}
 	 * 
 	 * @return {@code true} if the object compared is an instance of {@code Point3D} and has the same
 	 *         values; return {@code false} otherwise
@@ -134,6 +134,7 @@ public class Point3D implements YMLSerializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see util.yaml.YMLSerializable#serialize()
 	 */
 	public ConfigSection serialize() {
@@ -146,6 +147,7 @@ public class Point3D implements YMLSerializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see util.yaml.YMLSerializable#deserialize(util.yaml.ConfigSection)
 	 */
 	public void deserialize(ConfigSection section) {
@@ -156,6 +158,7 @@ public class Point3D implements YMLSerializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
@@ -164,9 +167,11 @@ public class Point3D implements YMLSerializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
 		return Objects.hash(x, y, z);
 	}
+
 }

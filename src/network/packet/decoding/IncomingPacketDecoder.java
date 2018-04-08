@@ -32,14 +32,14 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 	private final RawHandler handler;
 
 	/**
-	 * Constructs a new {@code IncomingPacketDecoder} with a specified {@code ConnectionHolder} as
-	 * the holder of the {@code Connection}.
+	 * Constructs a new {@code IncomingPacketDecoder} with a specified {@code ConnectionHolder} as the
+	 * holder of the {@code Connection}.
 	 * 
 	 * @param handler
-	 *           the {@code RawHandler} used to get to this decoding process
+	 *            the {@code RawHandler} used to get to this decoding process
 	 * 
 	 * @param holder
-	 *           the holder of the {@code Connection}.
+	 *            the holder of the {@code Connection}.
 	 */
 	public IncomingPacketDecoder(RawHandler handler, ConnectionHolder holder) {
 		this.handler = handler;
@@ -51,11 +51,11 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 	 * {@code DecodedPacket} for easier reading.
 	 * 
 	 * @param ctx
-	 *           The context of the channel handler
+	 *            The context of the channel handler
 	 * @param in
-	 *           The incoming bytes
+	 *            The incoming bytes
 	 * @param out
-	 *           The outgoing bytes
+	 *            The outgoing bytes
 	 */
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		if (in.isReadable()) {

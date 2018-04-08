@@ -15,15 +15,15 @@ public final class ArrayUtil {
 	private static Random r = new Random();
 
 	/**
-	 * Creates an array starting from the specified {@code start} argument and ending at the
-	 * {@code end} argument incrementing at the specified {@code increment} argument.
+	 * Creates an array starting from the specified {@code start} argument and ending at the {@code end}
+	 * argument incrementing at the specified {@code increment} argument.
 	 * 
 	 * @param start
-	 *           the starting value
+	 *            the starting value
 	 * @param end
-	 *           the ending value
+	 *            the ending value
 	 * @param increment
-	 *           the value to increment by
+	 *            the value to increment by
 	 * @return an array filled with the values ranging from start to end by the increment value
 	 */
 	public static double[] range(double start, double end, double increment) {
@@ -38,15 +38,15 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Creates an array starting from the specified {@code start} argument and ending at the
-	 * {@code end} argument incrementing at the specified {@code increment} argument.
+	 * Creates an array starting from the specified {@code start} argument and ending at the {@code end}
+	 * argument incrementing at the specified {@code increment} argument.
 	 * 
 	 * @param start
-	 *           the starting value
+	 *            the starting value
 	 * @param end
-	 *           the ending value
+	 *            the ending value
 	 * @param increment
-	 *           the value to increment by
+	 *            the value to increment by
 	 * @return an array filled with the values ranging from start to end by the increment value
 	 */
 	public static int[] range(int start, int end, int increment) {
@@ -61,15 +61,15 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Creates an array starting from the specified {@code start} argument and ending at the
-	 * {@code end} argument incrementing at the specified {@code increment} argument.
+	 * Creates an array starting from the specified {@code start} argument and ending at the {@code end}
+	 * argument incrementing at the specified {@code increment} argument.
 	 * 
 	 * @param start
-	 *           the starting value
+	 *            the starting value
 	 * @param end
-	 *           the ending value
+	 *            the ending value
 	 * @param increment
-	 *           the value to increment by
+	 *            the value to increment by
 	 * @return an array filled with the values ranging from start to end by the increment value
 	 */
 	public static float[] range(float start, float end, float increment) {
@@ -84,15 +84,15 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Creates an array starting from the specified {@code start} argument and ending at the
-	 * {@code end} argument incrementing at the specified {@code increment} argument.
+	 * Creates an array starting from the specified {@code start} argument and ending at the {@code end}
+	 * argument incrementing at the specified {@code increment} argument.
 	 * 
 	 * @param start
-	 *           the starting value
+	 *            the starting value
 	 * @param end
-	 *           the ending value
+	 *            the ending value
 	 * @param increment
-	 *           the value to increment by
+	 *            the value to increment by
 	 * @return an array filled with the values ranging from start to end by the increment value
 	 */
 	public static short[] range(short start, short end, short increment) {
@@ -107,15 +107,15 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Creates an array starting from the specified {@code start} argument and ending at the
-	 * {@code end} argument incrementing at the specified {@code increment} argument.
+	 * Creates an array starting from the specified {@code start} argument and ending at the {@code end}
+	 * argument incrementing at the specified {@code increment} argument.
 	 * 
 	 * @param start
-	 *           the starting value
+	 *            the starting value
 	 * @param end
-	 *           the ending value
+	 *            the ending value
 	 * @param increment
-	 *           the value to increment by
+	 *            the value to increment by
 	 * @return an array filled with the values ranging from start to end by the increment value
 	 */
 	public static long[] range(long start, long end, long increment) {
@@ -130,15 +130,15 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Creates an array starting from the specified {@code start} argument and ending at the
-	 * {@code end} argument incrementing at the specified {@code increment} argument.
+	 * Creates an array starting from the specified {@code start} argument and ending at the {@code end}
+	 * argument incrementing at the specified {@code increment} argument.
 	 * 
 	 * @param start
-	 *           the starting value
+	 *            the starting value
 	 * @param end
-	 *           the ending value
+	 *            the ending value
 	 * @param increment
-	 *           the value to increment by
+	 *            the value to increment by
 	 * @return an array filled with the values ranging from start to end by the increment value
 	 */
 	public static byte[] range(byte start, byte end, byte increment) {
@@ -156,7 +156,7 @@ public final class ArrayUtil {
 	 * Shuffles the elements within the specified {@code Array}.
 	 * 
 	 * @param a
-	 *           the array to shuffle
+	 *            the array to shuffle
 	 * @return the shuffled array
 	 */
 	public static <T> void shuffle(T[] a) {
@@ -168,7 +168,7 @@ public final class ArrayUtil {
 	 * Shuffles the elements within the specified {@code Array}.
 	 * 
 	 * @param a
-	 *           the array to shuffle
+	 *            the array to shuffle
 	 * @return the shuffled array
 	 */
 	public static void shuffle(int[] a) {
@@ -180,7 +180,7 @@ public final class ArrayUtil {
 	 * Shuffles the elements within the specified {@code Array}.
 	 * 
 	 * @param a
-	 *           the array to shuffle
+	 *            the array to shuffle
 	 * @return the shuffled array
 	 */
 	public static void shuffle(short[] a) {
@@ -192,7 +192,7 @@ public final class ArrayUtil {
 	 * Shuffles the elements within the specified {@code Array}.
 	 * 
 	 * @param a
-	 *           the array to shuffle
+	 *            the array to shuffle
 	 * @return the shuffled array
 	 */
 	public static void shuffle(float[] a) {
@@ -204,7 +204,7 @@ public final class ArrayUtil {
 	 * Shuffles the elements within the specified {@code Array}.
 	 * 
 	 * @param a
-	 *           the array to shuffle
+	 *            the array to shuffle
 	 * @return the shuffled array
 	 */
 	public static void shuffle(byte[] a) {
@@ -216,7 +216,7 @@ public final class ArrayUtil {
 	 * Shuffles the elements within the specified {@code Array}.
 	 * 
 	 * @param a
-	 *           the array to shuffle
+	 *            the array to shuffle
 	 * @return the shuffled array
 	 */
 	public static void shuffle(boolean[] a) {
@@ -228,7 +228,7 @@ public final class ArrayUtil {
 	 * Shuffles the elements within the specified {@code Array}.
 	 * 
 	 * @param a
-	 *           the array to shuffle
+	 *            the array to shuffle
 	 * @return the shuffled array
 	 */
 	public static void shuffle(long[] a) {
@@ -240,7 +240,7 @@ public final class ArrayUtil {
 	 * Shuffles the elements within the specified {@code Array}.
 	 * 
 	 * @param a
-	 *           the array to shuffle
+	 *            the array to shuffle
 	 * @return the shuffled array
 	 */
 	public static void shuffle(double[] a) {
@@ -252,7 +252,7 @@ public final class ArrayUtil {
 	 * Shuffles the elements within the specified {@code Array}.
 	 * 
 	 * @param a
-	 *           the array to shuffle
+	 *            the array to shuffle
 	 * @return the shuffled array
 	 */
 	public static void shuffle(char[] a) {
@@ -264,11 +264,11 @@ public final class ArrayUtil {
 	 * Swaps the specified indicies {@code i} and {@code j} in the specified array.
 	 * 
 	 * @param i
-	 *           the first index to swap
+	 *            the first index to swap
 	 * @param j
-	 *           the second index to swap
+	 *            the second index to swap
 	 * @param a
-	 *           the array to swap the indicies
+	 *            the array to swap the indicies
 	 */
 	public static <T> void swap(int i, int j, T[] a) {
 		T old = a[i];
@@ -280,11 +280,11 @@ public final class ArrayUtil {
 	 * Swaps the specified indicies {@code i} and {@code j} in the specified array.
 	 * 
 	 * @param i
-	 *           the first index to swap
+	 *            the first index to swap
 	 * @param j
-	 *           the second index to swap
+	 *            the second index to swap
 	 * @param a
-	 *           the array to swap the indicies
+	 *            the array to swap the indicies
 	 */
 	public static void swap(int i, int j, int[] a) {
 		int old = a[i];
@@ -296,11 +296,11 @@ public final class ArrayUtil {
 	 * Swaps the specified indicies {@code i} and {@code j} in the specified array.
 	 * 
 	 * @param i
-	 *           the first index to swap
+	 *            the first index to swap
 	 * @param j
-	 *           the second index to swap
+	 *            the second index to swap
 	 * @param a
-	 *           the array to swap the indicies
+	 *            the array to swap the indicies
 	 */
 	public static void swap(int i, int j, short[] a) {
 		short old = a[i];
@@ -312,11 +312,11 @@ public final class ArrayUtil {
 	 * Swaps the specified indicies {@code i} and {@code j} in the specified array.
 	 * 
 	 * @param i
-	 *           the first index to swap
+	 *            the first index to swap
 	 * @param j
-	 *           the second index to swap
+	 *            the second index to swap
 	 * @param a
-	 *           the array to swap the indicies
+	 *            the array to swap the indicies
 	 */
 	public static void swap(int i, int j, float[] a) {
 		float old = a[i];
@@ -328,11 +328,11 @@ public final class ArrayUtil {
 	 * Swaps the specified indicies {@code i} and {@code j} in the specified array.
 	 * 
 	 * @param i
-	 *           the first index to swap
+	 *            the first index to swap
 	 * @param j
-	 *           the second index to swap
+	 *            the second index to swap
 	 * @param a
-	 *           the array to swap the indicies
+	 *            the array to swap the indicies
 	 */
 	public static void swap(int i, int j, byte[] a) {
 		byte old = a[i];
@@ -344,11 +344,11 @@ public final class ArrayUtil {
 	 * Swaps the specified indicies {@code i} and {@code j} in the specified array.
 	 * 
 	 * @param i
-	 *           the first index to swap
+	 *            the first index to swap
 	 * @param j
-	 *           the second index to swap
+	 *            the second index to swap
 	 * @param a
-	 *           the array to swap the indicies
+	 *            the array to swap the indicies
 	 */
 	public static void swap(int i, int j, boolean[] a) {
 		boolean old = a[i];
@@ -360,11 +360,11 @@ public final class ArrayUtil {
 	 * Swaps the specified indicies {@code i} and {@code j} in the specified array.
 	 * 
 	 * @param i
-	 *           the first index to swap
+	 *            the first index to swap
 	 * @param j
-	 *           the second index to swap
+	 *            the second index to swap
 	 * @param a
-	 *           the array to swap the indicies
+	 *            the array to swap the indicies
 	 */
 	public static void swap(int i, int j, long[] a) {
 		long old = a[i];
@@ -376,11 +376,11 @@ public final class ArrayUtil {
 	 * Swaps the specified indicies {@code i} and {@code j} in the specified array.
 	 * 
 	 * @param i
-	 *           the first index to swap
+	 *            the first index to swap
 	 * @param j
-	 *           the second index to swap
+	 *            the second index to swap
 	 * @param a
-	 *           the array to swap the indicies
+	 *            the array to swap the indicies
 	 */
 	public static void swap(int i, int j, double[] a) {
 		double old = a[i];
@@ -392,11 +392,11 @@ public final class ArrayUtil {
 	 * Swaps the specified indicies {@code i} and {@code j} in the specified array.
 	 * 
 	 * @param i
-	 *           the first index to swap
+	 *            the first index to swap
 	 * @param j
-	 *           the second index to swap
+	 *            the second index to swap
 	 * @param a
-	 *           the array to swap the indicies
+	 *            the array to swap the indicies
 	 */
 	public static void swap(int i, int j, char[] a) {
 		char old = a[i];
@@ -409,9 +409,9 @@ public final class ArrayUtil {
 	 * specified {@code equals} filter to check if a type is similar.
 	 * 
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @param t
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the array contains the specified type; return false otherwise
 	 */
 	public static <T> boolean contains(T t, T[] a, Predicate<T> equals) {
@@ -426,9 +426,9 @@ public final class ArrayUtil {
 	 * returned otherwise.
 	 * 
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @param t
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the array contains the specified type; return false otherwise
 	 */
 	public static <T> boolean contains(T t, T[] a) {
@@ -443,9 +443,9 @@ public final class ArrayUtil {
 	 * returned otherwise.
 	 * 
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @param t
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the array contains the specified type; return false otherwise
 	 */
 	public static boolean contains(int t, int[] a) {
@@ -460,9 +460,9 @@ public final class ArrayUtil {
 	 * returned otherwise.
 	 * 
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @param t
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the array contains the specified type; return false otherwise
 	 */
 	public static boolean contains(short t, short[] a) {
@@ -477,9 +477,9 @@ public final class ArrayUtil {
 	 * returned otherwise.
 	 * 
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @param t
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the array contains the specified type; return false otherwise
 	 */
 	public static boolean contains(double t, double[] a) {
@@ -494,9 +494,9 @@ public final class ArrayUtil {
 	 * returned otherwise.
 	 * 
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @param t
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the array contains the specified type; return false otherwise
 	 */
 	public static boolean contains(float t, float[] a) {
@@ -511,9 +511,9 @@ public final class ArrayUtil {
 	 * returned otherwise.
 	 * 
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @param t
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the array contains the specified type; return false otherwise
 	 */
 	public static boolean contains(byte t, byte[] a) {
@@ -528,9 +528,9 @@ public final class ArrayUtil {
 	 * returned otherwise.
 	 * 
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @param t
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the array contains the specified type; return false otherwise
 	 */
 	public static boolean contains(char t, char[] a) {
@@ -545,9 +545,9 @@ public final class ArrayUtil {
 	 * returned otherwise.
 	 * 
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @param t
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the array contains the specified type; return false otherwise
 	 */
 	public static boolean contains(long t, long[] a) {
@@ -562,9 +562,9 @@ public final class ArrayUtil {
 	 * returned otherwise.
 	 * 
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @param t
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the array contains the specified type; return false otherwise
 	 */
 	public static boolean contains(boolean t, boolean[] a) {
@@ -579,9 +579,9 @@ public final class ArrayUtil {
 	 * there is no index, -1 is returned instead.
 	 * 
 	 * @param o
-	 *           the value to search for
+	 *            the value to search for
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @return the index of the value; return -1 otherwise
 	 */
 	public static <T> int indexOf(T o, T[] a) {
@@ -596,9 +596,9 @@ public final class ArrayUtil {
 	 * there is no index, -1 is returned instead.
 	 * 
 	 * @param o
-	 *           the value to search for
+	 *            the value to search for
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @return the index of the value; return -1 otherwise
 	 */
 	public static int indexOf(int o, int[] a) {
@@ -613,9 +613,9 @@ public final class ArrayUtil {
 	 * there is no index, -1 is returned instead.
 	 * 
 	 * @param o
-	 *           the value to search for
+	 *            the value to search for
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @return the index of the value; return -1 otherwise
 	 */
 	public static int indexOf(short o, short[] a) {
@@ -630,9 +630,9 @@ public final class ArrayUtil {
 	 * there is no index, -1 is returned instead.
 	 * 
 	 * @param o
-	 *           the value to search for
+	 *            the value to search for
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @return the index of the value; return -1 otherwise
 	 */
 	public static int indexOf(byte o, byte[] a) {
@@ -647,9 +647,9 @@ public final class ArrayUtil {
 	 * there is no index, -1 is returned instead.
 	 * 
 	 * @param o
-	 *           the value to search for
+	 *            the value to search for
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @return the index of the value; return -1 otherwise
 	 */
 	public static int indexOf(float o, float[] a) {
@@ -664,9 +664,9 @@ public final class ArrayUtil {
 	 * there is no index, -1 is returned instead.
 	 * 
 	 * @param o
-	 *           the value to search for
+	 *            the value to search for
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @return the index of the value; return -1 otherwise
 	 */
 	public static int indexOf(double o, double[] a) {
@@ -681,9 +681,9 @@ public final class ArrayUtil {
 	 * there is no index, -1 is returned instead.
 	 * 
 	 * @param o
-	 *           the value to search for
+	 *            the value to search for
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @return the index of the value; return -1 otherwise
 	 */
 	public static int indexOf(long o, long[] a) {
@@ -698,9 +698,9 @@ public final class ArrayUtil {
 	 * there is no index, -1 is returned instead.
 	 * 
 	 * @param o
-	 *           the value to search for
+	 *            the value to search for
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @return the index of the value; return -1 otherwise
 	 */
 	public static int indexOf(char o, char[] a) {
@@ -715,9 +715,9 @@ public final class ArrayUtil {
 	 * there is no index, -1 is returned instead.
 	 * 
 	 * @param o
-	 *           the value to search for
+	 *            the value to search for
 	 * @param a
-	 *           the array to search
+	 *            the array to search
 	 * @return the index of the value; return -1 otherwise
 	 */
 	public static int indexOf(boolean o, boolean[] a) {
@@ -728,13 +728,12 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code index} removed from the specified
-	 * {@code a}.
+	 * Returns the {@code Array} with the specified {@code index} removed from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the index from
+	 *            the array to remove the index from
 	 * @param index
-	 *           the index to remove
+	 *            the index to remove
 	 * @return the array with the removed index
 	 */
 	public static <T> T[] removeIndex(T[] a, int index) {
@@ -745,13 +744,12 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code index} removed from the specified
-	 * {@code a}.
+	 * Returns the {@code Array} with the specified {@code index} removed from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the index from
+	 *            the array to remove the index from
 	 * @param index
-	 *           the index to remove
+	 *            the index to remove
 	 * @return the array with the removed index
 	 */
 	public static byte[] removeIndex(byte[] a, int index) {
@@ -762,13 +760,12 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code index} removed from the specified
-	 * {@code a}.
+	 * Returns the {@code Array} with the specified {@code index} removed from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the index from
+	 *            the array to remove the index from
 	 * @param index
-	 *           the index to remove
+	 *            the index to remove
 	 * @return the array with the removed index
 	 */
 	public static int[] removeIndex(int[] a, int index) {
@@ -779,13 +776,12 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code index} removed from the specified
-	 * {@code a}.
+	 * Returns the {@code Array} with the specified {@code index} removed from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the index from
+	 *            the array to remove the index from
 	 * @param index
-	 *           the index to remove
+	 *            the index to remove
 	 * @return the array with the removed index
 	 */
 	public static short[] removeIndex(short[] a, int index) {
@@ -796,13 +792,12 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code index} removed from the specified
-	 * {@code a}.
+	 * Returns the {@code Array} with the specified {@code index} removed from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the index from
+	 *            the array to remove the index from
 	 * @param index
-	 *           the index to remove
+	 *            the index to remove
 	 * @return the array with the removed index
 	 */
 	public static long[] removeIndex(long[] a, int index) {
@@ -813,13 +808,12 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code index} removed from the specified
-	 * {@code a}.
+	 * Returns the {@code Array} with the specified {@code index} removed from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the index from
+	 *            the array to remove the index from
 	 * @param index
-	 *           the index to remove
+	 *            the index to remove
 	 * @return the array with the removed index
 	 */
 	public static float[] removeIndex(float[] a, int index) {
@@ -830,13 +824,12 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code index} removed from the specified
-	 * {@code a}.
+	 * Returns the {@code Array} with the specified {@code index} removed from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the index from
+	 *            the array to remove the index from
 	 * @param index
-	 *           the index to remove
+	 *            the index to remove
 	 * @return the array with the removed index
 	 */
 	public static double[] removeIndex(double[] a, int index) {
@@ -847,13 +840,12 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code index} removed from the specified
-	 * {@code a}.
+	 * Returns the {@code Array} with the specified {@code index} removed from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the index from
+	 *            the array to remove the index from
 	 * @param index
-	 *           the index to remove
+	 *            the index to remove
 	 * @return the array with the removed index
 	 */
 	public static char[] removeIndex(char[] a, int index) {
@@ -864,13 +856,12 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code index} removed from the specified
-	 * {@code a}.
+	 * Returns the {@code Array} with the specified {@code index} removed from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the index from
+	 *            the array to remove the index from
 	 * @param index
-	 *           the index to remove
+	 *            the index to remove
 	 * @return the array with the removed index
 	 */
 	public static boolean[] removeIndex(boolean[] a, int index) {
@@ -885,9 +876,9 @@ public final class ArrayUtil {
 	 * {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the element from
+	 *            the array to remove the element from
 	 * @param element
-	 *           the element to remove
+	 *            the element to remove
 	 * @return the array with the removed element
 	 */
 	public static <T> T[] removeElement(T[] a, T element) {
@@ -899,9 +890,9 @@ public final class ArrayUtil {
 	 * {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the element from
+	 *            the array to remove the element from
 	 * @param element
-	 *           the element to remove
+	 *            the element to remove
 	 * @return the array with the removed element
 	 */
 	public static boolean[] removeElement(boolean[] a, boolean element) {
@@ -913,9 +904,9 @@ public final class ArrayUtil {
 	 * {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the element from
+	 *            the array to remove the element from
 	 * @param element
-	 *           the element to remove
+	 *            the element to remove
 	 * @return the array with the removed element
 	 */
 	public static byte[] removeElement(byte[] a, byte element) {
@@ -927,9 +918,9 @@ public final class ArrayUtil {
 	 * {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the element from
+	 *            the array to remove the element from
 	 * @param element
-	 *           the element to remove
+	 *            the element to remove
 	 * @return the array with the removed element
 	 */
 	public static char[] removeElement(char[] a, char element) {
@@ -941,9 +932,9 @@ public final class ArrayUtil {
 	 * {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the element from
+	 *            the array to remove the element from
 	 * @param element
-	 *           the element to remove
+	 *            the element to remove
 	 * @return the array with the removed element
 	 */
 	public static float[] removeElement(float[] a, float element) {
@@ -955,9 +946,9 @@ public final class ArrayUtil {
 	 * {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the element from
+	 *            the array to remove the element from
 	 * @param element
-	 *           the element to remove
+	 *            the element to remove
 	 * @return the array with the removed element
 	 */
 	public static double[] removeElement(double[] a, double element) {
@@ -969,9 +960,9 @@ public final class ArrayUtil {
 	 * {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the element from
+	 *            the array to remove the element from
 	 * @param element
-	 *           the element to remove
+	 *            the element to remove
 	 * @return the array with the removed element
 	 */
 	public static long[] removeElement(long[] a, long element) {
@@ -983,9 +974,9 @@ public final class ArrayUtil {
 	 * {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the element from
+	 *            the array to remove the element from
 	 * @param element
-	 *           the element to remove
+	 *            the element to remove
 	 * @return the array with the removed element
 	 */
 	public static short[] removeElement(short[] a, short element) {
@@ -997,9 +988,9 @@ public final class ArrayUtil {
 	 * {@code a}.
 	 * 
 	 * @param a
-	 *           the array to remove the element from
+	 *            the array to remove the element from
 	 * @param element
-	 *           the element to remove
+	 *            the element to remove
 	 * @return the array with the removed element
 	 */
 	public static int[] removeElement(int[] a, int element) {
@@ -1007,13 +998,13 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the
-	 * specified {@code a}
+	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the specified
+	 * {@code a}
 	 * 
 	 * @param a
-	 *           the array to add the element to
+	 *            the array to add the element to
 	 * @param element
-	 *           the element to add
+	 *            the element to add
 	 * @return the array with the added element
 	 */
 	public static <T> T[] addElement(T[] a, T... element) {
@@ -1024,13 +1015,13 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the
-	 * specified {@code a}
+	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the specified
+	 * {@code a}
 	 * 
 	 * @param a
-	 *           the array to add the element to
+	 *            the array to add the element to
 	 * @param element
-	 *           the element to add
+	 *            the element to add
 	 * @return the array with the added element
 	 */
 	public static int[] addElement(int[] a, int... element) {
@@ -1041,13 +1032,13 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the
-	 * specified {@code a}
+	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the specified
+	 * {@code a}
 	 * 
 	 * @param a
-	 *           the array to add the element to
+	 *            the array to add the element to
 	 * @param element
-	 *           the element to add
+	 *            the element to add
 	 * @return the array with the added element
 	 */
 	public static short[] addElement(short[] a, short... element) {
@@ -1058,13 +1049,13 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the
-	 * specified {@code a}
+	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the specified
+	 * {@code a}
 	 * 
 	 * @param a
-	 *           the array to add the element to
+	 *            the array to add the element to
 	 * @param element
-	 *           the element to add
+	 *            the element to add
 	 * @return the array with the added element
 	 */
 	public static long[] addElement(long[] a, long... element) {
@@ -1075,13 +1066,13 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the
-	 * specified {@code a}
+	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the specified
+	 * {@code a}
 	 * 
 	 * @param a
-	 *           the array to add the element to
+	 *            the array to add the element to
 	 * @param element
-	 *           the element to add
+	 *            the element to add
 	 * @return the array with the added element
 	 */
 	public static float[] addElement(float[] a, float... element) {
@@ -1092,13 +1083,13 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the
-	 * specified {@code a}
+	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the specified
+	 * {@code a}
 	 * 
 	 * @param a
-	 *           the array to add the element to
+	 *            the array to add the element to
 	 * @param element
-	 *           the element to add
+	 *            the element to add
 	 * @return the array with the added element
 	 */
 	public static double[] addElement(double[] a, double... element) {
@@ -1109,13 +1100,13 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the
-	 * specified {@code a}
+	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the specified
+	 * {@code a}
 	 * 
 	 * @param a
-	 *           the array to add the element to
+	 *            the array to add the element to
 	 * @param element
-	 *           the element to add
+	 *            the element to add
 	 * @return the array with the added element
 	 */
 	public static byte[] addElement(byte[] a, byte... element) {
@@ -1126,13 +1117,13 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the
-	 * specified {@code a}
+	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the specified
+	 * {@code a}
 	 * 
 	 * @param a
-	 *           the array to add the element to
+	 *            the array to add the element to
 	 * @param element
-	 *           the element to add
+	 *            the element to add
 	 * @return the array with the added element
 	 */
 	public static char[] addElement(char[] a, char... element) {
@@ -1143,13 +1134,13 @@ public final class ArrayUtil {
 	}
 
 	/**
-	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the
-	 * specified {@code a}
+	 * Returns the {@code Array} with the specified {@code element} inserted at the end of the specified
+	 * {@code a}
 	 * 
 	 * @param a
-	 *           the array to add the element to
+	 *            the array to add the element to
 	 * @param element
-	 *           the element to add
+	 *            the element to add
 	 * @return the array with the added element
 	 */
 	public static boolean[] addElement(boolean[] a, boolean... element) {
@@ -1164,11 +1155,11 @@ public final class ArrayUtil {
 	 * {@code index} of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to insert the element to
+	 *            the array to insert the element to
 	 * @param index
-	 *           the index to insert the element at
+	 *            the index to insert the element at
 	 * @param element
-	 *           the element to insert
+	 *            the element to insert
 	 * @return the array with the inserted element
 	 */
 	public static <T> T[] insertElement(T[] a, int index, T element) {
@@ -1183,11 +1174,11 @@ public final class ArrayUtil {
 	 * {@code index} of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to insert the element to
+	 *            the array to insert the element to
 	 * @param index
-	 *           the index to insert the element at
+	 *            the index to insert the element at
 	 * @param element
-	 *           the element to insert
+	 *            the element to insert
 	 * @return the array with the inserted element
 	 */
 	public static int[] insertElement(int[] a, int index, int element) {
@@ -1202,11 +1193,11 @@ public final class ArrayUtil {
 	 * {@code index} of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to insert the element to
+	 *            the array to insert the element to
 	 * @param index
-	 *           the index to insert the element at
+	 *            the index to insert the element at
 	 * @param element
-	 *           the element to insert
+	 *            the element to insert
 	 * @return the array with the inserted element
 	 */
 	public static long[] insertElement(long[] a, int index, long element) {
@@ -1221,11 +1212,11 @@ public final class ArrayUtil {
 	 * {@code index} of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to insert the element to
+	 *            the array to insert the element to
 	 * @param index
-	 *           the index to insert the element at
+	 *            the index to insert the element at
 	 * @param element
-	 *           the element to insert
+	 *            the element to insert
 	 * @return the array with the inserted element
 	 */
 	public static short[] insertElement(short[] a, int index, short element) {
@@ -1240,11 +1231,11 @@ public final class ArrayUtil {
 	 * {@code index} of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to insert the element to
+	 *            the array to insert the element to
 	 * @param index
-	 *           the index to insert the element at
+	 *            the index to insert the element at
 	 * @param element
-	 *           the element to insert
+	 *            the element to insert
 	 * @return the array with the inserted element
 	 */
 	public static byte[] insertElement(byte[] a, int index, byte element) {
@@ -1259,11 +1250,11 @@ public final class ArrayUtil {
 	 * {@code index} of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to insert the element to
+	 *            the array to insert the element to
 	 * @param index
-	 *           the index to insert the element at
+	 *            the index to insert the element at
 	 * @param element
-	 *           the element to insert
+	 *            the element to insert
 	 * @return the array with the inserted element
 	 */
 	public static char[] insertElement(char[] a, int index, char element) {
@@ -1278,11 +1269,11 @@ public final class ArrayUtil {
 	 * {@code index} of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to insert the element to
+	 *            the array to insert the element to
 	 * @param index
-	 *           the index to insert the element at
+	 *            the index to insert the element at
 	 * @param element
-	 *           the element to insert
+	 *            the element to insert
 	 * @return the array with the inserted element
 	 */
 	public static float[] insertElement(float[] a, int index, float element) {
@@ -1297,11 +1288,11 @@ public final class ArrayUtil {
 	 * {@code index} of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to insert the element to
+	 *            the array to insert the element to
 	 * @param index
-	 *           the index to insert the element at
+	 *            the index to insert the element at
 	 * @param element
-	 *           the element to insert
+	 *            the element to insert
 	 * @return the array with the inserted element
 	 */
 	public static double[] insertElement(double[] a, int index, double element) {
@@ -1316,11 +1307,11 @@ public final class ArrayUtil {
 	 * {@code index} of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to insert the element to
+	 *            the array to insert the element to
 	 * @param index
-	 *           the index to insert the element at
+	 *            the index to insert the element at
 	 * @param element
-	 *           the element to insert
+	 *            the element to insert
 	 * @return the array with the inserted element
 	 */
 	public static boolean[] insertElement(boolean[] a, int index, boolean element) {
@@ -1334,7 +1325,7 @@ public final class ArrayUtil {
 	 * Returns a pseudorandom element from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to retrieve the pseudorandomly retrieved element from
+	 *            the array to retrieve the pseudorandomly retrieved element from
 	 * @return the pseudorandomly retrieved element
 	 */
 	public static <T> T randomElement(T[] a) {
@@ -1345,7 +1336,7 @@ public final class ArrayUtil {
 	 * Returns a pseudorandom element from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to retrieve the pseudorandomly retrieved element from
+	 *            the array to retrieve the pseudorandomly retrieved element from
 	 * @return the pseudorandomly retrieved element
 	 */
 	public static int randomElement(int[] a) {
@@ -1356,7 +1347,7 @@ public final class ArrayUtil {
 	 * Returns a pseudorandom element from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to retrieve the pseudorandomly retrieved element from
+	 *            the array to retrieve the pseudorandomly retrieved element from
 	 * @return the pseudorandomly retrieved element
 	 */
 	public static short randomElement(short[] a) {
@@ -1367,7 +1358,7 @@ public final class ArrayUtil {
 	 * Returns a pseudorandom element from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to retrieve the pseudorandomly retrieved element from
+	 *            the array to retrieve the pseudorandomly retrieved element from
 	 * @return the pseudorandomly retrieved element
 	 */
 	public static long randomElement(long[] a) {
@@ -1378,7 +1369,7 @@ public final class ArrayUtil {
 	 * Returns a pseudorandom element from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to retrieve the pseudorandomly retrieved element from
+	 *            the array to retrieve the pseudorandomly retrieved element from
 	 * @return the pseudorandomly retrieved element
 	 */
 	public static byte randomElement(byte[] a) {
@@ -1389,7 +1380,7 @@ public final class ArrayUtil {
 	 * Returns a pseudorandom element from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to retrieve the pseudorandomly retrieved element from
+	 *            the array to retrieve the pseudorandomly retrieved element from
 	 * @return the pseudorandomly retrieved element
 	 */
 	public static float randomElement(float[] a) {
@@ -1400,7 +1391,7 @@ public final class ArrayUtil {
 	 * Returns a pseudorandom element from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to retrieve the pseudorandomly retrieved element from
+	 *            the array to retrieve the pseudorandomly retrieved element from
 	 * @return the pseudorandomly retrieved element
 	 */
 	public static double randomElement(double[] a) {
@@ -1411,7 +1402,7 @@ public final class ArrayUtil {
 	 * Returns a pseudorandom element from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to retrieve the pseudorandomly retrieved element from
+	 *            the array to retrieve the pseudorandomly retrieved element from
 	 * @return the pseudorandomly retrieved element
 	 */
 	public static char randomElement(char[] a) {
@@ -1422,7 +1413,7 @@ public final class ArrayUtil {
 	 * Returns a pseudorandom element from the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to retrieve the pseudorandomly retrieved element from
+	 *            the array to retrieve the pseudorandomly retrieved element from
 	 * @return the pseudorandomly retrieved element
 	 */
 	public static boolean randomElement(boolean[] a) {
@@ -1433,7 +1424,7 @@ public final class ArrayUtil {
 	 * Reverses the elements of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to reverse
+	 *            the array to reverse
 	 * @return the reversed array
 	 */
 	public static <T> T[] reverse(T[] a) {
@@ -1447,7 +1438,7 @@ public final class ArrayUtil {
 	 * Reverses the elements of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to reverse
+	 *            the array to reverse
 	 * @return the reversed array
 	 */
 	public static int[] reverse(int[] a) {
@@ -1461,7 +1452,7 @@ public final class ArrayUtil {
 	 * Reverses the elements of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to reverse
+	 *            the array to reverse
 	 * @return the reversed array
 	 */
 	public static short[] reverse(short[] a) {
@@ -1475,7 +1466,7 @@ public final class ArrayUtil {
 	 * Reverses the elements of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to reverse
+	 *            the array to reverse
 	 * @return the reversed array
 	 */
 	public static long[] reverse(long[] a) {
@@ -1489,7 +1480,7 @@ public final class ArrayUtil {
 	 * Reverses the elements of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to reverse
+	 *            the array to reverse
 	 * @return the reversed array
 	 */
 	public static byte[] reverse(byte[] a) {
@@ -1503,7 +1494,7 @@ public final class ArrayUtil {
 	 * Reverses the elements of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to reverse
+	 *            the array to reverse
 	 * @return the reversed array
 	 */
 	public static float[] reverse(float[] a) {
@@ -1517,7 +1508,7 @@ public final class ArrayUtil {
 	 * Reverses the elements of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to reverse
+	 *            the array to reverse
 	 * @return the reversed array
 	 */
 	public static double[] reverse(double[] a) {
@@ -1531,7 +1522,7 @@ public final class ArrayUtil {
 	 * Reverses the elements of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to reverse
+	 *            the array to reverse
 	 * @return the reversed array
 	 */
 	public static char[] reverse(char[] a) {
@@ -1545,7 +1536,7 @@ public final class ArrayUtil {
 	 * Reverses the elements of the specified {@code a}.
 	 * 
 	 * @param a
-	 *           the array to reverse
+	 *            the array to reverse
 	 * @return the reversed array
 	 */
 	public static boolean[] reverse(boolean[] a) {
@@ -1559,9 +1550,9 @@ public final class ArrayUtil {
 	 * Filters the specified {@code a} using the specified {@code predicate} for filtering.
 	 * 
 	 * @param a
-	 *           the array to filter
+	 *            the array to filter
 	 * @param predicate
-	 *           the predicate to use for filtering
+	 *            the predicate to use for filtering
 	 * @return the filtered array
 	 */
 	public static <T> T[] filter(T[] a, Predicate<T> predicate) {
@@ -1576,9 +1567,9 @@ public final class ArrayUtil {
 	 * Filters the specified {@code a} using the specified {@code predicate} for filtering.
 	 * 
 	 * @param a
-	 *           the array to filter
+	 *            the array to filter
 	 * @param predicate
-	 *           the predicate to use for filtering
+	 *            the predicate to use for filtering
 	 * @return the filtered array
 	 */
 	public static int[] filter(int[] a, Predicate<Integer> filter) {
@@ -1593,9 +1584,9 @@ public final class ArrayUtil {
 	 * Filters the specified {@code a} using the specified {@code predicate} for filtering.
 	 * 
 	 * @param a
-	 *           the array to filter
+	 *            the array to filter
 	 * @param predicate
-	 *           the predicate to use for filtering
+	 *            the predicate to use for filtering
 	 * @return the filtered array
 	 */
 	public static short[] filter(short[] a, Predicate<Short> filter) {
@@ -1610,9 +1601,9 @@ public final class ArrayUtil {
 	 * Filters the specified {@code a} using the specified {@code predicate} for filtering.
 	 * 
 	 * @param a
-	 *           the array to filter
+	 *            the array to filter
 	 * @param predicate
-	 *           the predicate to use for filtering
+	 *            the predicate to use for filtering
 	 * @return the filtered array
 	 */
 	public static long[] filter(long[] a, Predicate<Long> filter) {
@@ -1627,9 +1618,9 @@ public final class ArrayUtil {
 	 * Filters the specified {@code a} using the specified {@code predicate} for filtering.
 	 * 
 	 * @param a
-	 *           the array to filter
+	 *            the array to filter
 	 * @param predicate
-	 *           the predicate to use for filtering
+	 *            the predicate to use for filtering
 	 * @return the filtered array
 	 */
 	public static byte[] filter(byte[] a, Predicate<Byte> filter) {
@@ -1644,9 +1635,9 @@ public final class ArrayUtil {
 	 * Filters the specified {@code a} using the specified {@code predicate} for filtering.
 	 * 
 	 * @param a
-	 *           the array to filter
+	 *            the array to filter
 	 * @param predicate
-	 *           the predicate to use for filtering
+	 *            the predicate to use for filtering
 	 * @return the filtered array
 	 */
 	public static float[] filter(float[] a, Predicate<Float> filter) {
@@ -1661,9 +1652,9 @@ public final class ArrayUtil {
 	 * Filters the specified {@code a} using the specified {@code predicate} for filtering.
 	 * 
 	 * @param a
-	 *           the array to filter
+	 *            the array to filter
 	 * @param predicate
-	 *           the predicate to use for filtering
+	 *            the predicate to use for filtering
 	 * @return the filtered array
 	 */
 	public static double[] filter(double[] a, Predicate<Double> filter) {
@@ -1678,9 +1669,9 @@ public final class ArrayUtil {
 	 * Filters the specified {@code a} using the specified {@code predicate} for filtering.
 	 * 
 	 * @param a
-	 *           the array to filter
+	 *            the array to filter
 	 * @param predicate
-	 *           the predicate to use for filtering
+	 *            the predicate to use for filtering
 	 * @return the filtered array
 	 */
 	public static char[] filter(char[] a, Predicate<Character> filter) {
@@ -1695,9 +1686,9 @@ public final class ArrayUtil {
 	 * Filters the specified {@code a} using the specified {@code predicate} for filtering.
 	 * 
 	 * @param a
-	 *           the array to filter
+	 *            the array to filter
 	 * @param predicate
-	 *           the predicate to use for filtering
+	 *            the predicate to use for filtering
 	 * @return the filtered array
 	 */
 	public static boolean[] filter(boolean[] a, Predicate<Boolean> filter) {

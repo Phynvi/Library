@@ -23,8 +23,8 @@ public enum ActionState {
 	RUNNING,
 
 	/**
-	 * The finishing state of an {@code Action} that is called when the {@code Action} is "finishing
-	 * up" or finalizing things.
+	 * The finishing state of an {@code Action} that is called when the {@code Action} is "finishing up"
+	 * or finalizing things.
 	 */
 	FINISH,
 

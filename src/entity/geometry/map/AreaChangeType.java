@@ -14,8 +14,7 @@ public enum AreaChangeType {
 	TELEPORT,
 
 	/**
-	 * This {@code AreaChangeType} is used when an {@code Entity} has walked in/out of an
-	 * {@code Area}.
+	 * This {@code AreaChangeType} is used when an {@code Entity} has walked in/out of an {@code Area}.
 	 */
 	WALK,
 

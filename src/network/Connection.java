@@ -18,10 +18,10 @@ public class Connection {
 	 * with the specified {@code revision}.
 	 * 
 	 * @param channel
-	 *           the channel of this {@code Connection}.
+	 *            the channel of this {@code Connection}.
 	 * 
 	 * @param revision
-	 *           the revision of the server this connection is associated with
+	 *            the revision of the server this connection is associated with
 	 */
 	public Connection(Channel channel, int revision) {
 		this.channel = channel;
@@ -32,10 +32,10 @@ public class Connection {
 	 * Writes the specified {@code object} so it may be sent to the client.
 	 * 
 	 * @throws NullPointerException
-	 *            if the object is null
+	 *             if the object is null
 	 * 
 	 * @param object
-	 *           the object to write through this connection
+	 *            the object to write through this connection
 	 */
 	public void write(Object object) {
 		if (object == null)
@@ -65,7 +65,7 @@ public class Connection {
 	 * Sets the {@code Display} of this {@code Connection} to the specified argument.
 	 * 
 	 * @param display
-	 *           the display to set
+	 *            the display to set
 	 */
 	public void setDisplay(Display display) {
 		this.display = display;

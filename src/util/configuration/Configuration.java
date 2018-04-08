@@ -17,9 +17,9 @@ public class Configuration {
 	 * the {@code sections} objects as.
 	 * 
 	 * @param type
-	 *           the type of configuration to write
+	 *            the type of configuration to write
 	 * @param sections
-	 *           the objects that are configurable
+	 *            the objects that are configurable
 	 */
 	public Configuration(ConfigType type, ConfigSection sections) {
 		this.type = type;
@@ -35,7 +35,7 @@ public class Configuration {
 	 * return null;
 	 * 
 	 * @param key
-	 *           the key associated with the section
+	 *            the key associated with the section
 	 * @return the {@code ConfigSection} associated with the {@code key}; return null otherwise
 	 */
 	public ConfigSection getSection(Object key) {
@@ -44,13 +44,13 @@ public class Configuration {
 
 	/**
 	 * Retrieves the specific data relating to the {@code sectionKey} and {@code sectionLocation} if
-	 * they are existent and returns them casted as the specified {@code cast} class; null is
-	 * returned otherwise.
+	 * they are existent and returns them casted as the specified {@code cast} class; null is returned
+	 * otherwise.
 	 * 
 	 * @param sectionKey
-	 *           the key corresponding to the section
+	 *            the key corresponding to the section
 	 * @param sectionLocation
-	 *           the key corresponding to the location of the section
+	 *            the key corresponding to the location of the section
 	 * @return the data retrieved; return null otherwise
 	 */
 	@SuppressWarnings("unchecked")
@@ -68,8 +68,7 @@ public class Configuration {
 	}
 
 	/**
-	 * Returns a <b>new</b> {@code Map} of the configurable objects within this
-	 * {@code Configuration}.
+	 * Returns a <b>new</b> {@code Map} of the configurable objects within this {@code Configuration}.
 	 * 
 	 * @return the new map of configurable objects
 	 */

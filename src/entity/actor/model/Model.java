@@ -2,7 +2,7 @@ package entity.actor.model;
 
 import java.util.TreeSet;
 import entity.actor.Actor;
-import infrastructure.GlobalAttachments;
+import infrastructure.GlobalVariables;
 
 /**
  * @author Albert Beaupre
@@ -26,8 +26,8 @@ public abstract class Model {
 	}
 
 	/**
-	 * This method is used for updating any essential variables for this {@code Model} to use before
-	 * it is reset.
+	 * This method is used for updating any essential variables for this {@code Model} to use before it
+	 * is reset.
 	 */
 	public abstract void update();
 
@@ -48,7 +48,7 @@ public abstract class Model {
 	 * Registers the specified {@code mask} to be updated for this {@code Model}
 	 * 
 	 * @param mask
-	 *           the mask to register
+	 *            the mask to register
 	 */
 	public void registerMask(Mask mask) {
 		if ((maskData & mask.data()) != 0)
@@ -56,7 +56,7 @@ public abstract class Model {
 		maskData |= mask.data();
 		currentMasks.add(mask);
 
-		GlobalAttachments.getActorUpdator().setForUpdating(actor);
+		GlobalVariables.getActorUpdator().setForUpdating(actor);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public abstract class Model {
 	 * Checks if an update flag was registered.
 	 * 
 	 * @param data
-	 *           The mask data of the update flag.
+	 *            The mask data of the update flag.
 	 * @return {@code True} if the update flag was registered, {@code false} if not.
 	 */
 	public boolean activated(int data) {

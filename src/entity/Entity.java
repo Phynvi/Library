@@ -13,7 +13,7 @@ import entity.geometry.map.AreaChangeType;
 public abstract class Entity implements Locatable {
 
 	private ConfigSection temporary; // This value will be null until any
-												// temporary variables are set
+										// temporary variables are set
 	private Location location;
 	private int index;
 
@@ -41,7 +41,7 @@ public abstract class Entity implements Locatable {
 	 * </pre>
 	 * 
 	 * @param location
-	 *           the location to set this {@code Entity}
+	 *            the location to set this {@code Entity}
 	 */
 	public final void setLocation(Location location, AreaChangeType type) {
 		Location previousLocation = this.location;
@@ -64,7 +64,7 @@ public abstract class Entity implements Locatable {
 	 * </pre>
 	 * 
 	 * @param location
-	 *           the location to set this {@code Entity}
+	 *            the location to set this {@code Entity}
 	 */
 	public final void setLocation(Location location) {
 		this.setLocation(location, AreaChangeType.SERVER);
@@ -89,6 +89,7 @@ public abstract class Entity implements Locatable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see entity.geometry.Locatable#getLocation()
 	 */
 	public final Location getLocation() {
@@ -100,7 +101,7 @@ public abstract class Entity implements Locatable {
 	 * {@code text}.
 	 * 
 	 * @param text
-	 *           the text of the option
+	 *            the text of the option
 	 */
 	public final void selectOption(Entity interactor, String text) {
 		interactor.options.select(text, this);
@@ -111,7 +112,7 @@ public abstract class Entity implements Locatable {
 	 * {@code index}.
 	 * 
 	 * @param index
-	 *           the index of the option
+	 *            the index of the option
 	 */
 	public final void selectOption(Entity interactor, int index) {
 		interactor.options.select(index, this);
@@ -132,17 +133,17 @@ public abstract class Entity implements Locatable {
 	public abstract int sizeY();
 
 	/**
-	 * This method is called when this {@code Entity} is added to an {@code EntityList}. It is used
-	 * to initialize this {@code Entity}.
+	 * This method is called when this {@code Entity} is added to an {@code EntityList}. It is used to
+	 * initialize this {@code Entity}.
 	 * 
 	 * @see entity.EntityList#add(Entity)
 	 */
 	public abstract void create();
 
 	/**
-	 * This method is called when this {@code Entity} is removed from an {@code EntityList}. It is
-	 * used to remove any relating values in memory or unnecessary values that aren't worth keeping
-	 * for this {@code Entity}.
+	 * This method is called when this {@code Entity} is removed from an {@code EntityList}. It is used
+	 * to remove any relating values in memory or unnecessary values that aren't worth keeping for this
+	 * {@code Entity}.
 	 * 
 	 * @see entity.EntityList#remove(Entity)
 	 * @see entity.EntityList#remove(int)
@@ -157,8 +158,8 @@ public abstract class Entity implements Locatable {
 	public abstract String getName();
 
 	/**
-	 * Returns the index value relating to an {@code EntityList} that this {@code Entity} is stored.
-	 * If this {@code Entity} is not within an {@code EntityList}, its index value will return -1 by
+	 * Returns the index value relating to an {@code EntityList} that this {@code Entity} is stored. If
+	 * this {@code Entity} is not within an {@code EntityList}, its index value will return -1 by
 	 * default.
 	 * 
 	 * @return index within {@code EntityList}; return -1 if not within {@code EntityList}.
@@ -172,9 +173,9 @@ public abstract class Entity implements Locatable {
 	 * then it will remove the temporary variable.
 	 * 
 	 * @param name
-	 *           the name of the variable
+	 *            the name of the variable
 	 * @param value
-	 *           the value of the variable
+	 *            the value of the variable
 	 */
 	public void temporary(String name, Object value) {
 		if (this.temporary == null)
@@ -206,7 +207,7 @@ public abstract class Entity implements Locatable {
 	 * @param index
 	 * 
 	 * @throws UnsupportedOperationException
-	 *            if a class calls this method that isn't instance of {@code EntityList}
+	 *             if a class calls this method that isn't instance of {@code EntityList}
 	 */
 	public final void setIndex(int index) {
 		try {
@@ -220,6 +221,7 @@ public abstract class Entity implements Locatable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {

@@ -5,41 +5,39 @@ import network.packet.Packet;
 import network.packet.PacketType;
 
 /**
- byte = byte (1 byte)
- word = short (2 bytes)
- dWord = double word = integer (2 * 2 bytes = 4 bytes)
- qWord = quadruple word = double dword = long (2 * 4 bytes = 8 bytes)
-
- BigEndian is the normal way of writing a sequence of bytes, where the bytes with the higher (possible) values come first (big end first).
- LittleEndian is another way of writing a sequence of bytes, where the bytes with the lower (possible) values come first (little end first).
- Example: an integer represented by 4 bytes ABCD.
- BigEndian: ABCD (A is relatively worth more than B, ...).
- LittleEndian: DCBA (D is relatively worth less than C, ...).
-
- CreateFrame marks the start of creating a packet with a known size.
-
- EndFrameVarSize marks the end of a packet with 'unknown' size where the number of bytes is smaller than or equal to 0xFF (255).
- EndFrameVarSizeWord marks the end of a packet with 'unknown' size where the number of bytes is smaller than or equal to 0xFFFF (65535).
-
- Write String writes a string ending with either 0 (closing zero) or 10 (line feed) (I'm not sure which one).
-
- Knowing this you can combine the words to get a meaningful explanation:
- Example
- WriteLittleEndianWord:
- A short represented by the bytes AB: BA.
-
- If in the method names Big or Little Endian isn't specified, it's Big endian.
-
- A short, represented by the bytes: AB.
- WriteLEWordA: (B + 128) A
- WriteWordA (WriteBEWordA): A (B + 128)
- As you can see the order (LE/BE) still stands. The 'A' means that during the writing, 128 should be added to the lowest byte (here being B).
-
- If the names don't help you out with 'converting'. Then look at what it does (You may want to learn about bitwise operators).
+ * byte = byte (1 byte) word = short (2 bytes) dWord = double word = integer (2 * 2 bytes = 4 bytes)
+ * qWord = quadruple word = double dword = long (2 * 4 bytes = 8 bytes)
+ * 
+ * BigEndian is the normal way of writing a sequence of bytes, where the bytes with the higher
+ * (possible) values come first (big end first). LittleEndian is another way of writing a sequence
+ * of bytes, where the bytes with the lower (possible) values come first (little end first).
+ * Example: an integer represented by 4 bytes ABCD. BigEndian: ABCD (A is relatively worth more than
+ * B, ...). LittleEndian: DCBA (D is relatively worth less than C, ...).
+ * 
+ * CreateFrame marks the start of creating a packet with a known size.
+ * 
+ * EndFrameVarSize marks the end of a packet with 'unknown' size where the number of bytes is
+ * smaller than or equal to 0xFF (255). EndFrameVarSizeWord marks the end of a packet with 'unknown'
+ * size where the number of bytes is smaller than or equal to 0xFFFF (65535).
+ * 
+ * Write String writes a string ending with either 0 (closing zero) or 10 (line feed) (I'm not sure
+ * which one).
+ * 
+ * Knowing this you can combine the words to get a meaningful explanation: Example
+ * WriteLittleEndianWord: A short represented by the bytes AB: BA.
+ * 
+ * If in the method names Big or Little Endian isn't specified, it's Big endian.
+ * 
+ * A short, represented by the bytes: AB. WriteLEWordA: (B + 128) A WriteWordA (WriteBEWordA): A (B
+ * + 128) As you can see the order (LE/BE) still stands. The 'A' means that during the writing, 128
+ * should be added to the lowest byte (here being B).
+ * 
+ * If the names don't help you out with 'converting'. Then look at what it does (You may want to
+ * learn about bitwise operators).
  */
 
 /************************************************/
-/*	      ABOVE IS AN EXPLANATION	       */
+/* ABOVE IS AN EXPLANATION */
 /**********************************************/
 
 /**
@@ -64,20 +62,20 @@ public class EncodedPacket extends Packet {
 	 * Constructs a new {@code EncodedPacket} with the specified {@code opcode} and {@code type}.
 	 * 
 	 * @param type
-	 *           the type of packet
+	 *            the type of packet
 	 * @param opcode
-	 *           the opcode of this packet
+	 *            the opcode of this packet
 	 */
 	public EncodedPacket(PacketType type, int opcode) {
 		super(type, opcode);
 	}
 
 	/**
-	 * Constructs a new {@code EncodedPacket} with the specified {@code opcode} with a default type
-	 * of {@link PacketType#STANDARD}.
+	 * Constructs a new {@code EncodedPacket} with the specified {@code opcode} with a default type of
+	 * {@link PacketType#STANDARD}.
 	 * 
 	 * @param opcode
-	 *           the opcode of this packet
+	 *            the opcode of this packet
 	 */
 	public EncodedPacket(int opcode) {
 		super(opcode);
@@ -95,7 +93,7 @@ public class EncodedPacket extends Packet {
 	 * Writes the bytes of the specified {@code packet} to this {@code EncodedPacket}.
 	 * 
 	 * @param packet
-	 *           the packet to write from
+	 *            the packet to write from
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket write(EncodedPacket packet) {
@@ -106,7 +104,7 @@ public class EncodedPacket extends Packet {
 	 * Writes the bytes of the specified {@code buffer} to this {@code EncodedPacket}.
 	 * 
 	 * @param buffer
-	 *           the buffer to write from
+	 *            the buffer to write from
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket write(ByteBuf buffer) {
@@ -148,7 +146,7 @@ public class EncodedPacket extends Packet {
 	 * Writes a byte to this {@code EncodedPacket}.
 	 * 
 	 * @param b
-	 *           the byte value to write
+	 *            the byte value to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeByte(int b) {
@@ -160,7 +158,7 @@ public class EncodedPacket extends Packet {
 	 * Writes the specified values of {@code b} as bytes to this {@code EncodedPacket}.
 	 * 
 	 * @param b
-	 *           the values to write
+	 *            the values to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeBytes(int... b) {
@@ -178,7 +176,7 @@ public class EncodedPacket extends Packet {
 	 * Writes the specified values of {@code s} as shorts to this {@code EncodedPacket}.
 	 * 
 	 * @param s
-	 *           the values to write
+	 *            the values to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeShort(int... s) {
@@ -199,7 +197,7 @@ public class EncodedPacket extends Packet {
 	 * </pre>
 	 * 
 	 * @param value
-	 *           the short value to write
+	 *            the short value to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeLEShort(int value) {
@@ -218,7 +216,7 @@ public class EncodedPacket extends Packet {
 	 * </pre>
 	 * 
 	 * @param value
-	 *           the short value to write
+	 *            the short value to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeShortA(int value) {
@@ -239,7 +237,7 @@ public class EncodedPacket extends Packet {
 	 * </pre>
 	 * 
 	 * @param value
-	 *           the short value to write
+	 *            the short value to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeLEShortA(int value) {
@@ -252,7 +250,7 @@ public class EncodedPacket extends Packet {
 	 * Writes the specified values of {@code i} as integers to this {@code EncodedPacket}.
 	 * 
 	 * @param i
-	 *           the values to write
+	 *            the values to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeInt(int... i) {
@@ -265,7 +263,7 @@ public class EncodedPacket extends Packet {
 	 * Writes a Litten-Endian word integer based on the specified argument.
 	 * 
 	 * @param val
-	 *           the value to write as a litten-endian word
+	 *            the value to write as a litten-endian word
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeLEInt(int val) {
@@ -294,7 +292,7 @@ public class EncodedPacket extends Packet {
 	 * Writes the specified values of {@code l} as longs to this {@code EncodedPacket}.
 	 * 
 	 * @param l
-	 *           the values to write
+	 *            the values to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeLong(long... l) {
@@ -307,7 +305,7 @@ public class EncodedPacket extends Packet {
 	 * Writes the specified values of {@code m} as mediums to this {@code EncodedPacket}.
 	 * 
 	 * @param m
-	 *           the values to write
+	 *            the values to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeMedium(int... m) {
@@ -321,7 +319,7 @@ public class EncodedPacket extends Packet {
 	 * {@code EncodedPacket}.
 	 * 
 	 * @param string
-	 *           the string to write
+	 *            the string to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeRS2String(String string) {
@@ -329,11 +327,11 @@ public class EncodedPacket extends Packet {
 	}
 
 	/**
-	 * Writes the bytes of the specified {@code string} with a leading and trailing 0 byte value to
-	 * this {@code EncodedPacket}.
+	 * Writes the bytes of the specified {@code string} with a leading and trailing 0 byte value to this
+	 * {@code EncodedPacket}.
 	 * 
 	 * @param string
-	 *           the string to write
+	 *            the string to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeGJString(String string) {
@@ -341,11 +339,11 @@ public class EncodedPacket extends Packet {
 	}
 
 	/**
-	 * Writes a {@code String} with a trailing byte value of 0 that cannot have any {@code null}
-	 * value within the specified {@codes string}.
+	 * Writes a {@code String} with a trailing byte value of 0 that cannot have any {@code null} value
+	 * within the specified {@codes string}.
 	 * 
 	 * @param string
-	 *           the string to write
+	 *            the string to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writePJStr1(String string) {
@@ -355,11 +353,10 @@ public class EncodedPacket extends Packet {
 	}
 
 	/**
-	 * Writes the value as a byte if the value is >= 128 otherwise it will write it as a short +
-	 * 32768.
+	 * Writes the value as a byte if the value is >= 128 otherwise it will write it as a short + 32768.
 	 * 
 	 * @param b
-	 *           the values to write
+	 *            the values to write
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeSmart(int s) {
@@ -384,8 +381,7 @@ public class EncodedPacket extends Packet {
 	}
 
 	/**
-	 * Sets the writer index back to the value it was before bit information had started being
-	 * written.
+	 * Sets the writer index back to the value it was before bit information had started being written.
 	 * 
 	 * <p>
 	 * The value of the writer index is equivalent to:
@@ -405,9 +401,9 @@ public class EncodedPacket extends Packet {
 	 * Writes bits based on the specified arguments.
 	 * 
 	 * @param bitCount
-	 *           The number of bits which need to be written
+	 *            The number of bits which need to be written
 	 * @param value
-	 *           The value.
+	 *            The value.
 	 * @return the instance of this {@code EncodedPacket} for chaining
 	 */
 	public EncodedPacket writeBits(int bitCount, int value) {

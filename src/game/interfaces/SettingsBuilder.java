@@ -16,7 +16,7 @@ public class SettingsBuilder {
 	 * Constructs a SettingsBuilder out of the given value
 	 * 
 	 * @param value
-	 *           the flags
+	 *            the flags
 	 * @return the SettingsBuilder not null
 	 */
 	public static SettingsBuilder decompile(int value) {
@@ -43,7 +43,7 @@ public class SettingsBuilder {
 	 * True if the settings have the right click entityOption for the given id.
 	 * 
 	 * @param optionId
-	 *           the entityOption id, value is 0-9
+	 *            the entityOption id, value is 0-9
 	 * @return True if the settings have the right click entityOption for the given id.
 	 */
 	public boolean hasSecondaryOption(int optionId) {
@@ -98,11 +98,10 @@ public class SettingsBuilder {
 	}
 
 	/**
-	 * True if the settings allow use on other interface components, eg, high alchemy is used on
-	 * items.
+	 * True if the settings allow use on other interface components, eg, high alchemy is used on items.
 	 * 
-	 * @return True if the settings allow use on other interface components, eg, high alchemy is used
-	 *         on items.
+	 * @return True if the settings allow use on other interface components, eg, high alchemy is used on
+	 *         items.
 	 */
 	public boolean canUseOnInterfaceComponent() {
 		return (value & (0x1 << (16))) != 0;
@@ -120,9 +119,8 @@ public class SettingsBuilder {
 	}
 
 	/**
-	 * True if components can be a catalyst in the 'Use With' functionality. For example, items
-	 * should set this to true when in the inventory to allow for alchemy, while items in the bank
-	 * should not.
+	 * True if components can be a catalyst in the 'Use With' functionality. For example, items should
+	 * set this to true when in the inventory to allow for alchemy, while items in the bank should not.
 	 * 
 	 * @return true if the components can be a catalyst in teh 'Use With' functionality
 	 */
@@ -132,8 +130,8 @@ public class SettingsBuilder {
 
 	/**
 	 * Set's standard entityOption settings. Great example of standard click entityOption is the
-	 * Continue button in dialog interface. If the entityOption is not allowed the packet won't be
-	 * send to server.
+	 * Continue button in dialog interface. If the entityOption is not allowed the packet won't be send
+	 * to server.
 	 * 
 	 * @param allowed
 	 */
@@ -145,9 +143,9 @@ public class SettingsBuilder {
 	}
 
 	/**
-	 * Set's right click entityOption settings. Great example of right click entityOption is the
-	 * Dismiss entityOption in summoning orb. If specified entityOption is not allowed , it will not
-	 * appear in right click menu and the packet will not be send to server when clicked.
+	 * Set's right click entityOption settings. Great example of right click entityOption is the Dismiss
+	 * entityOption in summoning orb. If specified entityOption is not allowed , it will not appear in
+	 * right click menu and the packet will not be send to server when clicked.
 	 */
 	public SettingsBuilder setSecondaryOption(int optionID, boolean allowed) {
 		if (optionID < 0 || optionID > 9)
@@ -183,8 +181,8 @@ public class SettingsBuilder {
 
 	/**
 	 * Set's interface events height. For example, we have inventory interface which is opened on
-	 * gameframe interface (548 or 746). If height is 1 , then the clicks in inventory will also
-	 * invoke click event handler scripts on gameframe interface.
+	 * gameframe interface (548 or 746). If height is 1 , then the clicks in inventory will also invoke
+	 * click event handler scripts on gameframe interface.
 	 */
 	public SettingsBuilder setInterfaceDepth(int depth) {
 		if (depth < 0 || depth > 7)

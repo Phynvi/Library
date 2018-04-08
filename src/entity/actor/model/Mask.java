@@ -31,6 +31,7 @@ public abstract class Mask implements Comparable<Mask> {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Mask o) {

@@ -26,6 +26,7 @@ public class ActorUpdateThread extends CoreThread {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see infrastructure.CoreThread#run()
 	 */
 	public final void run() {
@@ -61,7 +62,7 @@ public class ActorUpdateThread extends CoreThread {
 	 * updated after it is removed from the queue that the {@code Actor} is placed in.
 	 * 
 	 * @param actor
-	 *           the actor to set to update
+	 *            the actor to set to update
 	 */
 	public final void setForUpdating(Actor actor) {
 		queued.add(Objects.requireNonNull(actor, "An Actor cannot be set for updating if it is null"));

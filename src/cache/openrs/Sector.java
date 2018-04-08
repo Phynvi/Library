@@ -33,7 +33,7 @@ public final class Sector {
 	 * Decodes the specified {@link ByteBuffer} into a {@link Sector} object.
 	 * 
 	 * @param buf
-	 *           The buffer.
+	 *            The buffer.
 	 * @return The sector.
 	 */
 	public static Sector decode(ByteBuffer buf) {
@@ -79,15 +79,15 @@ public final class Sector {
 	 * Creates a new sector.
 	 * 
 	 * @param type
-	 *           The type of the file.
+	 *            The type of the file.
 	 * @param id
-	 *           The file's id.
+	 *            The file's id.
 	 * @param chunk
-	 *           The chunk of the file this sector contains.
+	 *            The chunk of the file this sector contains.
 	 * @param nextSector
-	 *           The sector containing the next chunk.
+	 *            The sector containing the next chunk.
 	 * @param data
-	 *           The data in this sector.
+	 *            The data in this sector.
 	 */
 	public Sector(int type, int id, int chunk, int nextSector, byte[] data) {
 		this.type = type;

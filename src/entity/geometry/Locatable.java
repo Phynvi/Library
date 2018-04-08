@@ -10,15 +10,17 @@ package entity.geometry;
 public interface Locatable {
 
 	/**
-	 * Returns the {@code Location} of this {@code locatable} object.
+	 * Returns the {@code Location} of this {@code Locatable} object.
 	 * 
 	 * @return the {@code Location}
 	 */
 	public Location getLocation();
 
 	/**
+	 * Sets the location for this {@code Locatable} object.
 	 * 
 	 * @param location
+	 *            the location to set to
 	 */
 	public void setLocation(Location location);
 

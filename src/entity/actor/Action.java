@@ -4,7 +4,7 @@ package entity.actor;
  * @author Albert Beaupre
  *
  * @param <A>
- *           The {@code Actor} type of this {@code Action}.
+ *            The {@code Actor} type of this {@code Action}.
  * 
  * @see entity.actor.Actor
  */
@@ -22,7 +22,7 @@ public abstract class Action<A extends Actor> {
 	 * {@code Action}.
 	 * 
 	 * @param actor
-	 *           the owner of this entity.actor.action
+	 *            the owner of this entity.actor.action
 	 */
 	public Action(A actor) {
 		this.actor = actor;
@@ -35,7 +35,7 @@ public abstract class Action<A extends Actor> {
 	 * {@code state} is equal to {@link ActionState#STOP}.
 	 * 
 	 * @param state
-	 *           the state at which this {@code Action} is at
+	 *            the state at which this {@code Action} is at
 	 * @return true if the {@code Action} continues to cycle; return false otherwise
 	 */
 	public abstract boolean cycle(ActionState state);
@@ -48,9 +48,8 @@ public abstract class Action<A extends Actor> {
 	public abstract boolean cancellable();
 
 	/**
-	 * Continues onto the next cycle of this {@code Action} and returns true if the state isn't
-	 * already at {@link ActionState#STOP}; otherwise it returns true and sets the state to the next
-	 * state.
+	 * Continues onto the next cycle of this {@code Action} and returns true if the state isn't already
+	 * at {@link ActionState#STOP}; otherwise it returns true and sets the state to the next state.
 	 * 
 	 * @return true if the next cycle can be made; return false otherwise
 	 */
@@ -73,7 +72,7 @@ public abstract class Action<A extends Actor> {
 	 * Sets the state of this {@code Action} to the specified {@code state} argument.
 	 * 
 	 * @param state
-	 *           the state to set to this {@code Action}
+	 *            the state to set to this {@code Action}
 	 */
 	public void setState(ActionState state) {
 		this.state = state;

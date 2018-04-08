@@ -16,9 +16,9 @@ public abstract class Interface extends Window {
 	protected boolean clickable;
 
 	/**
-	 * The position inside the parent this interface is to be placed in. This is neither the parent
-	 * nor the child interface ID, it is not an interface at all. It has a unique ID for each
-	 * position inside the parent.
+	 * The position inside the parent this interface is to be placed in. This is neither the parent nor
+	 * the child interface ID, it is not an interface at all. It has a unique ID for each position
+	 * inside the parent.
 	 */
 	protected short position;
 
@@ -26,13 +26,13 @@ public abstract class Interface extends Window {
 	 * Constructs a new {@code Interface}.
 	 * 
 	 * @param p
-	 *           the {@code PaneHolder} using this {@code Interface}
+	 *            the {@code PaneHolder} using this {@code Interface}
 	 * @param parent
-	 *           the parenting {@code Window} this {@code Interface} is placed on
+	 *            the parenting {@code Window} this {@code Interface} is placed on
 	 * @param position
-	 *           the position of this {@code Interface}
+	 *            the position of this {@code Interface}
 	 * @param clickable
-	 *           the flag to check if this {@code Interface} can be clicked
+	 *            the flag to check if this {@code Interface} can be clicked
 	 */
 	public Interface(PaneHolder p, Window parent, int position, boolean clickable) {
 		super(p);
@@ -46,30 +46,30 @@ public abstract class Interface extends Window {
 
 	/**
 	 * When this interface has its 'X' pressed, should the client close the interface immediately and
-	 * notify the server (false) or should it notify the server, in which case, the server will tell
-	 * the client to close it later.
+	 * notify the server (false) or should it notify the server, in which case, the server will tell the
+	 * client to close it later.
 	 * 
 	 * @return true if closing is handled server-sided, false otherwise.
 	 */
 	public abstract boolean isServerSidedClose();
 
 	/**
-	 * True if this interface remains open when the player moves, false if it should auto-close when
-	 * the player attempts to move.
+	 * True if this interface remains open when the player moves, false if it should auto-close when the
+	 * player attempts to move.
 	 * 
 	 * @return true if the interface can be used on the run.
 	 */
 	public abstract boolean isMobile();
 
 	/**
-	 * Opens this interface, but does not notify the player's windows. Overriding this method would
-	 * be useful if actions need to be taken when this {@code Interface} is being opened.
+	 * Opens this interface, but does not notify the player's windows. Overriding this method would be
+	 * useful if actions need to be taken when this {@code Interface} is being opened.
 	 */
 	public void onOpen() {}
 
 	/**
-	 * Closes this interface, but does not notify the player's windows. Overriding this method would
-	 * be useful if actions need to be taken when this {@code Interface} is being closed.
+	 * Closes this interface, but does not notify the player's windows. Overriding this method would be
+	 * useful if actions need to be taken when this {@code Interface} is being closed.
 	 */
 	public void onClose() {}
 
@@ -84,8 +84,7 @@ public abstract class Interface extends Window {
 	}
 
 	/**
-	 * Returns {@code true} if this {@code Interface} can be clicked; returns {@code false}
-	 * otherwise.
+	 * Returns {@code true} if this {@code Interface} can be clicked; returns {@code false} otherwise.
 	 * 
 	 * @return return true if clickable; return false otherwise
 	 */
@@ -116,6 +115,7 @@ public abstract class Interface extends Window {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {

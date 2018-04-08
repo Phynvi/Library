@@ -21,15 +21,15 @@ public class CacheStore {
 	private final CacheFile dataFile;
 
 	/**
-	 * Constructs a new {@code CacheStore} around the index correlating to the specified
-	 * {@code index} within the {@code cache}.
+	 * Constructs a new {@code CacheStore} around the index correlating to the specified {@code index}
+	 * within the {@code cache}.
 	 * 
 	 * @param cache
-	 *           the cache to retrieve any information from
+	 *            the cache to retrieve any information from
 	 * @param index
-	 *           the index id of the file
+	 *            the index id of the file
 	 * @throws IOException
-	 *            if there is a problem reading the data or index file within the path
+	 *             if there is a problem reading the data or index file within the path
 	 */
 	public CacheStore(File path) throws IOException {
 		dataFile = new CacheFile(path.getPath() + File.separator + "main_file_cache.dat2");
@@ -46,11 +46,11 @@ public class CacheStore {
 
 	/**
 	 * Returns an {@code IoBuffer} object with the information contained in the archive with the
-	 * specified {@code id}. If it does not exist, then an {@code IoBuffer} with an initial capacity
-	 * of 0 is returned instead.
+	 * specified {@code id}. If it does not exist, then an {@code IoBuffer} with an initial capacity of
+	 * 0 is returned instead.
 	 * 
 	 * @param idx
-	 *           the id of the archive to retrieve the data from
+	 *            the id of the archive to retrieve the data from
 	 * @return an {@code IoBuffer} with the archive data; returns an empty {@code IoBuffer} is non
 	 *         existent
 	 * @throws IOException

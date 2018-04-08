@@ -22,8 +22,7 @@ public interface Actor {
 	ActionQueue getActions();
 
 	/**
-	 * Queues the specified {@code action} to the {@code ActionQueue} that this {@code Actor}
-	 * contains.
+	 * Queues the specified {@code action} to the {@code ActionQueue} that this {@code Actor} contains.
 	 * 
 	 * <p>
 	 * This is effectively equivalent to:
@@ -33,7 +32,7 @@ public interface Actor {
 	 * </pre>
 	 * 
 	 * @param action
-	 *           the action to queue
+	 *            the action to queue
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public default void queue(Action action) {
@@ -45,9 +44,9 @@ public interface Actor {
 	 * {@code consumer} argument. This allows for quick queuing of an {@code Action}.
 	 * 
 	 * @param cancellable
-	 *           true if the action is cancellable; false otherwise
+	 *            true if the action is cancellable; false otherwise
 	 * @param consumer
-	 *           the consumer action to execute for the action
+	 *            the consumer action to execute for the action
 	 */
 	public default void queue(boolean cancellable, Consumer<ActionState> consumer) {
 		this.queue(new Action<Actor>(this) {

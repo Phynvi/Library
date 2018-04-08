@@ -24,11 +24,11 @@ public final class Xtea {
 	 * Deciphers the specified {@link ByteBuffer} with the given key.
 	 * 
 	 * @param buffer
-	 *           The buffer.
+	 *            The buffer.
 	 * @param key
-	 *           The key.
+	 *            The key.
 	 * @throws IllegalArgumentException
-	 *            if the key is not exactly 4 elements long.
+	 *             if the key is not exactly 4 elements long.
 	 */
 	public static void decipher(ByteBuffer buffer, int[] key) {
 		if (key.length != 4)
@@ -52,11 +52,11 @@ public final class Xtea {
 	 * Enciphers the specified {@link ByteBuffer} with the given key.
 	 * 
 	 * @param buffer
-	 *           The buffer.
+	 *            The buffer.
 	 * @param key
-	 *           The key.
+	 *            The key.
 	 * @throws IllegalArgumentException
-	 *            if the key is not exactly 4 elements long.
+	 *             if the key is not exactly 4 elements long.
 	 */
 	public static void encipher(ByteBuffer buffer, int[] key) {
 		if (key.length != 4)

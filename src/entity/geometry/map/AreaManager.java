@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import entity.geometry.Point3D;
 import entity.geometry.Shape3D;
-import infrastructure.GlobalAttachments;
+import infrastructure.GlobalVariables;
 
 /**
  * The {@code AreaManager} holds
@@ -29,16 +29,17 @@ public class AreaManager implements Shape3D {
 	 * Combines the specified {@code Area} to this {@code AreaManager} to manage it.
 	 * 
 	 * @param area
-	 *           the {@code Area} to combine to this {@code AreaManager}
+	 *            the {@code Area} to combine to this {@code AreaManager}
 	 */
 	public void combine(Area area) {
 		this.combinedArea.add(area);
 
-		GlobalAttachments.getEventManager().registerEventListener(area);
+		GlobalVariables.getEventManager().registerEventListener(area);
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see geometry.Shape3D#contains(geometry.Point3D)
 	 */
 	public boolean contains(Point3D point) {
@@ -50,6 +51,7 @@ public class AreaManager implements Shape3D {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see entity.geometry.Shape3D#listPoints()
 	 */
 	public List<Point3D> listPoints() {

@@ -11,8 +11,8 @@ import infrastructure.Tick;
  * until {@link Tick#queue(long)} has been called again.
  * 
  * <p>
- * If you wish to use a TickThread separated from the {@link infrastructure.GlobalAttachments} class, then
- * you must do something like this:
+ * If you wish to use a TickThread separated from the {@link infrastructure.GlobalVariables} class,
+ * then you must do something like this:
  * 
  * <pre>
  * {
@@ -30,7 +30,7 @@ import infrastructure.Tick;
 public final class TickThread extends CoreThread {
 
 	private CopyOnWriteArrayList<Tick> list; // This list is filled by any
-															// incoming ticks to be executed
+												// incoming ticks to be executed
 
 	/**
 	 * Constructs a new {@code TickThread} with an empty list of {@code Ticks}.
@@ -42,11 +42,11 @@ public final class TickThread extends CoreThread {
 
 	/**
 	 * Queues the specified {@code Tick} to be executed when {@link Tick#getDuration()} is greater or
-	 * equal to {@link Tick#getPeriod()} and them it will be removed from this {@code TickThread}
-	 * until this method is called again.
+	 * equal to {@link Tick#getPeriod()} and them it will be removed from this {@code TickThread} until
+	 * this method is called again.
 	 * 
 	 * @param tickable
-	 *           the {@code Tick} to be queued to execute
+	 *            the {@code Tick} to be queued to execute
 	 */
 	public void queue(Tick tickable) {
 		tickable.startTicking();

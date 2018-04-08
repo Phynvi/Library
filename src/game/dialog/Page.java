@@ -15,8 +15,8 @@ public class Page {
 	public final String text;
 
 	/**
-	 * This is the action taken when this page is opened. The value is automatically set to null so
-	 * no action will be taken.
+	 * This is the action taken when this page is opened. The value is automatically set to null so no
+	 * action will be taken.
 	 */
 	public Runnable action;
 
@@ -30,8 +30,8 @@ public class Page {
 	public int npcId = -1;
 
 	/**
-	 * This is the value of the facial expression used by an NPC or Player. This value isn't used by
-	 * the {@link game.dialog.OptionPage} class.
+	 * This is the value of the facial expression used by an NPC or Player. This value isn't used by the
+	 * {@link game.dialog.OptionPage} class.
 	 * 
 	 * <p>
 	 * <b>This value is set to {@link game.dialog.FacialExpressions#CALM_TALK} by default </b>
@@ -43,7 +43,7 @@ public class Page {
 	 * length to it, then the text value is set to "..."
 	 * 
 	 * @param text
-	 *           the text displayed on this page
+	 *            the text displayed on this page
 	 */
 	public Page(String text) {
 		if (text == null || text.isEmpty())

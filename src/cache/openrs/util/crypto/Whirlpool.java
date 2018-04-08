@@ -233,11 +233,11 @@ public class Whirlpool {
 	 * Delivers input data to the hashing algorithm.
 	 *
 	 * @param source
-	 *           plaintext data to hash.
+	 *            plaintext data to hash.
 	 * @param sourceBits
-	 *           how many bits of plaintext to process.
+	 *            how many bits of plaintext to process.
 	 *
-	 *           This method maintains the invariant: bufferBits < 512
+	 *            This method maintains the invariant: bufferBits < 512
 	 */
 	public void NESSIEadd(byte[] source, long sourceBits) {
 		/*
@@ -352,9 +352,9 @@ public class Whirlpool {
 	 * Delivers string input data to the hashing algorithm.
 	 *
 	 * @param source
-	 *           plaintext data to hash (ASCII text string).
+	 *            plaintext data to hash (ASCII text string).
 	 *
-	 *           This method maintains the invariant: bufferBits < 512
+	 *            This method maintains the invariant: bufferBits < 512
 	 */
 	public void NESSIEadd(String source) {
 		if (source.length() > 0) {

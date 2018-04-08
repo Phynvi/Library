@@ -26,7 +26,7 @@ public class Dialog implements FacialExpressions {
 	 * Constructs a new {@code Dialog} based on the {@code DialogTransactor}.
 	 * 
 	 * @param transactor
-	 *           the transactor
+	 *            the transactor
 	 */
 	public Dialog(DialogTransactor transactor) {
 		this.transactor = transactor;
@@ -94,7 +94,7 @@ public class Dialog implements FacialExpressions {
 	 * Displays an {@code InformationPage} with the specified {@code text}.
 	 * 
 	 * @param the
-	 *           text to display on the page
+	 *            text to display on the page
 	 * @return a chain of this instance
 	 */
 	public Dialog info(String text) {
@@ -107,7 +107,7 @@ public class Dialog implements FacialExpressions {
 	 * does not return true in its {@link Predicate#test(Object)} function.
 	 * 
 	 * @param predicate
-	 *           the predicate to test
+	 *            the predicate to test
 	 * @return a chain of this instance
 	 */
 	public Dialog when(Predicate<DialogTransactor> predicate) {
@@ -120,7 +120,7 @@ public class Dialog implements FacialExpressions {
 	 * Writes an action to the last {@code Page} written to this {@code Dialog}.
 	 * 
 	 * @param consumer
-	 *           the action to execute when the {@code Page} is opened.
+	 *            the action to execute when the {@code Page} is opened.
 	 * @return a chain of this instance
 	 */
 	public Dialog then(Consumer<DialogTransactor> consumer) {
@@ -132,7 +132,7 @@ public class Dialog implements FacialExpressions {
 	 * Writes multiple actions to the last {@code Page} written to this {@code Dialog}.
 	 * 
 	 * @param runnables
-	 *           the actions to execute when the {@code Page} is opened.
+	 *            the actions to execute when the {@code Page} is opened.
 	 * @return a chain of this instance
 	 */
 	public Dialog then(Runnable... runnables) {
@@ -144,8 +144,7 @@ public class Dialog implements FacialExpressions {
 	}
 
 	/**
-	 * Writes a {@code Page} to this {@code Dialog} that is meant to be written for a player to
-	 * speak.
+	 * Writes a {@code Page} to this {@code Dialog} that is meant to be written for a player to speak.
 	 * 
 	 * <p>
 	 * This method is effectively equivalent to:
@@ -155,7 +154,7 @@ public class Dialog implements FacialExpressions {
 	 * </pre>
 	 * 
 	 * @param name
-	 *           the name that is spoken
+	 *            the name that is spoken
 	 * @return a chain of this instance
 	 */
 	public Dialog player(String text) {
@@ -163,13 +162,12 @@ public class Dialog implements FacialExpressions {
 	}
 
 	/**
-	 * Writes a {@code Page} to this {@code Dialog} that is meant to be written for a player to
-	 * speak.
+	 * Writes a {@code Page} to this {@code Dialog} that is meant to be written for a player to speak.
 	 * 
 	 * @param expression
-	 *           the expression id value of the player speaking
+	 *            the expression id value of the player speaking
 	 * @param name
-	 *           the name that is spoken
+	 *            the name that is spoken
 	 * @return a chain of this instance
 	 */
 	public Dialog player(int expression, String text) {
@@ -185,11 +183,11 @@ public class Dialog implements FacialExpressions {
 	 * entityOption.
 	 * 
 	 * @param index
-	 *           the index of the entityOption to select
+	 *            the index of the entityOption to select
 	 * 
 	 * @throws UnsupportedOperationException
-	 *            if an {@code OptionPage} is not the current page or if the specified index of the
-	 *            entityOption is not available
+	 *             if an {@code OptionPage} is not the current page or if the specified index of the
+	 *             entityOption is not available
 	 * @return a chain of this instance
 	 */
 	public Dialog selectOption(int index) {
@@ -219,9 +217,9 @@ public class Dialog implements FacialExpressions {
 	 * Continues the dialog to the next page.
 	 * 
 	 * <p>
-	 * The {@code Page} returned is the next page within this {@code Dialog}, if existing, If there
-	 * is not another page, the {@link DialogTransactor#exitDialog()} method is called and the dialog
-	 * is stopped and null is returned.
+	 * The {@code Page} returned is the next page within this {@code Dialog}, if existing, If there is
+	 * not another page, the {@link DialogTransactor#exitDialog()} method is called and the dialog is
+	 * stopped and null is returned.
 	 * 
 	 * @return the next page; return null otherwise
 	 */

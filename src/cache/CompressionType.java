@@ -79,11 +79,11 @@ public enum CompressionType {
 	private final int id;
 
 	/**
-	 * Constructs a new {@code CompressionType} with a corresponding {@code id} which is the
-	 * correlating compression id.
+	 * Constructs a new {@code CompressionType} with a corresponding {@code id} which is the correlating
+	 * compression id.
 	 * 
 	 * @param id
-	 *           the correlating compression id
+	 *            the correlating compression id
 	 */
 	private CompressionType(int id) {
 		this.id = id;
@@ -94,7 +94,7 @@ public enum CompressionType {
 	 * non-existent.
 	 * 
 	 * @param id
-	 *           the id of the corresponding {@code CompressionType}
+	 *            the id of the corresponding {@code CompressionType}
 	 * @return the {@code CompressionType} with the corresponding id
 	 */
 	public static CompressionType forId(int id) {
@@ -105,26 +105,26 @@ public enum CompressionType {
 	}
 
 	/**
-	 * Decodes the given {@code bytes} argument using its compression algorithm (if any) and returns
-	 * the decoded bytes in a {@code ByteBuffer}.
+	 * Decodes the given {@code bytes} argument using its compression algorithm (if any) and returns the
+	 * decoded bytes in a {@code ByteBuffer}.
 	 * 
 	 * @param bytes
-	 *           the bytes to decode
+	 *            the bytes to decode
 	 * @return the decoded bytes
 	 * @throws IOException
-	 *            if there is a problem decoding the bytes
+	 *             if there is a problem decoding the bytes
 	 */
 	public abstract ByteBuffer decode(ByteBuffer bytes) throws IOException;
 
 	/**
-	 * Encodes the given {@code bytes} argument using its compression algorithm (if any) and returns
-	 * the encoded bytes in a {@code ByteBuffer}.
+	 * Encodes the given {@code bytes} argument using its compression algorithm (if any) and returns the
+	 * encoded bytes in a {@code ByteBuffer}.
 	 * 
 	 * @param bytes
-	 *           the bytes to encode
+	 *            the bytes to encode
 	 * @return the encoded bytes
 	 * @throws IOException
-	 *            if there is a problem encoding the bytes
+	 *             if there is a problem encoding the bytes
 	 */
 	public abstract ByteBuffer encode(ByteBuffer bytes) throws IOException;
 

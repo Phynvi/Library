@@ -12,11 +12,11 @@ import java.util.List;
 public interface Shape3D {
 
 	/**
-	 * Checks if the specified {@code Point3D} is contained within the bounds of this {@code Shape}
-	 * and returns {@code true} if so.
+	 * Checks if the specified {@code Point3D} is contained within the bounds of this {@code Shape} and
+	 * returns {@code true} if so.
 	 * 
 	 * @param point
-	 *           the {@code Point3D} to check if it is within the bounds of this {@code Shape}
+	 *            the {@code Point3D} to check if it is within the bounds of this {@code Shape}
 	 * 
 	 * @return {@code true} if the point is within the bounds; return {@code false} otherwise
 	 */
@@ -27,11 +27,11 @@ public interface Shape3D {
 	 * {@code Shape} and returns {@code true} if so.
 	 * 
 	 * @param x
-	 *           The X location of the coordinates to check
+	 *            The X location of the coordinates to check
 	 * @param y
-	 *           The Y location of the coordinates to check
+	 *            The Y location of the coordinates to check
 	 * @param z
-	 *           The Z location of the coordinates to check
+	 *            The Z location of the coordinates to check
 	 * 
 	 * @return {@code true} if the {@code (x,y,z)} coordinates are within the bounds; return
 	 *         {@code false} otherwise

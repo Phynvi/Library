@@ -19,14 +19,14 @@ import cache.openrs.util.crypto.Whirlpool;
 public class ChecksumTable {
 
 	/**
-	 * Decodes the {@link ChecksumTable} in the specified {@link ByteBuffer}. Whirlpool digests are
-	 * not read.
+	 * Decodes the {@link ChecksumTable} in the specified {@link ByteBuffer}. Whirlpool digests are not
+	 * read.
 	 * 
 	 * @param buffer
-	 *           The {@link ByteBuffer} containing the table.
+	 *            The {@link ByteBuffer} containing the table.
 	 * @return The decoded {@link ChecksumTable}.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public static ChecksumTable decode(ByteBuffer buffer) throws IOException {
 		return decode(buffer, false);
@@ -36,12 +36,12 @@ public class ChecksumTable {
 	 * Decodes the {@link ChecksumTable} in the specified {@link ByteBuffer}.
 	 * 
 	 * @param buffer
-	 *           The {@link ByteBuffer} containing the table.
+	 *            The {@link ByteBuffer} containing the table.
 	 * @param whirlpool
-	 *           If whirlpool digests should be read.
+	 *            If whirlpool digests should be read.
 	 * @return The decoded {@link ChecksumTable}.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public static ChecksumTable decode(ByteBuffer buffer, boolean whirlpool) throws IOException {
 		return decode(buffer, whirlpool, null, null);
@@ -52,16 +52,16 @@ public class ChecksumTable {
 	 * whirlpool hash.
 	 * 
 	 * @param buffer
-	 *           The {@link ByteBuffer} containing the table.
+	 *            The {@link ByteBuffer} containing the table.
 	 * @param whirlpool
-	 *           If whirlpool digests should be read.
+	 *            If whirlpool digests should be read.
 	 * @param modulus
-	 *           The modulus.
+	 *            The modulus.
 	 * @param publicKey
-	 *           The public key.
+	 *            The public key.
 	 * @return The decoded {@link ChecksumTable}.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public static ChecksumTable decode(ByteBuffer buffer, boolean whirlpool, BigInteger modulus, BigInteger publicKey) throws IOException {
 		/* find out how many entries there are and allocate a new table */
@@ -139,11 +139,11 @@ public class ChecksumTable {
 		 * Creates a new entry.
 		 * 
 		 * @param crc
-		 *           The CRC32 checksum of the slave table.
+		 *            The CRC32 checksum of the slave table.
 		 * @param version
-		 *           The version of the slave table.
+		 *            The version of the slave table.
 		 * @param whirlpool
-		 *           The whirlpool digest of the reference table.
+		 *            The whirlpool digest of the reference table.
 		 */
 		public Entry(int crc, int version, byte[] whirlpool) {
 			if (whirlpool.length != 64)
@@ -192,7 +192,7 @@ public class ChecksumTable {
 	 * Creates a new {@link ChecksumTable} with the specified size.
 	 * 
 	 * @param size
-	 *           The number of entries in this table.
+	 *            The number of entries in this table.
 	 */
 	public ChecksumTable(int size) {
 		entries = new Entry[size];
@@ -203,7 +203,7 @@ public class ChecksumTable {
 	 * 
 	 * @return The encoded {@link ByteBuffer}.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public ByteBuffer encode() throws IOException {
 		return encode(false);
@@ -213,10 +213,10 @@ public class ChecksumTable {
 	 * Encodes this {@link ChecksumTable}.
 	 * 
 	 * @param whirlpool
-	 *           If whirlpool digests should be encoded.
+	 *            If whirlpool digests should be encoded.
 	 * @return The encoded {@link ByteBuffer}.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public ByteBuffer encode(boolean whirlpool) throws IOException {
 		return encode(whirlpool, null, null);
@@ -226,14 +226,14 @@ public class ChecksumTable {
 	 * Encodes this {@link ChecksumTable} and encrypts the final whirlpool hash.
 	 * 
 	 * @param whirlpool
-	 *           If whirlpool digests should be encoded.
+	 *            If whirlpool digests should be encoded.
 	 * @param modulus
-	 *           The modulus.
+	 *            The modulus.
 	 * @param privateKey
-	 *           The private key.
+	 *            The private key.
 	 * @return The encoded {@link ByteBuffer}.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public ByteBuffer encode(boolean whirlpool, BigInteger modulus, BigInteger privateKey) throws IOException {
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -290,11 +290,11 @@ public class ChecksumTable {
 	 * Sets an entry in this table.
 	 * 
 	 * @param id
-	 *           The id.
+	 *            The id.
 	 * @param entry
-	 *           The entry.
+	 *            The entry.
 	 * @throws IndexOutOfBoundsException
-	 *            if the id is less than zero or greater than or equal to the size of the table.
+	 *             if the id is less than zero or greater than or equal to the size of the table.
 	 */
 	public void setEntry(int id, Entry entry) {
 		if (id < 0 || id >= entries.length)
@@ -306,10 +306,10 @@ public class ChecksumTable {
 	 * Gets an entry from this table.
 	 * 
 	 * @param id
-	 *           The id.
+	 *            The id.
 	 * @return The entry.
 	 * @throws IndexOutOfBoundsException
-	 *            if the id is less than zero or greater than or equal to the size of the table.
+	 *             if the id is less than zero or greater than or equal to the size of the table.
 	 */
 	public Entry getEntry(int id) {
 		if (id < 0 || id >= entries.length)

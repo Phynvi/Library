@@ -35,9 +35,9 @@ public abstract class Area implements Shape3D, EventListener {
 	 * specified {@code AreaChangeType}.
 	 * 
 	 * @param entity
-	 *           the entity entering this {@code Area}
+	 *            the entity entering this {@code Area}
 	 * @param type
-	 *           the way the {@code Entity} has entered this {@code Area}
+	 *            the way the {@code Entity} has entered this {@code Area}
 	 */
 	public abstract void onEnter(Entity entity, AreaChangeType type);
 
@@ -46,14 +46,15 @@ public abstract class Area implements Shape3D, EventListener {
 	 * specified {@code AreaChangeType}.
 	 * 
 	 * @param entity
-	 *           the entity leaving this {@code Area}
+	 *            the entity leaving this {@code Area}
 	 * @param type
-	 *           the way the {@code Entity} has left this {@code Area}
+	 *            the way the {@code Entity} has left this {@code Area}
 	 */
 	public abstract void onLeave(Entity entity, AreaChangeType type);
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see entity.geometry.Shape3D#listPoints()
 	 */
 	public List<Point3D> listPoints() {
@@ -62,6 +63,7 @@ public abstract class Area implements Shape3D, EventListener {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see geometry.Shape3D#contains(geometry.Point3D)
 	 */
 	public boolean contains(Point3D point) {

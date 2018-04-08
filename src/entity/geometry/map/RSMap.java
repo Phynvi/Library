@@ -8,7 +8,7 @@ import entity.geometry.Point3D;
 import entity.geometry.Shape3D;
 import event.EventListener;
 import event.EventMethod;
-import infrastructure.GlobalAttachments;
+import infrastructure.GlobalVariables;
 
 /**
  * 
@@ -22,14 +22,14 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	public static final int CHUNK_SIZE = 8;
 
 	/**
-	 * The number of bits you need to shift by to go from a tile number to a chunk. Eg, position.x >>
-	 * 3 is the chunkX
+	 * The number of bits you need to shift by to go from a tile number to a chunk. Eg, position.x >> 3
+	 * is the chunkX
 	 */
 	public static final int CHUNK_BITS = 3;
 
 	/**
-	 * The number of tiles that can be loaded by a viewer. This is hard coded to be 52 (104 / 2),
-	 * which is the maximum view distance (104) of a viewer divided by 2.
+	 * The number of tiles that can be loaded by a viewer. This is hard coded to be 52 (104 / 2), which
+	 * is the maximum view distance (104) of a viewer divided by 2.
 	 */
 	public static final int LOAD_RADIUS = 168 / 2;
 
@@ -62,7 +62,7 @@ public abstract class RSMap extends AreaManager implements EventListener {
 			throw new IllegalArgumentException("Maps must be a multiple of chunk size.. given length: " + width + ", width: " + height);
 		this.chunks = new Chunk[width >> CHUNK_BITS][][];
 
-		GlobalAttachments.getEventManager().registerEventListener(this);
+		GlobalVariables.getEventManager().registerEventListener(this);
 	}
 
 	@EventMethod
@@ -81,7 +81,8 @@ public abstract class RSMap extends AreaManager implements EventListener {
 				fromSet = new HashSet<>();
 			fromSet.remove(entity);
 			this.entities.put(entity.getClass(), event.previousLocation, fromSet);
-		} else entity.create();
+		} else
+			entity.create();
 		HashSet<Entity> toSet = this.entities.get(entity.getClass(), event.currentLocation);
 		if (toSet == null)
 			toSet = new HashSet<>();
@@ -93,11 +94,11 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * Creates the chunk at the given {@code (chunkX, chunkY, chunkZ)} coordinates.
 	 * 
 	 * @param chunkX
-	 *           the x coordinate to create the chunk at
+	 *            the x coordinate to create the chunk at
 	 * @param chunkY
-	 *           the y coordinate to create the chunk at
+	 *            the y coordinate to create the chunk at
 	 * @param chunkZ
-	 *           the z coordinate to create the chunk at
+	 *            the z coordinate to create the chunk at
 	 */
 	public abstract void fetch(int chunkX, int chunkY, int chunkZ);
 
@@ -105,11 +106,11 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * Creates the chunk at the given {@code (chunkX, chunkY, chunkZ)} coordinates.
 	 * 
 	 * @param chunkX
-	 *           the x coordinate to create the chunk at
+	 *            the x coordinate to create the chunk at
 	 * @param chunkY
-	 *           the y coordinate to create the chunk at
+	 *            the y coordinate to create the chunk at
 	 * @param chunkZ
-	 *           the z coordinate to create the chunk at
+	 *            the z coordinate to create the chunk at
 	 */
 	public abstract Chunk create(int chunkX, int chunkY, int chunkZ);
 
@@ -140,9 +141,9 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * then they are.
 	 * 
 	 * @param chunkX
-	 *           the x coordinate of the chunk to check
+	 *            the x coordinate of the chunk to check
 	 * @param chunkY
-	 *           the y coordinate of the chunk to check
+	 *            the y coordinate of the chunk to check
 	 */
 	protected void check(int chunkX, int chunkY) {
 		try {
@@ -158,9 +159,9 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * bitshifted right by WorldMap.CHUNK_BITS. (Eg pos.x >> WorldMap.CHUNK_BITS)
 	 * 
 	 * @param chunkX
-	 *           The chunk X
+	 *            The chunk X
 	 * @param chunkY
-	 *           The chunk Y
+	 *            The chunk Y
 	 * @return the chunk, null if out of bounds.
 	 */
 	public Chunk getChunk(int chunkX, int chunkY, int chunkZ) {
@@ -182,17 +183,17 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	}
 
 	/**
-	 * Adds the given clip to the given location in this map. If the location is out of bounds, then
-	 * the function returns. If the chunk is null, it returns.
+	 * Adds the given clip to the given location in this map. If the location is out of bounds, then the
+	 * function returns. If the chunk is null, it returns.
 	 * 
 	 * @param x
-	 *           the x tile coordinate
+	 *            the x tile coordinate
 	 * @param y
-	 *           the y tile coordinate
+	 *            the y tile coordinate
 	 * @param z
-	 *           the width of the tile
+	 *            the width of the tile
 	 * @param clip
-	 *           the clip to add
+	 *            the clip to add
 	 */
 	public void addClip(int x, int y, int z, int clip) {
 		try {
@@ -213,13 +214,13 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * location is out of bounds, then the function returns. If the chunk is null, it returns.
 	 * 
 	 * @param x
-	 *           the x tile coordinate
+	 *            the x tile coordinate
 	 * @param y
-	 *           the y tile coordinate
+	 *            the y tile coordinate
 	 * @param z
-	 *           the width of the tile
+	 *            the width of the tile
 	 * @param clip
-	 *           the clip to remove.
+	 *            the clip to remove.
 	 */
 	public void removeClip(int x, int y, int z, int clip) {
 		try {
@@ -236,16 +237,16 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	}
 
 	/**
-	 * Fetches the clip at the given location on the map. If the given location is out of bounds, or
-	 * the chunk at that position is null, -1 (0xFFFF FFFF) is returned, meaning there cannot be
-	 * movement on that tile.
+	 * Fetches the clip at the given location on the map. If the given location is out of bounds, or the
+	 * chunk at that position is null, -1 (0xFFFF FFFF) is returned, meaning there cannot be movement on
+	 * that tile.
 	 * 
 	 * @param x
-	 *           the x tile coordinate
+	 *            the x tile coordinate
 	 * @param y
-	 *           the y tile coordinate
+	 *            the y tile coordinate
 	 * @param z
-	 *           the width of the tile
+	 *            the width of the tile
 	 * @return clip the clip
 	 */
 	public int getClip(int x, int y, int z) {
@@ -267,11 +268,11 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * Returns the flags at the given {@code (x, y, z)} coordinates of this {@code WorldMap}.
 	 * 
 	 * @param x
-	 *           the x coordinate to get the flags
+	 *            the x coordinate to get the flags
 	 * @param y
-	 *           the y coordinate to get the flags
+	 *            the y coordinate to get the flags
 	 * @param z
-	 *           the z coordinate to get the flags
+	 *            the z coordinate to get the flags
 	 * @return the flags at the specified coordinates
 	 */
 	public int getFlags(int x, int y, int z) {
@@ -290,8 +291,8 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	}
 
 	/**
-	 * Finds any {@code Entity} of the given class type within the specified {@code bounds} and
-	 * returns a {@code HashSet} of the entities found.
+	 * Finds any {@code Entity} of the given class type within the specified {@code bounds} and returns
+	 * a {@code HashSet} of the entities found.
 	 * 
 	 * @param from
 	 * @param to
@@ -312,9 +313,9 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * {@code location} and returns a {@code HashSet} of the entities found.
 	 * 
 	 * @param location
-	 *           the location of search for entities around
+	 *            the location of search for entities around
 	 * @param radius
-	 *           the radius of the location to search around
+	 *            the radius of the location to search around
 	 * @return a {@code HashSet} with any entities with the given class type are within the radius of
 	 *         the location
 	 */

@@ -23,13 +23,13 @@ public final class NetworkRepository {
 	private static final HashMap<Integer, RawHandler> rawHandlers = new HashMap<>();
 
 	/**
-	 * Registers the specified {@code RawHandler} to this {@code NetworkRepository} for static access
-	 * to the specified {@code handler}.
+	 * Registers the specified {@code RawHandler} to this {@code NetworkRepository} for static access to
+	 * the specified {@code handler}.
 	 * 
 	 * @throws NullPointerException
-	 *            if the {@code RawHandler} is null
+	 *             if the {@code RawHandler} is null
 	 * @param handler
-	 *           the handler to register
+	 *            the handler to register
 	 */
 	public static void registerRawHandler(RawHandler handler) {
 		if (handler == null)
@@ -38,11 +38,11 @@ public final class NetworkRepository {
 	}
 
 	/**
-	 * Returns the static {@code RawHandler} registered within this {@code NetworkRepository} based
-	 * on the specified {@code revision}, or null if it does not exist.
+	 * Returns the static {@code RawHandler} registered within this {@code NetworkRepository} based on
+	 * the specified {@code revision}, or null if it does not exist.
 	 * 
 	 * @param revision
-	 *           the revision of the {@code RawHandler}
+	 *            the revision of the {@code RawHandler}
 	 * @return the raw handler based on the revision; or null if it doesn't exist
 	 */
 	public static RawHandler getRawHandler(int revision) {

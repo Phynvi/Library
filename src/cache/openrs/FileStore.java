@@ -24,10 +24,10 @@ public final class FileStore implements Closeable {
 	 * Opens the file store stored in the specified directory.
 	 * 
 	 * @param root
-	 *           The directory containing the index and data files.
+	 *            The directory containing the index and data files.
 	 * @return The file store.
 	 * @throws FileNotFoundException
-	 *            if any of the {@code main_file_cache.*} files could not be found.
+	 *             if any of the {@code main_file_cache.*} files could not be found.
 	 */
 	public static FileStore open(String root) throws FileNotFoundException {
 		return open(new File(root));
@@ -37,10 +37,10 @@ public final class FileStore implements Closeable {
 	 * Opens the file store stored in the specified directory.
 	 * 
 	 * @param root
-	 *           The directory containing the index and data files.
+	 *            The directory containing the index and data files.
 	 * @return The file store.
 	 * @throws FileNotFoundException
-	 *            if any of the {@code main_file_cache.*} files could not be found.
+	 *             if any of the {@code main_file_cache.*} files could not be found.
 	 */
 	public static FileStore open(File root) throws FileNotFoundException {
 		File data = new File(root, "main_file_cache.dat2");
@@ -94,11 +94,11 @@ public final class FileStore implements Closeable {
 	 * Creates a new file store.
 	 * 
 	 * @param data
-	 *           The data file.
+	 *            The data file.
 	 * @param indexes
-	 *           The index files.
+	 *            The index files.
 	 * @param meta
-	 *           The 'meta' index file.
+	 *            The 'meta' index file.
 	 */
 	public FileStore(FileChannel data, FileChannel[] indexes, FileChannel meta) {
 		this.dataChannel = data;
@@ -111,7 +111,7 @@ public final class FileStore implements Closeable {
 	 * 
 	 * @return The number of index files.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public int getTypeCount() throws IOException {
 		return indexChannels.length;
@@ -121,10 +121,10 @@ public final class FileStore implements Closeable {
 	 * Gets the number of files of the specified type.
 	 * 
 	 * @param type
-	 *           The type.
+	 *            The type.
 	 * @return The number of files.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public int getFileCount(int type) throws IOException {
 		if ((type < 0 || type >= indexChannels.length) && type != 255)
@@ -139,13 +139,13 @@ public final class FileStore implements Closeable {
 	 * Writes a file.
 	 * 
 	 * @param type
-	 *           The type of the file.
+	 *            The type of the file.
 	 * @param id
-	 *           The id of the file.
+	 *            The id of the file.
 	 * @param data
-	 *           A {@link ByteBuffer} containing the contents of the file.
+	 *            A {@link ByteBuffer} containing the contents of the file.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	public void write(int type, int id, ByteBuffer data) throws IOException {
 		data.mark();
@@ -159,16 +159,16 @@ public final class FileStore implements Closeable {
 	 * Writes a file.
 	 * 
 	 * @param type
-	 *           The type of the file.
+	 *            The type of the file.
 	 * @param id
-	 *           The id of the file.
+	 *            The id of the file.
 	 * @param data
-	 *           A {@link ByteBuffer} containing the contents of the file.
+	 *            A {@link ByteBuffer} containing the contents of the file.
 	 * @param overwrite
-	 *           A flag indicating if the existing file should be overwritten.
+	 *            A flag indicating if the existing file should be overwritten.
 	 * @return A flag indicating if the file was written successfully.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	@SuppressWarnings("resource")
 	private boolean write(int type, int id, ByteBuffer data, boolean overwrite) throws IOException {
@@ -259,12 +259,12 @@ public final class FileStore implements Closeable {
 	 * Reads a file.
 	 * 
 	 * @param type
-	 *           The type of the file.
+	 *            The type of the file.
 	 * @param id
-	 *           The id of the file.
+	 *            The id of the file.
 	 * @return A {@link ByteBuffer} containing the contents of the file.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 */
 	@SuppressWarnings("resource")
 	public ByteBuffer read(int type, int id) throws IOException {

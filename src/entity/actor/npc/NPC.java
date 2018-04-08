@@ -15,7 +15,7 @@ public abstract class NPC extends Entity implements Actor {
 	 * Constructs a new {@code NPC} located at the specified {@code location}.
 	 * 
 	 * @param location
-	 *           the location to create this {@code NPC} at.
+	 *            the location to create this {@code NPC} at.
 	 */
 	public NPC(Location location) {
 		super.setLocation(location);
@@ -23,6 +23,7 @@ public abstract class NPC extends Entity implements Actor {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see entity.actor.Actor#getActions()
 	 */
 	public ActionQueue<NPC> getActions() {

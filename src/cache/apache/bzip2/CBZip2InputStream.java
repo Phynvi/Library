@@ -95,26 +95,26 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 		} else {
 			int retChar = currentChar;
 			switch (currentState) {
-				case START_BLOCK_STATE:
-					break;
-				case RAND_PART_A_STATE:
-					break;
-				case RAND_PART_B_STATE:
-					setupRandPartB();
-					break;
-				case RAND_PART_C_STATE:
-					setupRandPartC();
-					break;
-				case NO_RAND_PART_A_STATE:
-					break;
-				case NO_RAND_PART_B_STATE:
-					setupNoRandPartB();
-					break;
-				case NO_RAND_PART_C_STATE:
-					setupNoRandPartC();
-					break;
-				default:
-					break;
+			case START_BLOCK_STATE:
+				break;
+			case RAND_PART_A_STATE:
+				break;
+			case RAND_PART_B_STATE:
+				setupRandPartB();
+				break;
+			case RAND_PART_C_STATE:
+				setupRandPartC();
+				break;
+			case NO_RAND_PART_A_STATE:
+				break;
+			case NO_RAND_PART_B_STATE:
+				setupNoRandPartB();
+				break;
+			case NO_RAND_PART_C_STATE:
+				setupNoRandPartC();
+				break;
+			default:
+				break;
 			}
 			return retChar;
 		}
@@ -399,8 +399,8 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 		groupPos = 0;
 
 		/*
-		 * Setting up the unzftab entries here is not strictly necessary, but it does save having to
-		 * do it later in a separate pass, and so saves a block's worth of cache misses.
+		 * Setting up the unzftab entries here is not strictly necessary, but it does save having to do it
+		 * later in a separate pass, and so saves a block's worth of cache misses.
 		 */
 		for (i = 0; i <= 255; i++) {
 			unzftab[i] = 0;
@@ -532,8 +532,8 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 				ll8[last] = seqToUnseq[tmp];
 
 				/*
-				 * This loop is hammered during decompression, hence the unrolling. for (j = nextSym-1;
-				 * j > 0; j--) yy[j] = yy[j-1];
+				 * This loop is hammered during decompression, hence the unrolling. for (j = nextSym-1; j > 0; j--)
+				 * yy[j] = yy[j-1];
 				 */
 
 				j = nextSym - 1;

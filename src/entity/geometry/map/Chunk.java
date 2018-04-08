@@ -36,11 +36,11 @@ public class Chunk {
 	 * StandardMap which is not customizable
 	 * 
 	 * @param cacheX
-	 *           the cache x value of the chunk (x >> 3)
+	 *            the cache x value of the chunk (x >> 3)
 	 * @param cacheY
-	 *           the cache y value of the chunk (y >> 3)
+	 *            the cache y value of the chunk (y >> 3)
 	 * @param cacheZ
-	 *           the cache z value of the chunk
+	 *            the cache z value of the chunk
 	 */
 	public Chunk(int cacheX, int cacheY, int cacheZ) {
 		this.cacheX = cacheX;
@@ -53,11 +53,11 @@ public class Chunk {
 	 * {@code (x, y)} coordinate argument.
 	 * 
 	 * @param x
-	 *           the x coordinate to add the clip
+	 *            the x coordinate to add the clip
 	 * @param y
-	 *           the y coordinate to add the clip
+	 *            the y coordinate to add the clip
 	 * @param clip
-	 *           the clip value to add
+	 *            the clip value to add
 	 */
 	public void addClip(int x, int y, int clip) {
 		if (this.clip == null)
@@ -70,11 +70,11 @@ public class Chunk {
 	 * ({@code (x, y)} coordinate arguments
 	 * 
 	 * @param x
-	 *           the x coordinate to remove the clip from
+	 *            the x coordinate to remove the clip from
 	 * @param y
-	 *           the y coordinate to remove the clip from
+	 *            the y coordinate to remove the clip from
 	 * @param clip
-	 *           the clip value to remove the clip location
+	 *            the clip value to remove the clip location
 	 */
 	public void removeClip(int x, int y, int clip) {
 		if (this.clip == null)
@@ -86,9 +86,9 @@ public class Chunk {
 	 * Returns the clip value placed at the specified {@code (x, y)} coordinate arguments.
 	 * 
 	 * @param x
-	 *           the x coordinate to get the clip at
+	 *            the x coordinate to get the clip at
 	 * @param y
-	 *           the y coordinate to get the clip at
+	 *            the y coordinate to get the clip at
 	 * @return the clip value placed at the coordinates
 	 */
 	public int getClip(int x, int y) {
@@ -98,15 +98,15 @@ public class Chunk {
 	}
 
 	/**
-	 * Sets the flag for this chunk at the given coordinate to the given flag. This sets, and does
-	 * not bitwise OR.
+	 * Sets the flag for this chunk at the given coordinate to the given flag. This sets, and does not
+	 * bitwise OR.
 	 * 
 	 * @param x
-	 *           the x coorindate
+	 *            the x coorindate
 	 * @param y
-	 *           the y coordinate
+	 *            the y coordinate
 	 * @param flag
-	 *           the flag value
+	 *            the flag value
 	 */
 	public void setFlag(int x, int y, int flag) {
 		if (flag == 0 && this.flags == null)
@@ -121,9 +121,9 @@ public class Chunk {
 	 * Returns the flags placed at the specified {@code (x, y)} coordinate arguments.
 	 * 
 	 * @param x
-	 *           the x coordinate, 0 to 7
+	 *            the x coordinate, 0 to 7
 	 * @param y
-	 *           the y coordinate, 0 to 7
+	 *            the y coordinate, 0 to 7
 	 * @return the flags or 0 if none
 	 */
 	public int getFlags(int x, int y) {
@@ -136,11 +136,11 @@ public class Chunk {
 	 * Returns true if this chunk has all of the given flags at the given location.
 	 * 
 	 * @param x
-	 *           the x coordinate, 0 to 7
+	 *            the x coordinate, 0 to 7
 	 * @param y
-	 *           the y coordinate, 0 to 7
+	 *            the y coordinate, 0 to 7
 	 * @param flag
-	 *           the flags to check for. May be combination of several flags by using bitwise OR
+	 *            the flags to check for. May be combination of several flags by using bitwise OR
 	 * @return true if this chunk has all of the given flags; return false otherwise
 	 */
 	public boolean hasFlag(int x, int y, int flag) {
@@ -159,11 +159,10 @@ public class Chunk {
 
 	/**
 	 * Sets the loaded flag of this {@code Chunk} to the specified {@code loaded} argument. This must
-	 * <b>ONLY</b> be set true if GameObjects, Clipping, and Flags have been set to this
-	 * {@code Chunk}.
+	 * <b>ONLY</b> be set true if GameObjects, Clipping, and Flags have been set to this {@code Chunk}.
 	 * 
 	 * @param loaded
-	 *           the flag to set
+	 *            the flag to set
 	 */
 	public void setLoaded(boolean loaded) {
 		this.loaded = loaded;
@@ -198,6 +197,7 @@ public class Chunk {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {

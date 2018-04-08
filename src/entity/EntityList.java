@@ -11,7 +11,7 @@ import java.util.Iterator;
  * @author Albert Beaupre
  * 
  * @param <E>
- *           The {@code Entity} type
+ *            The {@code Entity} type
  */
 public class EntityList<E extends Entity> implements Iterable<E> {
 
@@ -34,7 +34,7 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	 * Constructs a new {@code EntityList} with a specified {@code initialCapacity}.
 	 * 
 	 * @param initalCapacity
-	 *           the starting capacity of the data array in this {@code EntityList}
+	 *            the starting capacity of the data array in this {@code EntityList}
 	 */
 	public EntityList(int initialCapacity) {
 		this.data = new Entity[initialCapacity];
@@ -42,8 +42,8 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	}
 
 	/**
-	 * Ensures that the size of data within this {@code EntityList} is relative to the capacity of
-	 * this {@code EntityList}.
+	 * Ensures that the size of data within this {@code EntityList} is relative to the capacity of this
+	 * {@code EntityList}.
 	 */
 	private void ensureCapacity() {
 		if (size >= data.length * loadFactor)
@@ -58,12 +58,12 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	}
 
 	/**
-	 * Adds the specified {@code Entity} type to this {@code EntityList} and sets its index value to
-	 * the available index in this {@code EntityList} that has not been used and returns {@code true}
-	 * if the {@code Entity} was added; otherwise {@code false} is returned;
+	 * Adds the specified {@code Entity} type to this {@code EntityList} and sets its index value to the
+	 * available index in this {@code EntityList} that has not been used and returns {@code true} if the
+	 * {@code Entity} was added; otherwise {@code false} is returned;
 	 * 
 	 * @param entity
-	 *           the {@code Entity} type to add
+	 *            the {@code Entity} type to add
 	 * @return true if the {@code Entity} was added; return false otherwise
 	 * 
 	 * @see entity.Entity#getIndex()
@@ -82,11 +82,11 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	}
 
 	/**
-	 * Removes the specified {@code Entity} from this {@code EntityList} and returns {@code true} if
-	 * the {@code Entity} was removed; otherwise {@code false} is returned.
+	 * Removes the specified {@code Entity} from this {@code EntityList} and returns {@code true} if the
+	 * {@code Entity} was removed; otherwise {@code false} is returned.
 	 * 
 	 * @param entity
-	 *           the entity to remove
+	 *            the entity to remove
 	 * @return true if the {@code Entity} was removed; return false otherwise
 	 */
 	public boolean remove(E entity) {
@@ -103,7 +103,7 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	 * Removes the {@code Entity} at the specified {@code index} of this {@code EntityList}.
 	 * 
 	 * @param index
-	 *           the index to remove the {@code Entity} at
+	 *            the index to remove the {@code Entity} at
 	 * @return true if the {@code Entity} was removed
 	 * 
 	 * @see #remove(Entity)
@@ -117,7 +117,7 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	 * Returns the {@code Entity} placed at the specified {@code index} of this {@code EntityList}.
 	 * 
 	 * @param index
-	 *           the index to retrieve the {@code Entity} at
+	 *            the index to retrieve the {@code Entity} at
 	 * @return the {@code Entity} at the index; return null if non-existent
 	 */
 	@SuppressWarnings("unchecked")
@@ -158,7 +158,7 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	 * {@code Entity}, otherwise it will return {@code false} no matter what.
 	 * 
 	 * @param o
-	 *           the object to check
+	 *            the object to check
 	 * @return true if the object is within this {@code EntityList}; return false otherwise
 	 */
 	public boolean contains(Object o) {

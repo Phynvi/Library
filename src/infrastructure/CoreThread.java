@@ -16,11 +16,11 @@ public abstract class CoreThread extends Thread implements Runnable {
 	 * Any {@code Thread} created as a {@code CoreThread} must contain these specified arguments.
 	 * 
 	 * @param name
-	 *           the name of the thread
+	 *            the name of the thread
 	 * @param priority
-	 *           the priority type of the thread
+	 *            the priority type of the thread
 	 * @param daemon
-	 *           if the thread is a daemon type
+	 *            if the thread is a daemon type
 	 */
 	public CoreThread(String name, int priority, boolean daemon) {
 		super.setName(name);
@@ -32,6 +32,7 @@ public abstract class CoreThread extends Thread implements Runnable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	public abstract void run();

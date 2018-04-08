@@ -16,11 +16,11 @@ public class Display implements YMLSerializable {
 	 * Constructs a new {@code Display} from the specified arguments.
 	 * 
 	 * @param mode
-	 *           the display mode
+	 *            the display mode
 	 * @param length
-	 *           the length of the display
+	 *            the length of the display
 	 * @param width
-	 *           the width of the display
+	 *            the width of the display
 	 */
 	public Display(int mode, int width, int height) {
 		this.mode = mode;
@@ -30,6 +30,7 @@ public class Display implements YMLSerializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see util.yaml.YMLSerializable#serialize()
 	 */
 	public ConfigSection serialize() {
@@ -42,6 +43,7 @@ public class Display implements YMLSerializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see util.yaml.YMLSerializable#deserialize(util.yaml.ConfigSection)
 	 */
 	public void deserialize(ConfigSection section) {
@@ -61,7 +63,7 @@ public class Display implements YMLSerializable {
 
 	/**
 	 * @param mode
-	 *           the mode to set
+	 *            the mode to set
 	 */
 	public void setMode(int mode) {
 		this.mode = mode;
@@ -76,7 +78,7 @@ public class Display implements YMLSerializable {
 
 	/**
 	 * @param length
-	 *           the length to set
+	 *            the length to set
 	 */
 	public void setWidth(int width) {
 		this.width = width;
@@ -91,7 +93,7 @@ public class Display implements YMLSerializable {
 
 	/**
 	 * @param width
-	 *           the width to set
+	 *            the width to set
 	 */
 	public void setHeight(int height) {
 		this.height = height;

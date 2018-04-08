@@ -60,13 +60,13 @@ public abstract class Tick {
 	 * Queues this {@code Tickable} for execution after the specified {@code period} has passed.
 	 * 
 	 * @param period
-	 *           the period before this tickable will queued for execution.
+	 *            the period before this tickable will queued for execution.
 	 */
 	public void queue(long period) {
 		this.period = period;
 		if (queued)
 			return;
-		GlobalAttachments.getTicker().queue(this);
+		GlobalVariables.getTicker().queue(this);
 		queued = true;
 		cancelled = false;
 	}
@@ -110,6 +110,7 @@ public abstract class Tick {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {

@@ -9,11 +9,11 @@ package util.configuration;
 public interface YMLSerializable {
 
 	/**
-	 * Takes the specified {@code object} element and creates a serialized {@code ConfigSection}
-	 * based on it.
+	 * Takes the specified {@code object} element and creates a serialized {@code ConfigSection} based
+	 * on it.
 	 * 
 	 * @param object
-	 *           the object to serialize
+	 *            the object to serialize
 	 * @return the serialized {@code ConfigSection} based on the specified object
 	 */
 	public ConfigSection serialize();
@@ -23,7 +23,7 @@ public interface YMLSerializable {
 	 * {@code YMLSerializable}.
 	 * 
 	 * @param section
-	 *           the {@code ConfigSection} to take for deserialization
+	 *            the {@code ConfigSection} to take for deserialization
 	 * @return the deserialized object
 	 */
 	public void deserialize(ConfigSection section);

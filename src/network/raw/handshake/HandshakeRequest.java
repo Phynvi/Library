@@ -24,7 +24,7 @@ public enum HandshakeRequest {
 	 * Constructs a new {@code HandshakeRequest} from the specified {@code requestId}.
 	 * 
 	 * @param requestId
-	 *           the id of this request
+	 *            the id of this request
 	 */
 	private HandshakeRequest(int requestId) {
 		this.requestId = requestId;
@@ -44,7 +44,7 @@ public enum HandshakeRequest {
 	 * {@code null} if it does not exist.
 	 * 
 	 * @param id
-	 *           the id of the request to retrieve
+	 *            the id of the request to retrieve
 	 * @return the retrieved {@code HandshakeRequest} if existing; return {@code null} otherwise
 	 */
 	public static final HandshakeRequest forId(int id) {

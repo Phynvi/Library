@@ -17,16 +17,15 @@ public final class FileChannelUtils {
 	 * Reads as much as possible from the channel into the buffer.
 	 * 
 	 * @param channel
-	 *           The channel.
+	 *            The channel.
 	 * @param buffer
-	 *           The buffer.
+	 *            The buffer.
 	 * @param ptr
-	 *           The initial position in the channel.
+	 *            The initial position in the channel.
 	 * @throws IOException
-	 *            if an I/O error occurs.
+	 *             if an I/O error occurs.
 	 * @throws EOFException
-	 *            if the end of the file was reached and the buffer could not be completely
-	 *            populated.
+	 *             if the end of the file was reached and the buffer could not be completely populated.
 	 */
 	public static void readFully(FileChannel channel, ByteBuffer buffer, long ptr) throws IOException {
 		while (buffer.remaining() > 0) {

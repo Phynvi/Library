@@ -17,9 +17,9 @@ public class OptionPage extends Page {
 	 * Constructs a new {@code OptionPage}.
 	 * 
 	 * @param title
-	 *           the title of the page
+	 *            the title of the page
 	 * @param options
-	 *           the options
+	 *            the options
 	 */
 	public OptionPage(String title, DialogOption... options) {
 		super(title);

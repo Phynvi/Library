@@ -16,14 +16,14 @@ public class ReflectUtil {
 	 * Returns the {@code Class} that called the {@code method} you placed this {@code method} under.
 	 * 
 	 * @param level
-	 *           The level of the caller class. For example: If you are calling this class inside a
-	 *           method and you want to get the caller class of that method, you would use level 2.
-	 *           If you want the caller of that class, you would use level 3. Usually level 2 is the
-	 *           one you want.
+	 *            The level of the caller class. For example: If you are calling this class inside a
+	 *            method and you want to get the caller class of that method, you would use level 2. If
+	 *            you want the caller of that class, you would use level 3. Usually level 2 is the one
+	 *            you want.
 	 * 
 	 * @return the class that called the method
 	 * @throws ClassNotFoundException
-	 *            When the caller class was not found as a java class
+	 *             When the caller class was not found as a java class
 	 */
 	public static Class<?> getCallerClass(int level) throws ClassNotFoundException {
 		StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
@@ -37,7 +37,7 @@ public class ReflectUtil {
 	 * calculated.
 	 * 
 	 * @param object
-	 *           the object to create the hash code for
+	 *            the object to create the hash code for
 	 * @return the hash code
 	 */
 	public static int hashCode(Object object) {
@@ -54,11 +54,10 @@ public class ReflectUtil {
 	}
 
 	/**
-	 * Returns a {@code String} describing every accessible field within the specified
-	 * {@code Object}.
+	 * Returns a {@code String} describing every accessible field within the specified {@code Object}.
 	 * 
 	 * @param o
-	 *           the object to get the description of
+	 *            the object to get the description of
 	 * @return the description of the object's fields
 	 */
 	public static String describe(Object o) {

@@ -53,7 +53,7 @@ public class ItemDefinition {
 	/**
 	 * 
 	 * @param buffer
-	 *           A {@link ByteBuffer} that contains information such as the items location.
+	 *            A {@link ByteBuffer} that contains information such as the items location.
 	 * @return a new ItemDefinition.
 	 */
 	@SuppressWarnings("unused")

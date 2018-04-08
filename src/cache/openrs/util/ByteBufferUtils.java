@@ -24,7 +24,7 @@ public final class ByteBufferUtils {
 	 * set.
 	 * 
 	 * @param buf
-	 *           The buffer.
+	 *            The buffer.
 	 * @return The decoded string.
 	 */
 	public static String getJagexString(ByteBuffer buf) {
@@ -47,7 +47,7 @@ public final class ByteBufferUtils {
 	 * Reads a 'tri-byte' from the specified buffer.
 	 * 
 	 * @param buf
-	 *           The buffer.
+	 *            The buffer.
 	 * @return The value.
 	 */
 	public static int getTriByte(ByteBuffer buf) {
@@ -58,9 +58,9 @@ public final class ByteBufferUtils {
 	 * Writes a 'tri-byte' to the specified buffer.
 	 * 
 	 * @param buf
-	 *           The buffer.
+	 *            The buffer.
 	 * @param value
-	 *           The value.
+	 *            The value.
 	 */
 	public static void putTriByte(ByteBuffer buf, int value) {
 		buf.put((byte) (value >> 16));
@@ -72,7 +72,7 @@ public final class ByteBufferUtils {
 	 * Calculates the CRC32 checksum of the specified buffer.
 	 * 
 	 * @param buffer
-	 *           The buffer.
+	 *            The buffer.
 	 * @return The CRC32 checksum.
 	 */
 	public static int getCrcChecksum(ByteBuffer buffer) {
@@ -87,7 +87,7 @@ public final class ByteBufferUtils {
 	 * Calculates the whirlpool digest of the specified buffer.
 	 * 
 	 * @param buf
-	 *           The buffer.
+	 *            The buffer.
 	 * @return The 64-byte whirlpool digest.
 	 */
 	public static byte[] getWhirlpoolDigest(ByteBuffer buf) {
@@ -97,11 +97,11 @@ public final class ByteBufferUtils {
 	}
 
 	/**
-	 * Converts the contents of the specified byte buffer to a string, which is formatted similarly
-	 * to the output of the {@link Arrays#toString()} method.
+	 * Converts the contents of the specified byte buffer to a string, which is formatted similarly to
+	 * the output of the {@link Arrays#toString()} method.
 	 * 
 	 * @param buffer
-	 *           The buffer.
+	 *            The buffer.
 	 * @return The string.
 	 */
 	public static String toString(ByteBuffer buffer) {

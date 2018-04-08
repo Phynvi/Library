@@ -9,7 +9,7 @@ import network.ConnectionHolder;
  * @author Albert Beaupre
  *
  * @param <C>
- *           The {@code ConnectionHolder} type
+ *            The {@code ConnectionHolder} type
  */
 public interface PacketEncoder<C extends ConnectionHolder> {
 
@@ -18,9 +18,9 @@ public interface PacketEncoder<C extends ConnectionHolder> {
 	 * {@code EncodedPacket}.
 	 * 
 	 * @param holder
-	 *           the holder of the sent packet
+	 *            the holder of the sent packet
 	 * @param args
-	 *           the arguments to use to encode the packet
+	 *            the arguments to use to encode the packet
 	 * @return the {@code EncodedPacket}
 	 */
 	public EncodedPacket encode(C holder, Object... args);

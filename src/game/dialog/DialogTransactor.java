@@ -18,7 +18,7 @@ public interface DialogTransactor {
 	 * Displays the given {@code OptionPage} to the screen of the DialogTransactor.
 	 * 
 	 * @param page
-	 *           the page to display
+	 *            the page to display
 	 */
 	public abstract void displayOptions(OptionPage page);
 
@@ -26,7 +26,7 @@ public interface DialogTransactor {
 	 * Displays the given {@code Page} to the screen of the DialogTransactor.
 	 * 
 	 * @param page
-	 *           the page to display
+	 *            the page to display
 	 */
 	public abstract void displayDialogPage(Page page);
 
@@ -34,7 +34,7 @@ public interface DialogTransactor {
 	 * Displays the given {@code InformationPage} to the screen of the DialogTransactor.
 	 * 
 	 * @param page
-	 *           the page to display
+	 *            the page to display
 	 */
 	public abstract void displayInformation(InformationPage page);
 

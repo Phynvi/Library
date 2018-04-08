@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  * @author Albert Beaupre
  *
  * @param <E>
- *           The type of {@code Item} used within this collection
+ *            The type of {@code Item} used within this collection
  * 
  * @see container.Item
  */
@@ -35,9 +35,9 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	private Item[] data; // The items within this container
 
 	private final int maximumStack; // The maximum amount of an item before it
-												// cannot be increase in size anymore
+									// cannot be increase in size anymore
 	private final int minimumStack; // The minimum amount of an item before it is
-												// destroyed
+									// destroyed
 
 	public ArrayList<Consumer<Container<E>>> refreshers;
 
@@ -45,13 +45,13 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	 * Constructs a new {@code Container} from the specified arguments.
 	 * 
 	 * @param handler
-	 *           the container's handler
+	 *            the container's handler
 	 * @param capacity
-	 *           the maximum amount of items allowed in this container
+	 *            the maximum amount of items allowed in this container
 	 * @param minStack
-	 *           the minimum stack an item can be stacked to
+	 *            the minimum stack an item can be stacked to
 	 * @param maxStack
-	 *           the maximum stack an itme can be stacked to
+	 *            the maximum stack an itme can be stacked to
 	 */
 	public Container(ContainerHandler<E> handler, int capacity, int minimumStack, int maximumStack) {
 		this.data = new Item[this.capacity = (short) capacity];
@@ -93,16 +93,16 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	 * and returns true if the amount was removed.
 	 * 
 	 * @param index
-	 *           the index of the item to remove the amount from
+	 *            the index of the item to remove the amount from
 	 * @param amount
-	 *           the amount to be removed from the item
+	 *            the amount to be removed from the item
 	 * @return true if the amount was removed; return false otherwise
 	 */
 	public boolean remove(int index, int amount) {
 		if (data[index] != null) {
 			data[index] = data[index].decrease(amount);
 			if (data[index].getAmount() < minimumStack) // TODO < 1 should be <
-																			// minStack
+														// minStack
 				data[index] = null;
 			refresh();
 			return true;
@@ -115,7 +115,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	 * returns the removed item.
 	 * 
 	 * @param index
-	 *           the index of the item to remove
+	 *            the index of the item to remove
 	 * @return the item removed; return null if non-existent
 	 */
 	public E remove(int index) {
@@ -129,11 +129,11 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	}
 
 	/**
-	 * Returns the combined amounts of every item within this {@code Container} with the same id as
-	 * the specified {@code itemId}.
+	 * Returns the combined amounts of every item within this {@code Container} with the same id as the
+	 * specified {@code itemId}.
 	 * 
 	 * @param itemId
-	 *           the id of the items
+	 *            the id of the items
 	 * @return the amount of each item with the same id's combined
 	 */
 	public int amountOf(int itemId) {
@@ -168,7 +168,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	 * argument.
 	 * 
 	 * @param comparator
-	 *           the comparator to sort this {@code Container}.
+	 *            the comparator to sort this {@code Container}.
 	 */
 	public void sort(Comparator<Item> comparator) {
 		this.shift();
@@ -232,7 +232,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	 * instance of {@code Item}.
 	 * 
 	 * @param o
-	 *           the object to check if container within this {@code Container}
+	 *            the object to check if container within this {@code Container}
 	 * @return true if the object is within this {@code Container}; return false otherwise
 	 */
 	public boolean contains(Object o) {
@@ -243,7 +243,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	 * Returns true if the specified {@code objects} is contained inside of this {@code Container}.
 	 * 
 	 * @param objects
-	 *           the objects to check
+	 *            the objects to check
 	 * @return true if all objects are contained; return false otherwise
 	 */
 	public boolean contains(Object... objects) {
@@ -257,9 +257,9 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	 * Swaps the item at each specified index with each other.
 	 * 
 	 * @param fromIndex
-	 *           the index to swap from
+	 *            the index to swap from
 	 * @param toIndex
-	 *           the index to swap to
+	 *            the index to swap to
 	 */
 	public void swap(int fromIndex, int toIndex) {
 		Item old = get(toIndex);
@@ -272,7 +272,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	 * Returns the item element at the specified {@code index} of this {@code Container}.
 	 * 
 	 * @param index
-	 *           the index to get the item at
+	 *            the index to get the item at
 	 * @return the item at the index; return null if non-existent
 	 */
 	public E get(int index) {
@@ -280,11 +280,11 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	}
 
 	/**
-	 * Returns the index of the specified {@code object}, which can be the id of an item or an
-	 * instance of an item
+	 * Returns the index of the specified {@code object}, which can be the id of an item or an instance
+	 * of an item
 	 * 
 	 * @param object
-	 *           the object to retrieve the index for
+	 *            the object to retrieve the index for
 	 * @return the index retrieved; return -1 if not found
 	 */
 	public int indexOf(Object object) {
@@ -305,9 +305,9 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	 * Inserts the specified {@code element} at the {@code index} of this {@code Container}.
 	 * 
 	 * @param index
-	 *           the index to insert the item at
+	 *            the index to insert the item at
 	 * @param element
-	 *           the item to be inserted
+	 *            the item to be inserted
 	 * @return true if the item was inserted; return false otherwise
 	 */
 	public boolean insert(int index, Item element) {
@@ -322,13 +322,13 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E> {
 	}
 
 	/**
-	 * Sets the specified {@code element} at the {@code index} of this {@code Container} and returns
-	 * the item which was previously there.
+	 * Sets the specified {@code element} at the {@code index} of this {@code Container} and returns the
+	 * item which was previously there.
 	 * 
 	 * @param index
-	 *           the index to set the item at
+	 *            the index to set the item at
 	 * @param element
-	 *           the item to set at the index
+	 *            the item to set at the index
 	 * @return the previous item which was placed at the index; return null if there wasn't one
 	 */
 	public E set(int index, Item element) {

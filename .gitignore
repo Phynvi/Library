@@ -4,3 +4,4 @@ bin/
 .settings/
 tests/
 dependencies/
+src/cache/
