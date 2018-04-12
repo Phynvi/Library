@@ -1,8 +1,8 @@
 package game.dialog;
 
 /**
- * The {@code OptionPage} will hold the {@link game.dialog.DialogOption} options in a page and
- * handle the execution of the actions of them.
+ * The {@code OptionPage} will hold the {@link game.dialog.DialogOption} options
+ * in a page and handle the execution of the actions of them.
  * 
  * @author Albert Beaupre
  */
@@ -27,14 +27,15 @@ public class OptionPage extends Page {
 	}
 
 	/**
-	 * Executes the entityOption, if any
+	 * Executes the option at the specified {@code optionIndex}.
 	 * 
-	 * @param entityOption
+	 * @param optionIndex
+	 *            the index of the option to execute
 	 */
-	public final void execute(int option) {
-		if (options.length <= option)
+	public final void execute(int optionIndex) {
+		if (options.length <= optionIndex)
 			throw new ArrayIndexOutOfBoundsException("The DialogOption selected does not exist in the page");
-		options[option].action.run();
+		options[optionIndex].action.run();
 	}
 
 }

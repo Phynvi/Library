@@ -12,19 +12,20 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * Represents a util.configuration section in YML. Internally, this class is simply a map of
- * <String, Object> where the objects are values or possibly, more ConfigSections.
+ * Represents a util.configuration section in YML. Internally, this class is
+ * simply a map of <String, Object> where the objects are values or possibly,
+ * more ConfigSections.
  * 
- * This is an easy way of storing and loading data from util.configuration files. It uses the
- * SnakeYAML library, coupled with this project.
+ * This is an easy way of storing and loading data from util.configuration
+ * files. It uses the SnakeYAML library, coupled with this project.
  * 
  * @author Dirk Jamieson
  */
 public class ConfigSection implements Map<String, Object> {
 
 	/**
-	 * The map of <String, Object> contained in this section. This is the key-values of the map. Note
-	 * that the key cannot contain full stops ('.').
+	 * The map of <String, Object> contained in this section. This is the key-values
+	 * of the map. Note that the key cannot contain full stops ('.').
 	 */
 	protected Map<String, Object> map;
 
@@ -36,8 +37,8 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Constructs a new {@code ConfigSection} with values based on the YAML parsed from the specified
-	 * {@code string}.
+	 * Constructs a new {@code ConfigSection} with values based on the YAML parsed
+	 * from the specified {@code string}.
 	 * 
 	 * @param string
 	 *            the YAML string to be decoded into a map
@@ -53,8 +54,8 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Constructs a new {@code ConfigSection} with values based on the YAML parsed from the specified
-	 * {@code InputStream}.
+	 * Constructs a new {@code ConfigSection} with values based on the YAML parsed
+	 * from the specified {@code InputStream}.
 	 * 
 	 * @param in
 	 *            the {@code InputStream} to parse the YAML from
@@ -87,25 +88,28 @@ public class ConfigSection implements Map<String, Object> {
 	/**
 	 * Returns true if this {@code ConfigSection} is empty of any values.
 	 * 
-	 * @return true if this {@code ConfigSection} is empty of any values; return false otherwise
+	 * @return true if this {@code ConfigSection} is empty of any values; return
+	 *         false otherwise
 	 */
 	public boolean isEmpty() {
 		return this.map.isEmpty();
 	}
 
 	/**
-	 * Sets the object at the given location to the given object. If you attempt to do this with an
-	 * object which is not serializable, then chances are you'll end up with garbage data. Consider
-	 * writing a method to serialize the required object into a ConfigSection if this is the case.
-	 * Numbers, Strings and ConfigSections are stored properly and may be fetched later.
+	 * Sets the object at the given location to the given object. If you attempt to
+	 * do this with an object which is not serializable, then chances are you'll end
+	 * up with garbage data. Consider writing a method to serialize the required
+	 * object into a ConfigSection if this is the case. Numbers, Strings and
+	 * ConfigSections are stored properly and may be fetched later.
 	 * 
 	 * @param s
 	 *            the key for the object (May include '.')
 	 * @param o
 	 *            the object to set.
+	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public void set(String s, Object o) {
+	public ConfigSection set(String s, Object o) {
 		if (s == null)
 			throw new NullPointerException("Key may not be null.");
 		String[] parts = s.split("\\.");
@@ -135,10 +139,12 @@ public class ConfigSection implements Map<String, Object> {
 		} else {
 			node.put(parts[parts.length - 1], o);
 		}
+		return this;
 	}
 
 	/**
-	 * Fetches the map at the specified key, or if it is null or not a map, returns the given fallback.
+	 * Fetches the map at the specified key, or if it is null or not a map, returns
+	 * the given fallback.
 	 * 
 	 * @param key
 	 *            the key to search for
@@ -166,7 +172,8 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the map at the specified key, or if it is null or not a map, returns null
+	 * Fetches the map at the specified key, or if it is null or not a map, returns
+	 * null
 	 * 
 	 * @param key
 	 *            the key to search for
@@ -181,8 +188,8 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the byte array at the specified key, or returns the given fallback if it was not found or
-	 * invalid.
+	 * Fetches the byte array at the specified key, or returns the given fallback if
+	 * it was not found or invalid.
 	 * 
 	 * @param key
 	 *            The key to retrieve
@@ -202,7 +209,8 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the byte array at the specified key, or returns null if it was not found or invalid.
+	 * Fetches the byte array at the specified key, or returns null if it was not
+	 * found or invalid.
 	 * 
 	 * @param key
 	 *            The key to retrieve
@@ -213,10 +221,11 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the list at the requested position in this section. This works by calling getObject(key).
-	 * If the object is a collection, its elements are added to a new list. If the object is a map, its
-	 * keys are added to a new list. This new list is returned. If it's neither a set nor map, then the
-	 * fallback list is returned instead.
+	 * Fetches the list at the requested position in this section. This works by
+	 * calling getObject(key). If the object is a collection, its elements are added
+	 * to a new list. If the object is a map, its keys are added to a new list. This
+	 * new list is returned. If it's neither a set nor map, then the fallback list
+	 * is returned instead.
 	 * 
 	 * @param key
 	 *            the location of the list to fetch
@@ -251,10 +260,11 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the list at the requested position in this section. This works by calling getObject(key).
-	 * If the object is a collection, its elements are added to a new list. If the object is a map, its
-	 * keys are added to a new list. This new list is returned. If it's neither a set nor map, then null
-	 * is returned instead. This method calls getList(key, clazz, null)
+	 * Fetches the list at the requested position in this section. This works by
+	 * calling getObject(key). If the object is a collection, its elements are added
+	 * to a new list. If the object is a map, its keys are added to a new list. This
+	 * new list is returned. If it's neither a set nor map, then null is returned
+	 * instead. This method calls getList(key, clazz, null)
 	 * 
 	 * @param key
 	 *            the location of the list to fetch
@@ -267,7 +277,8 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches a set of strings which represent the keys for this config section. This set is immutable.
+	 * Fetches a set of strings which represent the keys for this config section.
+	 * This set is immutable.
 	 * 
 	 * @return the set of strings
 	 */
@@ -276,21 +287,22 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the section under the given key, or returns fallback if there was an issue. If the
-	 * section contains the key, but it is not a Configurable Section, then the fallback is returned.
+	 * Fetches the section under the given key, or returns fallback if there was an
+	 * issue. If the section contains the key, but it is not a Configurable Section,
+	 * then the fallback is returned.
 	 * 
 	 * @param key
 	 *            The key
 	 * @param fallback
-	 *            return value if the value was not specified or is not a ConfigSection
+	 *            return value if the value was not specified or is not a
+	 *            ConfigSection
 	 * @return the section
 	 */
 	public ConfigSection getUnderlyingSection(String key, ConfigSection fallback) {
 		Object o = getObject(key);
 		try {
 			if (o != null && o instanceof Map) {
-				@SuppressWarnings("unchecked")
-				Map<String, Object> map = (Map<String, Object>) o;
+				@SuppressWarnings("unchecked") Map<String, Object> map = (Map<String, Object>) o;
 				return new ConfigSection(map);
 			}
 		} catch (Exception e) {}
@@ -298,9 +310,9 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the section under the given key, or returns a blank config section if there was an issue.
-	 * Note that this differs from other methods which return a null fallback object. If you desire null
-	 * on error, use getSection(key, null).
+	 * Fetches the section under the given key, or returns a blank config section if
+	 * there was an issue. Note that this differs from other methods which return a
+	 * null fallback object. If you desire null on error, use getSection(key, null).
 	 * 
 	 * @param key
 	 *            the key
@@ -359,7 +371,8 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the integer at the given key, allowing a fallback value to be specified.
+	 * Fetches the integer at the given key, allowing a fallback value to be
+	 * specified.
 	 * 
 	 * @param k
 	 *            the key to search for
@@ -415,7 +428,8 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the double at the given key, allowing a fallback value to be specified.
+	 * Fetches the double at the given key, allowing a fallback value to be
+	 * specified.
 	 * 
 	 * @param k
 	 *            the key to search for
@@ -443,7 +457,8 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the String at the given key, allowing a fallback value to be specified.
+	 * Fetches the String at the given key, allowing a fallback value to be
+	 * specified.
 	 * 
 	 * @param k
 	 *            the key to search for
@@ -471,7 +486,8 @@ public class ConfigSection implements Map<String, Object> {
 	}
 
 	/**
-	 * Fetches the boolean at the given key, allowing a fallback value to be specified.
+	 * Fetches the boolean at the given key, allowing a fallback value to be
+	 * specified.
 	 * 
 	 * @param k
 	 *            the key to search for

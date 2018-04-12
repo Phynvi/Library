@@ -42,7 +42,7 @@ public final class TickThread extends CoreThread {
 
 	/**
 	 * Queues the specified {@code Tick} to be executed when {@link Tick#getDuration()} is greater or
-	 * equal to {@link Tick#getPeriod()} and them it will be removed from this {@code TickThread} until
+	 * equal to {@link Tick#getPeriod()} and then it will be removed from this {@code TickThread} until
 	 * this method is called again.
 	 * 
 	 * @param tickable
