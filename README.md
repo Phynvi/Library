@@ -54,7 +54,7 @@ Here is a brief list of things to complete:
   - [x] Action system
   - [ ] Entity design and interaction
   - [ ] Mini Game handling
-  - [ ] Skill design and management
+  - [x] Skill design and management
   - [x] Container system
 - [x] Configuration serialization (player saves, server data, etc.)
 - [x] Modular system for separated programming
