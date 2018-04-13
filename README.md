@@ -46,8 +46,8 @@ Here is a brief list of things to complete:
   - [ ] Region Management (Dynamic/Static Map Building)
   - [x] Flexible Tick System
   - [x] Event Listening/Managing
-  - [X] Easy Mask/Update handling
-  - [ ] Multiple Protocol Support
+  - [x] Easy Mask/Update handling
+  - [ ] <strike>Multiple Protocol Support</strike> (This seems inconsistent with what needs to be developed at the moment)
   - [ ] Easy packet reading/writing
 - [ ] Content Features
   - [x] Interface handling and functionalities
