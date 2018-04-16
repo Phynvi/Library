@@ -5,3 +5,4 @@ bin/
 dependencies/
 tests/*
 tests/
+src/cache/
