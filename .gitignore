@@ -3,6 +3,6 @@ bin/
 .project
 .settings/
 dependencies/
-tests/*
+data/
 tests/
 src/cache/
