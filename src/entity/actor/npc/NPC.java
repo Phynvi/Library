@@ -4,12 +4,13 @@ import entity.Entity;
 import entity.actor.ActionQueue;
 import entity.actor.Actor;
 import entity.geometry.Location;
+import util.loot.DropTableHolder;
 
 /**
  * 
  * @author Albert Beaupre
  */
-public abstract class NPC extends Entity implements Actor {
+public abstract class NPC extends Entity implements Actor, DropTableHolder {
 
 	/**
 	 * Constructs a new {@code NPC} located at the specified {@code location}.

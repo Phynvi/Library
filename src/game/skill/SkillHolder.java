@@ -16,4 +16,35 @@ public interface SkillHolder {
 	 */
 	public SkillSetManager getSkills();
 
+	/**
+	 * Returns true if this {@code SkillHolder} has the given level requirement for
+	 * the speicifed {@code SkillType}.
+	 * 
+	 * @param type
+	 *            the type of level
+	 * @param level
+	 *            the level requirement
+	 * @param modified
+	 *            flag for any temporary level modifications allowed for this
+	 *            requirement check
+	 * @return true if has level; return false otherwise
+	 */
+	public default boolean hasLevel(SkillType type, int level, boolean modified) {
+		return getSkills().getLevel(type, modified) >= level;
+	}
+
+	/**
+	 * @see game.skill.SkillSetManager
+	 */
+	public default void modifyLevel(SkillType type, int levels) {
+		this.getSkills().modifyLevel(type, levels);
+	}
+
+	/**
+	 * @see game.skill.SkillSetManager
+	 */
+	public default void modifyLevelByPercent(SkillType type, double percentage) {
+		this.getSkills().modifyByPercent(type, percentage);
+	}
+
 }
