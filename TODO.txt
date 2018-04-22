@@ -3,7 +3,7 @@
 	-Task relation can be numerical. So for example a woodcutting task can be #3 and firemaking task can be #4 and you cannot complete WoodMaster Task without task 3 and 4 being complete/
 	
 
-2. Task 'callbacks', which are actions executed when the task is completed. This would be helpful is someone wants to write shorter code with responsive events.
+2. Task 'callbacks', which are actions executed when the task is completed. This would be helpful if someone wants to write shorter code with responsive events.
 
 3. 
 

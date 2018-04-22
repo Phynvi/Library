@@ -1,4 +1,4 @@
-package util.loot;
+package game.loot;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -17,7 +17,7 @@ public interface DropTableHolder {
 	 * 
 	 * @return the selected items from the drop table
 	 */
-	public default <T extends LootableItem> Collection<T> selectDropItems() {
+	public default <T extends LootableItem> Collection<T> selectNextDropItems() {
 		DropTable<T> dropTable = this.getDropTable();
 		Collection<T> selected = dropTable.selectItems();
 		LootableItemDropEvent event = new LootableItemDropEvent(this, selected);

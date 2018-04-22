@@ -1,4 +1,4 @@
-package util.loot;
+package game.loot;
 
 import java.util.ArrayList;
 import java.util.Collection;

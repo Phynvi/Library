@@ -4,13 +4,15 @@ import entity.Entity;
 import entity.actor.ActionQueue;
 import entity.actor.Actor;
 import entity.geometry.Location;
-import util.loot.DropTableHolder;
+import game.loot.DropTableHolder;
 
 /**
  * 
  * @author Albert Beaupre
  */
 public abstract class NPC extends Entity implements Actor, DropTableHolder {
+	
+	private final ActionQueue<NPC> actions = new ActionQueue<>();
 
 	/**
 	 * Constructs a new {@code NPC} located at the specified {@code location}.
@@ -28,7 +30,7 @@ public abstract class NPC extends Entity implements Actor, DropTableHolder {
 	 * @see entity.actor.Actor#getActions()
 	 */
 	public ActionQueue<NPC> getActions() {
-		return new ActionQueue<>();
+		return actions;
 	}
 
 }

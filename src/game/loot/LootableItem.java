@@ -1,4 +1,4 @@
-package util.loot;
+package game.loot;
 
 /**
  * Represents an item used to be selected for loot.

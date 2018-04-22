@@ -27,7 +27,7 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 	 * The {@code attachments} map is used to attach any {@code YMLSerializable}
 	 * values to this {@code Persona}.
 	 */
-	private HashMap<String, YMLSerializable> attachments = new HashMap<>();
+	private HashMap<String, YMLSerializable> registered_serializables = new HashMap<>();
 
 	/**
 	 * The {@code config} variable is used to store any configurations to this
@@ -50,7 +50,9 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 	 * Constructs a new {@code Persona} to be created.
 	 */
 	public Persona() {
-		this.register("skills", skillManager);
+		this.registerForSerialization("skills", skillManager);
+		this.registerForSerialization("inventory", inventory);
+		this.registerForSerialization("equipment", equipment);
 	}
 
 	/**
@@ -75,13 +77,13 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 	 * @return true if the object was deserialized, false if the server is still
 	 *         waiting for the holder to load.
 	 */
-	public boolean register(String key, YMLSerializable yml) {
+	public boolean registerForSerialization(String key, YMLSerializable yml) {
 		if (key == null)
 			throw new NullPointerException("Key may not be null.");
 		if (yml == null)
 			throw new NullPointerException("YMLSerializable object may not be null.");
 
-		this.attachments.put(key, yml);
+		this.registered_serializables.put(key, yml);
 
 		if (this.config != null) {
 			yml.deserialize(this.config.getUnderlyingSection(key));
@@ -117,7 +119,7 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 		Location loc = getLocation();
 		if (loc != null)
 			this.config.set("location", loc.serialize());
-		for (Entry<String, YMLSerializable> e : this.attachments.entrySet())
+		for (Entry<String, YMLSerializable> e : this.registered_serializables.entrySet())
 			this.config.set(e.getKey(), e.getValue().serialize());
 		return this.config;
 	}
@@ -129,7 +131,7 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 	 */
 	public void deserialize(ConfigSection section) {
 		this.config = section;
-		for (Entry<String, YMLSerializable> e : this.attachments.entrySet())
+		for (Entry<String, YMLSerializable> e : this.registered_serializables.entrySet())
 			e.getValue().deserialize(section.getUnderlyingSection(e.getKey()));
 	}
 
