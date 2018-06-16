@@ -27,7 +27,7 @@ public class EntityOptions {
 	 * @param index
 	 * @param target
 	 */
-	protected void select(int index, Entity target) {
+	public void select(int index, Entity target) {
 		if (index >= entityOptions.length || entityOptions[index] == null)
 			throw new NullPointerException("That entityOption does not exist on target entity: " + index);
 		if (target == null)
@@ -46,7 +46,7 @@ public class EntityOptions {
 	 * @param text
 	 * @param target
 	 */
-	protected void select(String text, Entity target) {
+	public void select(String text, Entity target) {
 		for (int i = 0; i < entityOptions.length; i++) {
 			if (entityOptions[i].text.equalsIgnoreCase(text)) {
 				select(i, target);

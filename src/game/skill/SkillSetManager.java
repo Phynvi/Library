@@ -9,10 +9,9 @@ import util.configuration.ConfigSection;
 import util.configuration.YMLSerializable;
 
 /**
- * The SkillSetManager class is used to hold and manage a set of the
- * {@code Skill}s. Temporary skill level modification such as boosts or
- * decreases, leveling up, and anything else relating to a {@code Skill} is
- * handled within this class.
+ * The SkillSetManager class is used to hold and manage a set of the {@code Skill}s. Temporary skill
+ * level modification such as boosts or decreases, leveling up, and anything else relating to a
+ * {@code Skill} is handled within this class.
  * 
  * @author Albert Beaupre
  * 
@@ -31,8 +30,8 @@ public class SkillSetManager implements YMLSerializable {
 	private SkillTick skillTick;
 
 	/**
-	 * Constructs a new {@code SkillSetManager} with the given {@code SkillHolder}
-	 * as the holder for this class.
+	 * Constructs a new {@code SkillSetManager} with the given {@code SkillHolder} as the holder for
+	 * this class.
 	 * 
 	 * @param holder
 	 *            the holder of the class to use for itself
@@ -49,9 +48,8 @@ public class SkillSetManager implements YMLSerializable {
 	}
 
 	/**
-	 * Adds the given {@code experience} to the {@code Skill} with the specified
-	 * {@code type} and calls the {@code SkillLevelUpEvent} if any level has
-	 * increased in the skill.
+	 * Adds the given {@code experience} to the {@code Skill} with the specified {@code type} and calls
+	 * the {@code SkillLevelUpEvent} if any level has increased in the skill.
 	 * 
 	 * @param type
 	 *            the correlating skill type
@@ -71,8 +69,8 @@ public class SkillSetManager implements YMLSerializable {
 	}
 
 	/**
-	 * Modifies the level temporarily of the {@code Skill} with the specified
-	 * {@code type} by the given {@code percentage} argument.
+	 * Modifies the level temporarily of the {@code Skill} with the specified {@code type} by the given
+	 * {@code percentage} argument.
 	 * 
 	 * @param type
 	 *            the type of the correlating skill
@@ -90,8 +88,8 @@ public class SkillSetManager implements YMLSerializable {
 	}
 
 	/**
-	 * Modifies the level temporarily of the {@code Skill} with the specified
-	 * {@code type} by the given {@code levels} argument.
+	 * Modifies the level temporarily of the {@code Skill} with the specified {@code type} by the given
+	 * {@code levels} argument.
 	 * 
 	 * @param type
 	 *            the type of the correlating skill
@@ -109,9 +107,8 @@ public class SkillSetManager implements YMLSerializable {
 	}
 
 	/**
-	 * Returns the current level of the {@code Skill} with the specified
-	 * {@code Type}. If the given {@code modified} argument is true, then the
-	 * temporary level is returned.
+	 * Returns the current level of the {@code Skill} with the specified {@code Type}. If the given
+	 * {@code modified} argument is true, then the temporary level is returned.
 	 * 
 	 * @param type
 	 *            the type of the correlating skill to get the level of
@@ -124,8 +121,7 @@ public class SkillSetManager implements YMLSerializable {
 	}
 
 	/**
-	 * Returns the amount of experience the {@code Skill} with the specified
-	 * {@code type} is at.
+	 * Returns the amount of experience the {@code Skill} with the specified {@code type} is at.
 	 * 
 	 * @param type
 	 *            the type of the correlating skill to get the experience for
@@ -136,8 +132,7 @@ public class SkillSetManager implements YMLSerializable {
 	}
 
 	/**
-	 * Returns the total level of all skills combined within the
-	 * {@code SkillSetManager}.
+	 * Returns the total level of all skills combined within the {@code SkillSetManager}.
 	 * 
 	 * @return the total level of all skills
 	 */
@@ -183,8 +178,7 @@ public class SkillSetManager implements YMLSerializable {
 	}
 
 	/**
-	 * Should never allow access to this class. These variables are only to be
-	 * modified by this class.
+	 * Should never allow access to this class. These variables are only to be modified by this class.
 	 */
 	private class SkillTick extends Tick {
 
@@ -214,10 +208,11 @@ public class SkillSetManager implements YMLSerializable {
 
 	@Override
 	public void deserialize(ConfigSection section) {
-		for (Entry<String, Object> entry : section.entrySet()) {
-			@SuppressWarnings("unchecked") Map<String, Object> map = (Map<String, Object>) entry.getValue();
+		for (Entry<Object, Object> entry : section.entrySet()) {
+			@SuppressWarnings("unchecked")
+			Map<Object, Object> map = (Map<Object, Object>) entry.getValue();
 
-			SkillType type = SkillType.valueOf(entry.getKey());
+			SkillType type = SkillType.valueOf("" + entry.getKey());
 			skills.get(type).deserialize(new ConfigSection(map));
 		}
 	}

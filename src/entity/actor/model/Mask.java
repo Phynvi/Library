@@ -22,7 +22,7 @@ public abstract class Mask implements Comparable<Mask> {
 	 * 
 	 * @return the ordinate (index) of this {@code Mask} to be read
 	 */
-	public abstract byte ordinal();
+	public abstract int ordinal();
 
 	/**
 	 * Writes information based on this {@code Mask} to the specified {@code packet} argument.

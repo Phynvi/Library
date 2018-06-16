@@ -1,13 +1,15 @@
 package infrastructure;
 
+import java.io.File;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import cache.Cache;
 import event.EventManager;
-import infrastructure.threads.ActorUpdateThread;
 import infrastructure.threads.TickThread;
 
 /**
@@ -21,23 +23,33 @@ import infrastructure.threads.TickThread;
  */
 public class Core {
 
-	private static final ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(7); // Plans to implement 7 threads
+	private static final ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(2); // Plans to implement 4 threads
 	private static long TASK_COUNT = 0;
 
-	public static boolean debugging = true;
+	private static boolean debuggingEnabled = false;
+	private static Cache cache;
 
 	/**
 	 * Initializes the important variables and steps for this Library to function properly and
 	 * efficiently.
+	 * 
+	 * @param cacheRoot
+	 *            the root folder for the cache to be loaded from
+	 * @param debugginEnabled
+	 *            the flag for the debugging to be enabled/disabled
 	 */
-	public static void initialize(String cacheRoot) {
+	public static void initialize(String cacheRoot, boolean debuggingEnabled) {
 		try {
+			cache = new Cache(new File(cacheRoot));
+			cache.load();
+
 			/**
 			 * Attach all essential attachments
 			 */
-			GlobalVariables.setActorUpdator(new ActorUpdateThread());
 			GlobalVariables.setTicker(new TickThread());
 			GlobalVariables.setEventManager(new EventManager());
+
+			Core.debuggingEnabled = debuggingEnabled;
 		} catch (Exception e) {
 			System.err.println("Error initializing Core...");
 			e.printStackTrace();
@@ -106,6 +118,24 @@ public class Core {
 	 */
 	public static ScheduledFuture<?> scheduleFixedTask(CoreThread thread, long delay, long period, TimeUnit unit) {
 		return threadPool.scheduleAtFixedRate(Objects.requireNonNull(thread, "You cannot schedule a Core Thread to null"), delay, period, unit);
+	}
+
+	/**
+	 * Returns true if debugging is enabled for the server; return false otherwise
+	 * 
+	 * @return true if debugging is enabled
+	 */
+	public static boolean isDebugEnabled() {
+		return Core.debuggingEnabled;
+	}
+
+	/**
+	 * Returns the {@code Cache} loaded for this {@code Core}.
+	 * 
+	 * @return the cache loaded
+	 */
+	public static Cache getCache() {
+		return cache;
 	}
 
 }

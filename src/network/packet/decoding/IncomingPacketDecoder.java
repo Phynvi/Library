@@ -74,7 +74,7 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 					if (processor != null) {
 						processor.process(holder, packet);
 					} else {
-						if (Core.debugging)
+						if (Core.isDebugEnabled())
 							LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
 					}
 					return;
@@ -87,7 +87,7 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 				if (processor != null) {
 					processor.process(holder, packet);
 				} else {
-					if (Core.debugging)
+					if (Core.isDebugEnabled())
 						LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
 				}
 			} else {}

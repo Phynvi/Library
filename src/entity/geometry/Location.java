@@ -2,13 +2,14 @@ package entity.geometry;
 
 import entity.geometry.map.Chunk;
 import entity.geometry.map.RSMap;
+import util.configuration.YMLSerializable;
 
 /**
  * Represents a position in a {@code WorldMap} to locate anything.
  * 
  * @author Albert Beaupre
  */
-public class Location extends Point3D {
+public class Location extends Point3D implements YMLSerializable {
 
 	/**
 	 * The {@code RSMap} in relation to what this location is placed.
@@ -149,6 +150,10 @@ public class Location extends Point3D {
 	 */
 	public String toString() {
 		return String.format("Location[x=%s, y=%s, z=%s]", this.x, this.y, this.z);
+	}
+
+	public Location newInstance() {
+		return new Location(map, x, y, z);
 	}
 
 	/*

@@ -15,20 +15,8 @@ import java.util.Iterator;
  */
 public class EntityList<E extends Entity> implements Iterable<E> {
 
-	private static final int DEFAULT_CAPACITY = 1000;
-	private static final float DEFAULT_LOAD_FACTOR = 0.25f;
-
 	private Entity[] data;
-	private float loadFactor;
 	private int size;
-
-	/**
-	 * Constructs a new {@code EntityList} with a default capacity of 1000.
-	 */
-	public EntityList() {
-		this.data = new Entity[DEFAULT_CAPACITY];
-		this.loadFactor = DEFAULT_LOAD_FACTOR;
-	}
 
 	/**
 	 * Constructs a new {@code EntityList} with a specified {@code initialCapacity}.
@@ -38,16 +26,6 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	 */
 	public EntityList(int initialCapacity) {
 		this.data = new Entity[initialCapacity];
-		this.loadFactor = DEFAULT_LOAD_FACTOR;
-	}
-
-	/**
-	 * Ensures that the size of data within this {@code EntityList} is relative to the capacity of this
-	 * {@code EntityList}.
-	 */
-	private void ensureCapacity() {
-		if (size >= data.length * loadFactor)
-			this.data = Arrays.copyOf(data, (int) (data.length + (data.length * loadFactor)));
 	}
 
 	private int openIndex() {
@@ -69,8 +47,6 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	 * @see entity.Entity#getIndex()
 	 */
 	public boolean add(E entity) {
-		ensureCapacity();
-
 		int index = openIndex();
 		if (index != -1) {
 			data[index] = entity;

@@ -1,6 +1,5 @@
 package container;
 
-import infrastructure.GlobalVariables;
 import util.configuration.ConfigSection;
 
 /**
@@ -120,6 +119,6 @@ public class Item {
 	 * @return true if it can stack with the same item
 	 */
 	public boolean isStackable() {
-		return GlobalVariables.getItemData().isStackable(id) && attributes == null;
+		return false;
 	}
 }

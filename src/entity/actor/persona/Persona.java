@@ -10,6 +10,7 @@ import entity.Entity;
 import entity.actor.ActionQueue;
 import entity.actor.Actor;
 import entity.geometry.Location;
+import entity.geometry.path.Mobile;
 import game.skill.SkillHolder;
 import game.skill.SkillSetManager;
 import util.configuration.ConfigSection;
@@ -19,27 +20,21 @@ import util.configuration.YMLSerializable;
  * 
  * @author Albert Beaupre
  */
-public abstract class Persona extends Entity implements Actor, SkillHolder, YMLSerializable {
+public abstract class Persona extends Entity implements Actor, SkillHolder, YMLSerializable, Mobile {
 
 	private final ActionQueue<Persona> actions = new ActionQueue<>();
 
 	/**
-	 * The {@code attachments} map is used to attach any {@code YMLSerializable}
-	 * values to this {@code Persona}.
+	 * The {@code attachments} map is used to attach any {@code YMLSerializable} values to this
+	 * {@code Persona}.
 	 */
 	private HashMap<String, YMLSerializable> registered_serializables = new HashMap<>();
 
 	/**
-	 * The {@code config} variable is used to store any configurations to this
-	 * {@code Persona} that can be serialized.
+	 * The {@code config} variable is used to store any configurations to this {@code Persona} that can
+	 * be serialized.
 	 */
 	public ConfigSection config = new ConfigSection();
-
-	/**
-	 * This method must be set to true if this {@code Persona} is active within the
-	 * game; otherwise set it to false.
-	 */
-	public boolean active;
 
 	public final Container<Item> inventory = new Container<>(Containers.AVAILABLE_STACK, 28, 1, Integer.MAX_VALUE);
 	public final Container<Item> equipment = new Container<>(Containers.AVAILABLE_STACK, 14, 1, Integer.MAX_VALUE);
@@ -56,26 +51,31 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 	}
 
 	/**
-	 * This registers the given serializable object with this Persona. If the config
-	 * has already been loaded, then the deserialize() method is called on the given
-	 * object, using the ConfigSection available in this Persona's config at the
-	 * given key. If the config has not yet been loaded (This is done in the
-	 * load(File f) call), then the serializable object is still registered under
-	 * the given key, and then when the config is loaded, the deserialize() method
-	 * is called with the appropriate ConfigSection as an argument.
+	 * This clarifies that this {@code Persona} is active in-game, meaning they exist to other players.
 	 * 
-	 * Calling this method also means that when this Persona has serialize() called,
-	 * it will call the serialize() method on the given YML object and set the
-	 * ConfigSection at the given key to the result. The result of this
-	 * serialization is then written to disk, allowing persistant data to be stored
-	 * across Personas.
+	 * @return true if persona is active; return false otherwise
+	 */
+	public abstract boolean isActive();
+
+	/**
+	 * This registers the given serializable object with this Persona. If the config has already been
+	 * loaded, then the deserialize() method is called on the given object, using the ConfigSection
+	 * available in this Persona's config at the given key. If the config has not yet been loaded (This
+	 * is done in the load(File f) call), then the serializable object is still registered under the
+	 * given key, and then when the config is loaded, the deserialize() method is called with the
+	 * appropriate ConfigSection as an argument.
+	 * 
+	 * Calling this method also means that when this Persona has serialize() called, it will call the
+	 * serialize() method on the given YML object and set the ConfigSection at the given key to the
+	 * result. The result of this serialization is then written to disk, allowing persistant data to be
+	 * stored across Personas.
 	 * 
 	 * @param key
 	 *            the key for the config section.
 	 * @param yml
 	 *            the object to deserialize/serialize.
-	 * @return true if the object was deserialized, false if the server is still
-	 *         waiting for the holder to load.
+	 * @return true if the object was deserialized, false if the server is still waiting for the holder
+	 *         to load.
 	 */
 	public boolean registerForSerialization(String key, YMLSerializable yml) {
 		if (key == null)

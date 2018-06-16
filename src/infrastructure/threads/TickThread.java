@@ -1,6 +1,7 @@
 package infrastructure.threads;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
+
 import infrastructure.CoreThread;
 import infrastructure.Tick;
 
@@ -29,15 +30,16 @@ import infrastructure.Tick;
  */
 public final class TickThread extends CoreThread {
 
-	private CopyOnWriteArrayList<Tick> list; // This list is filled by any
-												// incoming ticks to be executed
+	private ArrayList<Tick> waitingList = new ArrayList<>();
+	private ArrayList<Tick> list; // This list is filled by any
+									// incoming ticks to be executed
 
 	/**
 	 * Constructs a new {@code TickThread} with an empty list of {@code Ticks}.
 	 */
 	public TickThread() {
-		super("Tick Thread", Thread.NORM_PRIORITY, false);
-		this.list = new CopyOnWriteArrayList<>();
+		super("Tick Thread", Thread.MAX_PRIORITY, false);
+		this.list = new ArrayList<>();
 	}
 
 	/**
@@ -49,8 +51,8 @@ public final class TickThread extends CoreThread {
 	 *            the {@code Tick} to be queued to execute
 	 */
 	public void queue(Tick tickable) {
+		waitingList.add(tickable);
 		tickable.startTicking();
-		this.list.add(tickable);
 	}
 
 	/**
@@ -59,6 +61,10 @@ public final class TickThread extends CoreThread {
 	 */
 	public void run() {
 		try {
+			if (waitingList.size() > 0) {
+				list.addAll(waitingList);
+				waitingList.clear();
+			}
 			if (list.size() > 0) {
 
 				for (int i = 0; i < list.size(); i++) {

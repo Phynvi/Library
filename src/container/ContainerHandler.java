@@ -23,7 +23,7 @@ public interface ContainerHandler<E extends Item> {
 	 *            the item to add
 	 * @return true if the item was added; return false otherwise
 	 */
-	boolean add(Container<E> container, Item item);
+	boolean add(Container<E> container, E item);
 
 	/**
 	 * Removes the specified {@code item} from the {@code container}, if possible, and returns true if
@@ -35,7 +35,7 @@ public interface ContainerHandler<E extends Item> {
 	 *            the item to remove
 	 * @return true if the item was removed; return false otherwise
 	 */
-	boolean remove(Container<E> container, Item item);
+	boolean remove(Container<E> container, E item);
 
 	/**
 	 * Returns true if the specified {@code item} can be added to the {@code container}.
@@ -46,6 +46,6 @@ public interface ContainerHandler<E extends Item> {
 	 *            the item to use for checking
 	 * @return true if the item can be added; return false otherwise
 	 */
-	boolean addable(Container<E> container, Item item);
+	boolean addable(Container<E> container, E item);
 
 }

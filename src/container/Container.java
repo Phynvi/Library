@@ -13,16 +13,16 @@ import util.configuration.ConfigSection;
 import util.configuration.YMLSerializable;
 
 /**
- * A {@code Container} has a specific number of slots (based on the capacity of
- * the {@code Container)} which are filled by {@code Item} elements. Any slot
- * not used within this {@code Container} has a default value of null but is
- * still usable and is represented as an 'empty' slot.
+ * A {@code Container} has a specific number of slots (based on the capacity of the
+ * {@code Container)} which are filled by {@code Item} elements. Any slot not used within this
+ * {@code Container} has a default value of null but is still usable and is represented as an
+ * 'empty' slot.
  * 
  * <p>
- * The {@code Container} class implements {@link java.util.Collection} for
- * easier references to collection classes and methods. The {@code Container}
- * class also implements {@link java.lang.Iterable} for much easier iterations,
- * especially through the {@code Item} data of this {@code Container}.
+ * The {@code Container} class implements {@link java.util.Collection} for easier references to
+ * collection classes and methods. The {@code Container} class also implements
+ * {@link java.lang.Iterable} for much easier iterations, especially through the {@code Item} data
+ * of this {@code Container}.
  * 
  * @author Albert Beaupre
  *
@@ -35,7 +35,7 @@ import util.configuration.YMLSerializable;
 public class Container<E extends Item> implements Collection<E>, Iterable<E>, YMLSerializable {
 
 	private final ContainerHandler<E> handler;
-	private final short capacity; // Containers are not meant to have a large
+	private final int capacity; // Containers are not meant to have a large
 	// capacity
 	private Item[] data; // The items within this container
 
@@ -59,7 +59,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	 *            the maximum stack an itme can be stacked to
 	 */
 	public Container(ContainerHandler<E> handler, int capacity, int minimumStack, int maximumStack) {
-		this.data = new Item[this.capacity = (short) capacity];
+		this.data = new Item[this.capacity = capacity];
 		this.handler = handler;
 		this.minimumStack = minimumStack;
 		this.maximumStack = maximumStack;
@@ -86,8 +86,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * This method is called when <b>any change</b> happens to this
-	 * {@code Container}.
+	 * This method is called when <b>any change</b> happens to this {@code Container}.
 	 */
 	private void refresh() {
 		for (Consumer<Container<E>> refresher : this.refreshers)
@@ -95,8 +94,8 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Removes the specified {@code amount} from an item at the specified
-	 * {@code index}, if possible, and returns true if the amount was removed.
+	 * Removes the specified {@code amount} from an item at the specified {@code index}, if possible,
+	 * and returns true if the amount was removed.
 	 * 
 	 * @param index
 	 *            the index of the item to remove the amount from
@@ -117,8 +116,8 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Removes the item at the specified {@code index} of this {@code Container} if
-	 * possible, and returns the removed item.
+	 * Removes the item at the specified {@code index} of this {@code Container} if possible, and
+	 * returns the removed item.
 	 * 
 	 * @param index
 	 *            the index of the item to remove
@@ -135,8 +134,8 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Returns the combined amounts of every item within this {@code Container} with
-	 * the same id as the specified {@code itemId}.
+	 * Returns the combined amounts of every item within this {@code Container} with the same id as the
+	 * specified {@code itemId}.
 	 * 
 	 * @param itemId
 	 *            the id of the items
@@ -151,8 +150,8 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Returns the amount of indices within this {@code Container} that have not
-	 * been occupied by an item.
+	 * Returns the amount of indices within this {@code Container} that have not been occupied by an
+	 * item.
 	 * 
 	 * @return the amount of free spaces within this {@code Container}
 	 */
@@ -170,8 +169,8 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Sorts this {@code Container} to rearrange the items based on the specified
-	 * {@code Comparator} argument.
+	 * Sorts this {@code Container} to rearrange the items based on the specified {@code Comparator}
+	 * argument.
 	 * 
 	 * @param comparator
 	 *            the comparator to sort this {@code Container}.
@@ -192,8 +191,8 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Shifts the elements within this {@code Container} to the left and leaves no
-	 * empty spaces in between each item.
+	 * Shifts the elements within this {@code Container} to the left and leaves no empty spaces in
+	 * between each item.
 	 */
 	public void shift() {
 		ArrayList<Item> shifted = new ArrayList<Item>();
@@ -203,8 +202,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Returns the number of maximum amount of items that is allowed within this
-	 * {@code Container}.
+	 * Returns the number of maximum amount of items that is allowed within this {@code Container}.
 	 * 
 	 * @return the maximum amount of items allowed in this container
 	 */
@@ -228,29 +226,26 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	/**
 	 * Returns true if this {@code Container} has no items within it.
 	 * 
-	 * @return true if no items are within this {@code Container}; return false
-	 *         otherwise
+	 * @return true if no items are within this {@code Container}; return false otherwise
 	 */
 	public boolean isEmpty() {
 		return size() == 0;
 	}
 
 	/**
-	 * Returns true if the specified {@code Object} is contained within this
-	 * {@code Container} and is instance of {@code Item}.
+	 * Returns true if the specified {@code Object} is contained within this {@code Container} and is
+	 * instance of {@code Item}.
 	 * 
 	 * @param o
 	 *            the object to check if container within this {@code Container}
-	 * @return true if the object is within this {@code Container}; return false
-	 *         otherwise
+	 * @return true if the object is within this {@code Container}; return false otherwise
 	 */
 	public boolean contains(Object o) {
 		return indexOf(o) != -1;
 	}
 
 	/**
-	 * Returns true if the specified {@code objects} is contained inside of this
-	 * {@code Container}.
+	 * Returns true if the specified {@code objects} is contained inside of this {@code Container}.
 	 * 
 	 * @param objects
 	 *            the objects to check
@@ -279,8 +274,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Returns the item element at the specified {@code index} of this
-	 * {@code Container}.
+	 * Returns the item element at the specified {@code index} of this {@code Container}.
 	 * 
 	 * @param index
 	 *            the index to get the item at
@@ -291,8 +285,8 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Returns the index of the specified {@code object}, which can be the id of an
-	 * item or an instance of an item
+	 * Returns the index of the specified {@code object}, which can be the id of an item or an instance
+	 * of an item
 	 * 
 	 * @param object
 	 *            the object to retrieve the index for
@@ -313,8 +307,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Inserts the specified {@code element} at the {@code index} of this
-	 * {@code Container}.
+	 * Inserts the specified {@code element} at the {@code index} of this {@code Container}.
 	 * 
 	 * @param index
 	 *            the index to insert the item at
@@ -334,15 +327,14 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Sets the specified {@code element} at the {@code index} of this
-	 * {@code Container} and returns the item which was previously there.
+	 * Sets the specified {@code element} at the {@code index} of this {@code Container} and returns the
+	 * item which was previously there.
 	 * 
 	 * @param index
 	 *            the index to set the item at
 	 * @param element
 	 *            the item to set at the index
-	 * @return the previous item which was placed at the index; return null if there
-	 *         wasn't one
+	 * @return the previous item which was placed at the index; return null if there wasn't one
 	 */
 	public E set(int index, Item element) {
 		E e = (E) (data[index] = element);
@@ -360,8 +352,8 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Converts the items within this {@code Container} to an array, which contains
-	 * nulled objects if there is no item within that place in the array.
+	 * Converts the items within this {@code Container} to an array, which contains nulled objects if
+	 * there is no item within that place in the array.
 	 */
 	public Item[] toArray() {
 		return Arrays.copyOf(data, data.length);
@@ -387,22 +379,21 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	public boolean add(Item e) {
 		if (e == null)
 			return false;
-		boolean added = handler.add(this, e);
+		boolean added = handler.add(this, (E) e);
 		refresh();
 		return added;
 	}
 
 	/**
-	 * Adds a new {@code Item} to this {@code Container} with the specified
-	 * {@code id} and {@code amount}.
+	 * Adds a new {@code Item} to this {@code Container} with the specified {@code id} and
+	 * {@code amount}.
 	 */
 	public boolean add(int id, int amount) {
 		return this.add(new Item(id, amount));
 	}
 
 	/**
-	 * Adds 1 new {@code Item} to this {@code Container} with the specified
-	 * {@code id}.
+	 * Adds 1 new {@code Item} to this {@code Container} with the specified {@code id}.
 	 */
 	public boolean add(int id) {
 		return this.add(new Item(id, 1));
@@ -414,7 +405,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	public boolean remove(Object o) {
 		if (o == null || !(o instanceof Item))
 			return false;
-		boolean removed = handler.remove(this, (Item) o);
+		boolean removed = handler.remove(this, (E) o);
 		refresh();
 		return removed;
 	}
@@ -455,8 +446,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Clears this {@code Container} of every item and replaces the value of the
-	 * items with null.
+	 * Clears this {@code Container} of every item and replaces the value of the items with null.
 	 */
 	public void clear() {
 		for (int i = 0; i < capacity; i++)
@@ -477,8 +467,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Returns the maximum item stack amount an item in this {@code Container} can
-	 * have.
+	 * Returns the maximum item stack amount an item in this {@code Container} can have.
 	 * 
 	 * @return the maximum stack amount
 	 */
@@ -487,8 +476,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	}
 
 	/**
-	 * Returns the minimum item stack amount an item in this {@code Container} can
-	 * have.
+	 * Returns the minimum item stack amount an item in this {@code Container} can have.
 	 * 
 	 * @return the minimum stack amount
 	 */
@@ -516,10 +504,10 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 
 	@Override
 	public void deserialize(ConfigSection section) {
-		for (Entry<String, Object> entry : section.entrySet()) {
-			ConfigSection map = new ConfigSection((Map<String, Object>) entry.getValue());
+		for (Entry<Object, Object> entry : section.entrySet()) {
+			ConfigSection map = new ConfigSection((Map<Object, Object>) entry.getValue());
 
-			int slot = Integer.parseInt(entry.getKey().trim());
+			int slot = Integer.parseInt("" + entry.getKey());
 			int id = map.getInt("id");
 			int amount = map.getInt("amount");
 			this.set(slot, new Item(id, amount));

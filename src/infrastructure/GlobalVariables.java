@@ -3,15 +3,15 @@ package infrastructure;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-import cache.data.ItemData;
+
+import entity.actor.model.ModelUpdater;
 import event.EventManager;
-import infrastructure.threads.ActorUpdateThread;
 import infrastructure.threads.TickThread;
 import io.netty.util.AttributeKey;
 
 /**
- * The {@code GlobalVariables} class is meant to hold methods that will be used
- * throughout the library.
+ * The {@code GlobalVariables} class is meant to hold methods that will be used throughout the
+ * library.
  * 
  * @author Albert Beaupre
  */
@@ -19,45 +19,14 @@ public class GlobalVariables {
 
 	public static AttributeKey<World> WORLD_KEY = AttributeKey.valueOf("world");
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); // This is used for any sort of
-																						// console logging
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private static TickThread TICKER;
 	private static EventManager EVENT_MANAGER;
-	private static ActorUpdateThread UPDATE_THREAD;
-	private static ItemData ITEM_DATA;
+	private static ModelUpdater MODEL_UPDATER;
 
 	/**
-	 * setes the specified {@code ActorUpdateThread} to this {@code sets} class.
-	 * 
-	 * @param updateThread
-	 *            the {@code ActorUpdateThread} to set
-	 */
-	public static void setActorUpdator(ActorUpdateThread updateThread) {
-		if (GlobalVariables.UPDATE_THREAD != null) {
-			LOGGER.warning("An ActorUpdateThread has already been set");
-			return;
-		}
-		GlobalVariables.UPDATE_THREAD = Objects.requireNonNull(updateThread, "The ActorUpdateThread cannot be set as NULL");
-		Core.scheduleFixedTask(UPDATE_THREAD, 0, 30, TimeUnit.MILLISECONDS);
-		LOGGER.info("An ActorUpdateThread has successfully been set");
-	}
-
-	/**
-	 * Returns the {@code ActorUpdateThread} that has been seted to this
-	 * {@code sets} class so it may globally handle any updating of an
-	 * {@code Actor}.
-	 * 
-	 * @return the {@code ActorUpdateThread} seted to this class
-	 */
-	public static ActorUpdateThread getActorUpdator() {
-		if (GlobalVariables.UPDATE_THREAD == null)
-			throw new NullPointerException("There is not an ActorUpdateThread set");
-		return GlobalVariables.UPDATE_THREAD;
-	}
-
-	/**
-	 * setes the specified {@code ticker} to this {@code sets} class.
+	 * Sets the specified {@code ticker} to this {@code GlobalVariables} class.
 	 * 
 	 * @param tickThread
 	 *            the ticker to set
@@ -73,13 +42,13 @@ public class GlobalVariables {
 	}
 
 	/**
-	 * Returns the {@code TickThread} that has been seted to this {@code sets} class
-	 * that will globally handle Ticks.
+	 * Returns the {@code TickThread} that has been set to this {@code GlobalVariables} class that will
+	 * globally handle Ticks.
 	 * 
 	 * @throws NullPointerException
 	 *             if the {@code TickThread} of this class is {@code null}
 	 * 
-	 * @return the {@code TickThread} that has been seted
+	 * @return the {@code TickThread} that has been set
 	 */
 	public static TickThread getTicker() {
 		if (GlobalVariables.TICKER == null)
@@ -88,8 +57,8 @@ public class GlobalVariables {
 	}
 
 	/**
-	 * setes the specified {@code eventManager} to this {@code sets} class so it may
-	 * globally handle any {@code Event}.
+	 * Sets the specified {@code eventManager} to this {@code GlobalVariables} class so it may globally
+	 * handle any {@code Event}.
 	 * 
 	 * @param eventManager
 	 *            the {@code EventMaanger} to set
@@ -104,13 +73,13 @@ public class GlobalVariables {
 	}
 
 	/**
-	 * Returns the {@code EventManager} that has been seted to this {@code sets}
-	 * class that will globally handle any {@code Event}.
+	 * Returns the {@code EventManager} that has been set to this {@code GlobalVariables} class that
+	 * will globally handle any {@code Event}.
 	 * 
 	 * @throws NullPointerException
 	 *             if the {@code EventManager} of this class is {@code null}
 	 * 
-	 * @return the {@code EventManager} that has been seted
+	 * @return the {@code EventManager} that has been set
 	 */
 	public static EventManager getEventManager() {
 		if (GlobalVariables.EVENT_MANAGER == null)
@@ -119,32 +88,35 @@ public class GlobalVariables {
 	}
 
 	/**
-	 * setes the specified {@code data} to this {@code sets} class to keep a global
-	 * field of item information to be used around the server.
+	 * Sets the specified {@code updater} to this {@code GlobalVariables} class so it may globally
+	 * handle any {@code Model} for updating.
 	 * 
-	 * @param data
-	 *            the information to set
+	 * @param updater
+	 *            the {@code ModelUpdater} to set
 	 */
-	public static void setItemData(ItemData data) {
-		if (GlobalVariables.ITEM_DATA != null) {
-			LOGGER.warning("Item information has already been set");
+	public static void setModelUpdater(ModelUpdater updater) {
+		if (GlobalVariables.MODEL_UPDATER != null) {
+			LOGGER.warning("A ModelUpdater has already been set");
 			return;
 		}
-		GlobalVariables.ITEM_DATA = Objects.requireNonNull(data, "The Item information cannot equal NULL");
-		LOGGER.info("Item information has been successfully set");
+		GlobalVariables.MODEL_UPDATER = Objects.requireNonNull(updater, "The ModelUpdater cannot be set as NULL");
+		LOGGER.info("A ModelUpdater has successfully been set");
+
+		updater.queue(30);
 	}
 
 	/**
-	 * Returns the {@code ItemData} seted to this {@code sets} class.
+	 * Returns the {@code ModelUpdater} that has been set to this {@code GlobalVariables} class that
+	 * will globally handle any {@code Model} that is being updated.
 	 * 
 	 * @throws NullPointerException
-	 *             if the {@code ItemData} has not been seted
+	 *             if the {@code ModelUpdater} of this class is {@code null}
 	 * 
-	 * @return the {@code ItemData} that has been seted
+	 * @return the {@code ModelUpdater} that has been set
 	 */
-	public static ItemData getItemData() {
-		if (GlobalVariables.ITEM_DATA == null)
-			throw new NullPointerException("There is not any Item information set");
-		return GlobalVariables.ITEM_DATA;
+	public static ModelUpdater getModelUpdater() {
+		if (GlobalVariables.MODEL_UPDATER == null)
+			throw new NullPointerException("There is not a ModelUpdater set");
+		return GlobalVariables.MODEL_UPDATER;
 	}
 }

@@ -42,8 +42,9 @@ public final class ActionQueue<A extends Actor> extends Tick {
 			if (a.cancellable())
 				this.cancel(a);
 		}
-		if (this.actions.offer(action) && !this.isQueued())
-			this.queue();
+		this.actions.offer(action);
+		if (!this.isQueued())
+			this.queue(600);
 	}
 
 	/**
@@ -94,12 +95,11 @@ public final class ActionQueue<A extends Actor> extends Tick {
 		if (action != null) {
 			if (!action.cycle(action.getState())) {
 				this.actions.remove();
-				this.queue(0);
+				this.queue(600);
 			} else {
 				this.queue(600);
 			}
 			return;
 		}
-		super.cancel();
 	}
 }

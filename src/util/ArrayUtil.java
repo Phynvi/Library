@@ -1555,8 +1555,8 @@ public final class ArrayUtil {
 	 *            the predicate to use for filtering
 	 * @return the filtered array
 	 */
-	public static <T> T[] filter(T[] a, Predicate<T> predicate) {
-		T[] arr = (T[]) Array.newInstance(a[0].getClass(), 0);
+	public static <T> T[] filter(T[] a, Predicate<T> predicate, Class<T> clazz) {
+		T[] arr = (T[]) Array.newInstance(clazz, 0);
 		for (T t : a)
 			if (predicate.test(t))
 				arr = addElement(arr, t);

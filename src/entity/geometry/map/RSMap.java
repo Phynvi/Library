@@ -1,9 +1,12 @@
 package entity.geometry.map;
 
 import java.util.HashSet;
+
 import org.apache.commons.collections4.map.MultiKeyMap;
+
 import entity.Entity;
 import entity.geometry.EntityLocationChangeEvent;
+import entity.geometry.Location;
 import entity.geometry.Point3D;
 import entity.geometry.Shape3D;
 import event.EventListener;
@@ -16,8 +19,25 @@ import infrastructure.GlobalVariables;
  */
 public abstract class RSMap extends AreaManager implements EventListener {
 
+	public static final int FLAG_CLIP = 0x1;
+	public static final int FLAG_BRIDGE = 0x2;
+
 	/**
-	 * The number of tiles in a chunk. This is hard coded to be 8.
+	 * Flag given if there is a roof over this piece of terrain
+	 */
+	public static final int FLAG_ROOF = 0x4;
+
+	/**
+	 * Steep cliff flag? Elevation flag?
+	 */
+	public static final int FLAG_UNKNOWN = 0x8;
+
+	/**
+	 * Wall flag?
+	 */
+	public static final int FLAG_UNKNOWN2 = 0x10;
+	/**
+	 * The number of tiles in a chunk. This is hard coded to be eight.
 	 */
 	public static final int CHUNK_SIZE = 8;
 
@@ -31,7 +51,7 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * The number of tiles that can be loaded by a viewer. This is hard coded to be 52 (104 / 2), which
 	 * is the maximum view distance (104) of a viewer divided by 2.
 	 */
-	public static final int LOAD_RADIUS = 168 / 2;
+	public static final int LOAD_RADIUS = 104 / 2;
 
 	/**
 	 * This is the length in tiles of this {@code RSMap}.
@@ -43,7 +63,7 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 */
 	public final int height;
 
-	private MultiKeyMap<Object, HashSet<Entity>> entities = new MultiKeyMap<>();
+	private MultiKeyMap<Object, HashSet<? extends Entity>> entities = new MultiKeyMap<>();
 	private final Point3D offset;
 	private Chunk[][][] chunks;
 
@@ -60,7 +80,7 @@ public abstract class RSMap extends AreaManager implements EventListener {
 
 		if (width % CHUNK_SIZE != 0 || height % CHUNK_SIZE != 0)
 			throw new IllegalArgumentException("Maps must be a multiple of chunk size.. given length: " + width + ", width: " + height);
-		this.chunks = new Chunk[width >> CHUNK_BITS][][];
+		this.chunks = new Chunk[width >> CHUNK_BITS][height >> CHUNK_BITS][4];
 
 		GlobalVariables.getEventManager().registerEventListener(this);
 	}
@@ -76,14 +96,31 @@ public abstract class RSMap extends AreaManager implements EventListener {
 			return;
 
 		if (event.previousLocation != null) {
-			HashSet<Entity> fromSet = this.entities.get(entity.getClass(), event.previousLocation);
+			HashSet fromSet = this.entities.get(entity.getClass(), event.previousLocation);
 			if (fromSet == null)
 				fromSet = new HashSet<>();
 			fromSet.remove(entity);
 			this.entities.put(entity.getClass(), event.previousLocation, fromSet);
+
+			Location previousRegionLocation = entity.getTemporary("previous_region_location", null);
+			if (previousRegionLocation == null)
+				entity.temporary("previous_region_location", previousRegionLocation = event.previousLocation);
+
+			int diffX = Math.abs(event.currentLocation.getRegionX() - previousRegionLocation.getRegionX());
+			int diffY = Math.abs(event.currentLocation.getRegionY() - previousRegionLocation.getRegionY());
+
+			if (diffX >= 4 || diffY >= 4) {
+
+				entity.temporary("previous_region_location", event.currentLocation);
+				/*
+				 * Set the map region changing flag so the new map region packet is sent upon the next update.
+				 */
+				updateMapRegionChange(entity);
+			}
+
 		} else
 			entity.create();
-		HashSet<Entity> toSet = this.entities.get(entity.getClass(), event.currentLocation);
+		HashSet toSet = this.entities.get(entity.getClass(), event.currentLocation);
 		if (toSet == null)
 			toSet = new HashSet<>();
 		toSet.add(entity);
@@ -113,6 +150,14 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 *            the z coordinate to create the chunk at
 	 */
 	public abstract Chunk create(int chunkX, int chunkY, int chunkZ);
+
+	/**
+	 * Updates the map region changing for the specified {@code Entity}.
+	 * 
+	 * @param entity
+	 *            the entity to update the change in the map region
+	 */
+	public abstract void updateMapRegionChange(Entity entity);
 
 	/**
 	 * 
@@ -257,10 +302,10 @@ public abstract class RSMap extends AreaManager implements EventListener {
 
 			Chunk c = chunks[chunkX - this.offset.x][chunkY - this.offset.y][z];
 			if (c == null || c.isLoaded() == false)
-				return -1;
+				return 0;
 			return c.getClip(x & 7, y & 7);
 		} catch (Exception e) {
-			return -1;
+			return 0;
 		}
 	}
 
@@ -298,10 +343,10 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * @param to
 	 * @return
 	 */
-	public HashSet<Entity> findEntities(Shape3D bounds, Class<? extends Entity> clazz) {
-		HashSet<Entity> found = new HashSet<>();
+	public <T extends Entity> HashSet<T> findEntities(Shape3D bounds, Class<T> clazz) {
+		HashSet<T> found = new HashSet<>();
 		for (Point3D point : bounds.listPoints()) {
-			HashSet<Entity> set = entities.get(clazz, point);
+			HashSet<T> set = (HashSet<T>) entities.get(clazz, point);
 			if (set != null)
 				found.addAll(set);
 		}
@@ -319,11 +364,11 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * @return a {@code HashSet} with any entities with the given class type are within the radius of
 	 *         the location
 	 */
-	public HashSet<Entity> findEntities(Point3D location, Class<? extends Entity> clazz, int radius) {
-		HashSet<Entity> found = new HashSet<>();
-		for (int i = -radius; i < radius; i++) {
-			for (int j = -radius; j < radius; j++) {
-				HashSet<Entity> set = entities.get(clazz, location.translate(i, j, 0));
+	public <T extends Entity> HashSet<T> findEntities(Point3D location, Class<? extends Entity> clazz, int radius) {
+		HashSet<T> found = new HashSet<>();
+		for (int i = -radius; i <= radius; i++) {
+			for (int j = -radius; j <= radius; j++) {
+				HashSet set = entities.get(clazz, location.translate(i, j, 0));
 				if (set != null)
 					found.addAll(set);
 			}

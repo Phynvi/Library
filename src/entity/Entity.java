@@ -1,11 +1,11 @@
 package entity;
 
-import util.ReflectUtil;
-import util.configuration.ConfigSection;
 import entity.geometry.EntityLocationChangeEvent;
 import entity.geometry.Locatable;
 import entity.geometry.Location;
 import entity.geometry.map.AreaChangeType;
+import util.ReflectUtil;
+import util.configuration.ConfigSection;
 
 /**
  * @author Albert Beaupre
@@ -196,7 +196,7 @@ public abstract class Entity implements Locatable {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getTemporary(String name, T fallback) {
-		return this.temporary == null ? null : (T) this.temporary.get(name);
+		return this.temporary == null ? fallback : (T) this.temporary.get(name);
 	}
 
 	/**

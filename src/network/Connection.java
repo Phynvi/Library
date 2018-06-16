@@ -1,5 +1,7 @@
 package network;
 
+import java.util.Objects;
+
 import io.netty.channel.Channel;
 
 /**
@@ -78,6 +80,19 @@ public class Connection {
 	 */
 	public int getRevision() {
 		return revision;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(revision, display, channel);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Connection))
+			return false;
+		Connection con = (Connection) o;
+		return con.revision == revision && display.equals(con.display) && channel.equals(con.channel);
 	}
 
 }
