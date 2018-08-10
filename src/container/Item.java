@@ -1,5 +1,6 @@
 package container;
 
+import util.DataCenter;
 import util.configuration.ConfigSection;
 
 /**
@@ -119,6 +120,15 @@ public class Item {
 	 * @return true if it can stack with the same item
 	 */
 	public boolean isStackable() {
-		return false;
+		return DataCenter.retrieveData("items", id, "stackable", Boolean.class);
+	}
+
+	/**
+	 * Returns the amount this {@code Item} can be stacked to.
+	 * 
+	 * @return the amount that the item can be stacked to.
+	 */
+	public int getMaximumStackValue() {
+		return DataCenter.retrieveData("items", id, "max_stack", Integer.class);
 	}
 }

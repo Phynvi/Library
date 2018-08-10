@@ -17,30 +17,30 @@ public class Containers {
 	public static ContainerHandler<Item> ALWAYS_STACK = new ContainerHandler<Item>() {
 
 		@Override
-		public boolean add(Container<Item> container, Item item) {
+		public boolean add(Container<Item> c, Item item) {
 			int id = item.getId();
 			int amount = item.getAmount();
-			int index = container.indexOf(item.getId());
-			int maxStack = container.getMaximumStack();
+			int index = c.indexOf(item.getId());
+			int maxStack = item.getMaximumStackValue() != c.getMaximumStack() ? item.getMaximumStackValue() : c.getMaximumStack();
 			if (index != -1) {
-				int there = container.get(index).getAmount();
+				int there = c.get(index).getAmount();
 				int total = there + amount > maxStack ? maxStack : there + amount;
-				container.set(index, new Item(id, total));
+				c.set(index, new Item(id, total));
 			} else {
-				if (container.isFull())
+				if (c.isFull())
 					return false;
-				container.set(container.getFreeIndex(), new Item(id, amount > maxStack ? maxStack : amount));
+				c.set(c.getFreeIndex(), new Item(id, amount > maxStack ? maxStack : amount));
 			}
 			return true;
 		}
 
 		@Override
-		public boolean remove(Container<Item> container, Item item) {
-			int index = container.indexOf(item.getId());
+		public boolean remove(Container<Item> c, Item item) {
+			int index = c.indexOf(item.getId());
 			if (index != -1) {
-				Item previous = container.get(index).decrease(item.getAmount());
-				if (previous.getAmount() < container.getMinimumStack())
-					container.set(index, null);
+				Item previous = c.get(index).decrease(item.getAmount());
+				if (previous.getAmount() < c.getMinimumStack())
+					c.set(index, null);
 				return true;
 			}
 			return false;
@@ -59,29 +59,29 @@ public class Containers {
 	public static ContainerHandler<Item> AVAILABLE_STACK = new ContainerHandler<Item>() {
 
 		@Override
-		public boolean add(Container<Item> container, Item item) {
+		public boolean add(Container<Item> c, Item item) {
 			int id = item.getId();
 			int amount = item.getAmount();
 			if (item.isStackable()) {
-				int index = container.indexOf(item.getId());
-				int maxStack = container.getMaximumStack();
+				int index = c.indexOf(item.getId());
+				int maxStack = item.getMaximumStackValue() != c.getMaximumStack() ? item.getMaximumStackValue() : c.getMaximumStack();
 				if (index != -1) {
-					int there = container.get(index).getAmount();
+					int there = c.get(index).getAmount();
 					int total = there + amount > maxStack ? maxStack : there + amount;
-					container.set(index, new Item(id, total));
+					c.set(index, new Item(id, total));
 				} else {
-					if (container.isFull())
+					if (c.isFull())
 						return false;
-					container.set(container.getFreeIndex(), new Item(id, amount > maxStack ? maxStack : amount));
+					c.set(c.getFreeIndex(), new Item(id, amount > maxStack ? maxStack : amount));
 				}
 				return true;
 			} else {
-				if (container.isFull())
+				if (c.isFull())
 					return false;
 				for (int i = 0; i < amount; i++) {
-					int freeIndex = container.getFreeIndex();
+					int freeIndex = c.getFreeIndex();
 					if (freeIndex != -1) {
-						container.set(freeIndex, new Item(id, 1));
+						c.set(freeIndex, new Item(id, 1));
 					} else {
 						return false;
 					}
@@ -91,20 +91,20 @@ public class Containers {
 		}
 
 		@Override
-		public boolean remove(Container<Item> container, Item item) {
+		public boolean remove(Container<Item> c, Item item) {
 			if (item.isStackable()) {
-				int index = container.indexOf(item.getId());
+				int index = c.indexOf(item.getId());
 				if (index != -1) {
-					Item previous = container.get(index).decrease(item.getAmount());
-					if (previous.getAmount() < container.getMinimumStack())
-						container.set(index, null);
+					Item previous = c.get(index).decrease(item.getAmount());
+					if (previous.getAmount() < c.getMinimumStack())
+						c.set(index, null);
 					return true;
 				}
 			} else {
 				for (int i = 0; i < item.getAmount(); i++) {
-					int index_2 = container.indexOf(item.getId());
+					int index_2 = c.indexOf(item.getId());
 					if (index_2 != -1) {
-						container.set(index_2, null);
+						c.set(index_2, null);
 					} else {
 						return false;
 					}
@@ -114,7 +114,7 @@ public class Containers {
 		}
 
 		@Override
-		public boolean addable(Container<Item> container, Item item) {
+		public boolean addable(Container<Item> c, Item item) {
 			return false;
 		}
 	};
@@ -126,13 +126,13 @@ public class Containers {
 	public static ContainerHandler<Item> NEVER_STACK = new ContainerHandler<Item>() {
 
 		@Override
-		public boolean add(Container<Item> container, Item item) {
-			if (container.isFull())
+		public boolean add(Container<Item> c, Item item) {
+			if (c.isFull())
 				return false;
 			for (int i = 0; i < item.getAmount(); i++) {
-				int freeIndex = container.getFreeIndex();
+				int freeIndex = c.getFreeIndex();
 				if (freeIndex != -1) {
-					container.set(freeIndex, new Item(item.getId(), 1));
+					c.set(freeIndex, new Item(item.getId(), 1));
 				} else {
 					return false;
 				}
@@ -141,11 +141,11 @@ public class Containers {
 		}
 
 		@Override
-		public boolean remove(Container<Item> container, Item item) {
+		public boolean remove(Container<Item> c, Item item) {
 			for (int i = 0; i < item.getAmount(); i++) {
-				int index_2 = container.indexOf(item.getId());
+				int index_2 = c.indexOf(item.getId());
 				if (index_2 != -1) {
-					container.set(index_2, null);
+					c.set(index_2, null);
 				} else {
 					return false;
 				}
@@ -154,7 +154,7 @@ public class Containers {
 		}
 
 		@Override
-		public boolean addable(Container<Item> container, Item item) {
+		public boolean addable(Container<Item> c, Item item) {
 			return false;
 		}
 	};

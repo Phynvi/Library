@@ -47,4 +47,6 @@ public interface Shape3D {
 	 */
 	public List<Point3D> listPoints();
 
+	public boolean inRange(Point3D point, int range);
+
 }

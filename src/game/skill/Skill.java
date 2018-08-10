@@ -4,8 +4,7 @@ import util.configuration.ConfigSection;
 import util.configuration.YMLSerializable;
 
 /**
- * The Skill class is used to hold variables and methods relating to any in-game
- * skills.
+ * The Skill class is used to hold variables and methods relating to any in-game skills.
  * 
  * @author Albert Beaupre
  */
@@ -16,17 +15,19 @@ public class Skill implements YMLSerializable {
 	private double experience;
 
 	/**
+	 * Adds the given {@code experience} to this {@code Skill} and changes the current level based on
+	 * the current experience.
 	 * 
-	 * @param exp
+	 * @param experience
+	 *            the experience to add
 	 */
-	public void addExperience(double exp) {
-		this.experience += exp;
+	public void addExperience(double experience) {
+		this.experience += experience;
 		this.currentLevel = SkillSetManager.getLevelForExperience(this.experience);
 	}
 
 	/**
-	 * Modifies this {@code Skill} temporarily by the given {@code percentage}
-	 * amount.
+	 * Modifies this {@code Skill} temporarily by the given {@code percentage} amount.
 	 * 
 	 * @param percentage
 	 *            the percentage to temporarily level this skill
@@ -46,8 +47,8 @@ public class Skill implements YMLSerializable {
 	}
 
 	/**
-	 * Returns the current level of this {@code Skill}. If the given
-	 * {@code modified} argument is true, then the temporary level is returned.
+	 * Returns the current level of this {@code Skill}. If the given {@code modified} argument is true,
+	 * then the temporary level is returned.
 	 * 
 	 * @param modified
 	 *            the flag to return the temporary level

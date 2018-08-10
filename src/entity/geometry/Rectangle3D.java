@@ -40,4 +40,18 @@ public class Rectangle3D implements Shape3D {
 		}
 		return list;
 	}
+
+	@Override
+	public boolean inRange(Point3D point, int range) {
+		for (int i = x - 1; i < x + length; i++) {
+			for (int j = y - 1; j < y + width; j++) {
+				for (int k = z - 1; k < z + height; k++) {
+					Point3D np = new Point3D(i + 1, j + 1, k + 1);
+					if (np.inRange(point, range))
+						return true;
+				}
+			}
+		}
+		return false;
+	}
 }

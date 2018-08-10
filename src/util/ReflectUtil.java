@@ -116,7 +116,6 @@ public class ReflectUtil {
 				field.setAccessible(false);
 		}
 		result.append("}");
-
 		return result.toString();
 	}
 }

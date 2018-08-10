@@ -46,7 +46,7 @@ public abstract class Model {
 	 */
 	public void registerMask(Mask mask) {
 		this.currentMasks[mask.ordinal()] = mask;
-		maskData |= mask.data();
+		this.maskData |= mask.data();
 		if (!this.updating)
 			setForUpdating(true);
 	}
@@ -76,7 +76,7 @@ public abstract class Model {
 	 */
 	public final void finishUpdate() {
 		reset();
-		maskData = 0;
+		this.maskData = 0;
 		for (int i = 0; i < this.currentMasks.length; i++)
 			this.currentMasks[i] = null;
 	}
@@ -87,7 +87,7 @@ public abstract class Model {
 	 * @return {@code True} if so, {@code false} if not.
 	 */
 	public boolean isUpdateRequired() {
-		return maskData != 0;
+		return this.maskData != 0;
 	}
 
 	/**
@@ -98,7 +98,7 @@ public abstract class Model {
 	 * @return true if the mask was registered, false if not.
 	 */
 	public boolean activated(byte data) {
-		return (maskData & data) != 0;
+		return (this.maskData & data) != 0;
 	}
 
 	/**
@@ -118,7 +118,7 @@ public abstract class Model {
 	 * @return the combined mask data
 	 */
 	public int getMaskData() {
-		return maskData;
+		return this.maskData;
 	}
 
 	/**

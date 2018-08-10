@@ -3,6 +3,7 @@ package entity.geometry.map;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
 import entity.geometry.Point3D;
 import entity.geometry.Shape3D;
 import infrastructure.GlobalVariables;
@@ -16,6 +17,10 @@ import infrastructure.GlobalVariables;
  */
 public class AreaManager implements Shape3D {
 
+	/**
+	 * A new set is constructed every time this set is needing access because of better efficiency
+	 * against concurrent sets.
+	 */
 	private HashSet<Area> combinedArea;
 
 	/**
@@ -43,8 +48,10 @@ public class AreaManager implements Shape3D {
 	 * @see geometry.Shape3D#contains(geometry.Point3D)
 	 */
 	public boolean contains(Point3D point) {
-		for (Area shape : combinedArea)
-			if (shape.contains(point))
+		HashSet<Area> newSet = new HashSet<>(combinedArea);
+
+		for (Area area : newSet)
+			if (area.contains(point))
 				return true;
 		return false;
 	}
@@ -56,8 +63,19 @@ public class AreaManager implements Shape3D {
 	 */
 	public List<Point3D> listPoints() {
 		List<Point3D> allPoints = new ArrayList<>();
-		for (Area area : combinedArea)
+		HashSet<Area> newSet = new HashSet<>(combinedArea);
+		for (Area area : newSet)
 			allPoints.addAll(area.listPoints());
 		return allPoints;
+	}
+
+	@Override
+	public boolean inRange(Point3D point, int range) {
+		HashSet<Area> newSet = new HashSet<>(combinedArea);
+
+		for (Area area : newSet)
+			if (!area.inRange(point, range))
+				return false;
+		return true;
 	}
 }
