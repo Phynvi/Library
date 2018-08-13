@@ -76,8 +76,9 @@ public abstract class Area implements Shape3D, EventListener {
 		Location previous = event.previousLocation;
 
 		if (previous == null) {
-			if (contains(current))
+			if (contains(current)) {
 				onEnter(event.entity, event.type);
+			}
 			return;
 		}
 

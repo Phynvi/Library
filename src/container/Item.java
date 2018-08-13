@@ -66,6 +66,8 @@ public class Item {
 	 *            the value of the attribute
 	 */
 	public void attribute(String attributeName, Object value) {
+		attributeName = attributeName.toLowerCase();
+
 		if (attributes == null)
 			attributes = new ConfigSection();
 		if (attributes.containsKey(attributeName)) {
@@ -75,7 +77,7 @@ public class Item {
 			attributes.put(attributeName, value);
 		}
 		if (attributes.isEmpty())
-			attributes = null;
+			attributes = null; //There are so many items within the game, this needs to be disposed of
 	}
 
 	/**
