@@ -35,7 +35,7 @@ public class CacheFile extends RandomAccessFile {
 	}
 
 	public static CacheFile decode(File file, int idx, ByteBuffer payload, int fileId) throws IOException {
-		CacheFile f = new CacheFile(file.getPath() + File.separator + "./cache/main_file_cache.idx" + idx);
+		CacheFile f = new CacheFile(file.getPath() + File.separator + "main_file_cache.idx" + idx);
 		int type = payload.get() & 0xFF;
 		f.compression = CompressionType.forId(type);
 		int length = payload.getInt(1); /* Length of compressed data */

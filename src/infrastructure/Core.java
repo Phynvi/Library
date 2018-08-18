@@ -2,6 +2,7 @@ package infrastructure;
 
 import java.io.File;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -9,6 +10,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import cache.Cache;
+import entity.actor.model.ModelUpdater;
 import event.EventManager;
 import infrastructure.threads.TickThread;
 
@@ -23,10 +25,11 @@ import infrastructure.threads.TickThread;
  */
 public class Core {
 
-	private static final ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(2); // Plans to implement 4 threads
+	private static final ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(4); // Plans to implement 4 threads
+	private static final ExecutorService taskPool = Executors.newCachedThreadPool();
+	
 	private static long TASK_COUNT = 0;
 
-	private static boolean debuggingEnabled = false;
 	private static Cache cache;
 
 	/**
@@ -38,18 +41,18 @@ public class Core {
 	 * @param debugginEnabled
 	 *            the flag for the debugging to be enabled/disabled
 	 */
-	public static void initialize(String cacheRoot, boolean debuggingEnabled) {
+	public static void initialize(int revision, String cacheRoot) {
 		try {
 			cache = new Cache(new File(cacheRoot));
-			cache.load();
+			cache.load(revision);
 
 			/**
 			 * Attach all essential attachments
 			 */
 			GlobalVariables.setTicker(new TickThread());
 			GlobalVariables.setEventManager(new EventManager());
+			GlobalVariables.setModelUpdater(new ModelUpdater());
 
-			Core.debuggingEnabled = debuggingEnabled;
 		} catch (Exception e) {
 			System.err.println("Error initializing Core...");
 			e.printStackTrace();
@@ -87,7 +90,7 @@ public class Core {
 		thread.setDaemon(true);
 		thread.setPriority(Thread.MIN_PRIORITY);
 
-		return threadPool.submit(Objects.requireNonNull(thread, "You cannot submit a task equal to null"));
+		return taskPool.submit(Objects.requireNonNull(thread, "You cannot submit a task equal to null"));
 	}
 
 	/**
@@ -99,7 +102,7 @@ public class Core {
 	 * @return the Future representing pending completion of the task
 	 */
 	public static Future<?> submitRegularTask(Runnable r) {
-		return threadPool.submit(r);
+		return taskPool.submit(r);
 	}
 
 	/**
@@ -118,15 +121,6 @@ public class Core {
 	 */
 	public static ScheduledFuture<?> scheduleFixedTask(CoreThread thread, long delay, long period, TimeUnit unit) {
 		return threadPool.scheduleAtFixedRate(Objects.requireNonNull(thread, "You cannot schedule a Core Thread to null"), delay, period, unit);
-	}
-
-	/**
-	 * Returns true if debugging is enabled for the server; return false otherwise
-	 * 
-	 * @return true if debugging is enabled
-	 */
-	public static boolean isDebugEnabled() {
-		return Core.debuggingEnabled;
 	}
 
 	/**

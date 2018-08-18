@@ -1,13 +1,14 @@
 package network.packet.decoding;
 
-import infrastructure.Core;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Logger;
+
+import infrastructure.GlobalVariables;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Logger;
 import network.ConnectionHolder;
 import network.packet.PacketType;
 import network.raw.RawHandler;
@@ -74,7 +75,7 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 					if (processor != null) {
 						processor.process(holder, packet);
 					} else {
-						if (Core.isDebugEnabled())
+						if (GlobalVariables.isDebugEnabled())
 							LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
 					}
 					return;
@@ -87,7 +88,7 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 				if (processor != null) {
 					processor.process(holder, packet);
 				} else {
-					if (Core.isDebugEnabled())
+					if (GlobalVariables.isDebugEnabled())
 						LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
 				}
 			} else {}

@@ -25,6 +25,8 @@ public class GlobalVariables {
 	private static EventManager EVENT_MANAGER;
 	private static ModelUpdater MODEL_UPDATER;
 
+	private static boolean DEBUGGING = true;
+
 	/**
 	 * Sets the specified {@code ticker} to this {@code GlobalVariables} class.
 	 * 
@@ -118,5 +120,24 @@ public class GlobalVariables {
 		if (GlobalVariables.MODEL_UPDATER == null)
 			throw new NullPointerException("There is not a ModelUpdater set");
 		return GlobalVariables.MODEL_UPDATER;
+	}
+
+	/**
+	 * Sets the debugging flag for the server to the given {@code debugging} paramter.
+	 * 
+	 * @param debugging
+	 *            the flag to set
+	 */
+	public static void setDebuggingEnabled(boolean debugging) {
+		GlobalVariables.DEBUGGING = debugging;
+	}
+
+	/**
+	 * Returns true if debugging is enabled for the server; return false otherwise
+	 * 
+	 * @return true if debugging is enabled
+	 */
+	public static boolean isDebugEnabled() {
+		return DEBUGGING;
 	}
 }

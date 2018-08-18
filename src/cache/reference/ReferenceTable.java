@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.TreeMap;
 
+import cache.Cache;
 import cache.CacheFile;
 import cache.CacheUtility;
 
@@ -32,6 +33,14 @@ public class ReferenceTable {
 	 */
 	public static final int FLAG_WHIRLPOOL = 0x02;
 
+	private static int smart(ByteBuffer buffer) {
+		int peek = buffer.getShort(buffer.position());
+
+		if (peek < 0 && Cache.CACHE_REVISION >= 666)
+			return 0x7fffffff & buffer.getInt();
+		return buffer.getShort() & 0xFFFF;
+	}
+
 	public static ReferenceTable decode(int idx, CacheFile file) {
 		ReferenceTable t = new ReferenceTable(idx);
 
@@ -39,14 +48,13 @@ public class ReferenceTable {
 		t.idx = idx;
 		t.format = bb.get() & 0xFF;
 
-		if (t.format >= 6) {
+		if (t.format >= 6)
 			t.version = bb.getInt();
-		}
 
 		t.flags = bb.get() & 0xFF;
 
 		/* the number of references */
-		int size = bb.getShort() & 0xFFFF;
+		int size = smart(bb);
 		t.references = new TreeMap<Integer, Reference>();
 
 		/* read the ids */
@@ -54,7 +62,7 @@ public class ReferenceTable {
 		int accumulator = 0;
 		size = -1;
 		for (int i = 0; i < ids.length; i++) {
-			int delta = bb.getShort() & 0xFFFF;
+			int delta = smart(bb);
 			ids[i] = accumulator += delta;
 			if (ids[i] > size) {
 				size = ids[i];
@@ -94,7 +102,7 @@ public class ReferenceTable {
 		/* read the child sizes */
 		int[][] members = new int[size][];
 		for (int id : ids) {
-			int length = bb.getShort() & 0xFFFF;
+			int length = smart(bb);
 			members[id] = new int[length];
 			t.references.get(id).children = new TreeMap<Integer, ChildReference>();
 		}
@@ -107,7 +115,7 @@ public class ReferenceTable {
 
 			/* loop through the array of ids */
 			for (int i = 0; i < members[id].length; i++) {
-				int delta = bb.getShort() & 0xFFFF;
+				int delta = smart(bb);
 				members[id][i] = accumulator += delta;
 				if (members[id][i] > size) {
 					size = members[id][i];

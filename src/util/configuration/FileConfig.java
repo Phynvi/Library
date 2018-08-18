@@ -57,6 +57,7 @@ public class FileConfig extends ConfigSection {
 
 			in.close();
 		} catch (Exception e) {
+			e.printStackTrace();
 			// File does not exist, therefore it has no data to load.
 		}
 	}
@@ -96,6 +97,7 @@ public class FileConfig extends ConfigSection {
 			ps.print(out);
 			ps.close();
 		} catch (Exception e) {
+			e.printStackTrace();
 			// File does not exist, therefore it has no data to load.
 		}
 	}

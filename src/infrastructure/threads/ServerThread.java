@@ -53,7 +53,7 @@ public class ServerThread extends CoreThread {
 	public final void start() {
 		if (running)
 			return;
-		Core.submitThread(this);
+		Core.submitRegularTask(this);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class ServerThread extends CoreThread {
 
 			running = f.isSuccess();
 
-			logger.info("Initialized ServerThread on port " + port + ".");
+			logger.info("World Initialized: " + world.getName() + " on port " + port + ".");
 
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {

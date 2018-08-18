@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import org.apache.commons.collections4.map.MultiKeyMap;
 
@@ -12,11 +13,14 @@ import cache.openrs.util.ByteBufferUtils;
 import cache.openrs.util.crypto.Whirlpool;
 import cache.reference.Reference;
 import cache.reference.ReferenceTable;
+import infrastructure.GlobalVariables;
 
 /**
  * @author Albert Beaupre
  */
 public class Cache {
+
+	public static int CACHE_REVISION = -1;
 
 	private final CacheStore store;
 	private final File folder;
@@ -25,9 +29,10 @@ public class Cache {
 	private ChecksumTable checksum;
 
 	private ReferenceTable[] reference_tables;
-	private CacheFile[] indicies;
 
 	private MultiKeyMap<Integer, CacheFile> file_table;
+
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
 	 * Constructs a new {@code Cache}, and initializes the {@code CacheStore} of this {@code Cache}
@@ -48,12 +53,19 @@ public class Cache {
 	 * 
 	 * @throws IOException
 	 */
-	public void load() throws IOException {
+	public void load(int revision) throws IOException {
+		if (revision <= 0)
+			throw new IllegalArgumentException("The cache revision must be > 0 before loading");
+
+		CACHE_REVISION = revision;
+
 		int blockSize = store.getBlockSize();
 
 		this.file_table = new MultiKeyMap<>();
-		this.indicies = new CacheFile[blockSize];
 		this.reference_tables = new ReferenceTable[blockSize];
+
+		if (GlobalVariables.isDebugEnabled())
+			LOGGER.info("Loading cache with " + blockSize + " index files...");
 
 		for (int index = 0; index < blockSize; index++) {
 			ByteBuffer data = store.getFileData(255, index);
@@ -61,12 +73,13 @@ public class Cache {
 				CacheFile file = CacheFile.decode(folder, 255, data, index);
 				ReferenceTable reference = ReferenceTable.decode(index, file);
 
-				this.indicies[index] = file;
 				this.reference_tables[index] = reference;
 			}
 		}
 
 		this.rebuildChecksum();
+		if (GlobalVariables.isDebugEnabled())
+			LOGGER.info("Finished loading cache.");
 	}
 
 	/**
@@ -165,12 +178,15 @@ public class Cache {
 	}
 
 	/**
+	 * Creates a response, which goes to the client.
 	 * 
 	 * @param idx
+	 *            the index type
 	 * @param fileId
+	 *            the file id
 	 * @param opcode
-	 * @return
-	 * @throws IOException
+	 *            the opcode
+	 * @return the response
 	 */
 	public ByteBuffer createResponse(int idx, int fileId, int opcode) throws IOException {
 		ByteBuffer out, raw;
