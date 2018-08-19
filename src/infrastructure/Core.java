@@ -43,8 +43,8 @@ public class Core {
 	 */
 	public static void initialize(int revision, String cacheRoot) {
 		try {
-			cache = new Cache(new File(cacheRoot));
-			cache.load(revision);
+			cache = new Cache(new File(cacheRoot), revision);
+			cache.load();
 
 			/**
 			 * Attach all essential attachments

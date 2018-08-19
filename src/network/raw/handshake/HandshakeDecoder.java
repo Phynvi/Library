@@ -7,8 +7,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import network.NetworkRepository;
 import network.raw.CacheRequestDecoder;
-import network.raw.LoginRequestDecoder;
 import network.raw.RawHandler;
+import network.raw.login.LoginRequestDecoder;
 
 /**
  * The {@code HandshakeDecoder} will receive any incoming data from a client with the same port and

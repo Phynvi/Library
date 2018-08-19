@@ -10,8 +10,8 @@ import java.nio.ByteBuffer;
  */
 public class CacheStore {
 
-	private static final int INDEX_IDENTIFIER = 6;
-	private static final int BLOCK_LENGTH = 520;
+	public static final int INDEX_IDENTIFIER = 6;
+	public static final int BLOCK_LENGTH = 520;
 
 	private final int HEADER_LENGTH;
 	private final int BLOCK_DATA_LENGTH;
@@ -38,7 +38,7 @@ public class CacheStore {
 		this.HEADER_LENGTH = dataFile.readUnsignedShort() >= 65535 ? 10 : 8;
 		this.BLOCK_DATA_LENGTH = BLOCK_LENGTH - HEADER_LENGTH;
 
-		int size = getBlockSize();
+		int size = getIndexSize();
 		indexFiles = new CacheFile[size];
 		for (int index = 0; index < size; index++)
 			indexFiles[index] = new CacheFile(path.getPath() + File.separator + "main_file_cache.idx" + index);
@@ -55,12 +55,12 @@ public class CacheStore {
 	 *         existent
 	 * @throws IOException
 	 */
-	public ByteBuffer getFileData(int idx, int id) throws IOException {
+	public synchronized ByteBuffer getFileData(int idx, int id) throws IOException {
 		@SuppressWarnings("resource")
 		CacheFile indexFile = idx == 255 ? metaFile : indexFiles[idx];
 
 		if (id * INDEX_IDENTIFIER + INDEX_IDENTIFIER > indexFile.length())
-			return null;
+			throw new NullPointerException();
 
 		ByteBuffer temp = ByteBuffer.allocateDirect(BLOCK_LENGTH);
 		temp.position(0).limit(INDEX_IDENTIFIER);
@@ -70,15 +70,15 @@ public class CacheStore {
 		int size = ((temp.get() & 0xff) << 16) | ((temp.get() & 0xff) << 8) | (temp.get() & 0xff);
 		int block = ((temp.get() & 0xff) << 16) | ((temp.get() & 0xff) << 8) | (temp.get() & 0xff);
 
-		if (size < 0 || size > 1000000)
-			return null;
-		if (block < 0 || block > dataFile.length() / BLOCK_LENGTH)
-			return null;
+		if (size < 0 || size > (idx == 255 ? 500000 : 1000000))
+			throw new NullPointerException("Size: " + size);
+		if (block < 0 || block > dataFile.getChannel().size() / BLOCK_LENGTH)
+			throw new NullPointerException("Block: " + block);
 		ByteBuffer data = ByteBuffer.allocate(size);
 		int remaining = size, chunk = 0;
 		while (remaining > 0) {
 			if (block < 1)
-				return null;
+				throw new NullPointerException("Block: " + block);
 
 			int availableLength = remaining > BLOCK_DATA_LENGTH ? BLOCK_DATA_LENGTH : remaining;
 			ByteBuffer temporary = ByteBuffer.allocate(availableLength + HEADER_LENGTH);
@@ -91,9 +91,9 @@ public class CacheStore {
 			int relativeIndex = temporary.get() & 0xFF;
 
 			if (id != archiveId || chunk != currentChunk || idx != relativeIndex)
-				return null;
-			if (nextBlock < 0 || nextBlock > dataFile.length() / BLOCK_LENGTH)
-				return null;
+				throw new NullPointerException(String.format("IDX=%s, FID=%s, AID=%s, C=%s, B=%s, RI=%s", idx, id, archiveId, currentChunk, nextBlock, relativeIndex));
+			if (nextBlock < 0 || nextBlock > dataFile.getChannel().size() / BLOCK_LENGTH)
+				throw new NullPointerException(String.format("Next Block: " + nextBlock));
 
 			data.put(temporary);
 			remaining -= availableLength;
@@ -109,7 +109,15 @@ public class CacheStore {
 	 * @return
 	 * @throws IOException
 	 */
-	public int getBlockSize() throws IOException {
+	public int getIndexSize() throws IOException {
 		return (int) (metaFile.length() / INDEX_IDENTIFIER);
+	}
+
+	public int getHeaderLength() {
+		return HEADER_LENGTH;
+	}
+
+	public int getBlockDataLength() {
+		return BLOCK_DATA_LENGTH;
 	}
 }

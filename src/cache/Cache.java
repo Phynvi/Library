@@ -7,8 +7,6 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import org.apache.commons.collections4.map.MultiKeyMap;
-
 import cache.openrs.util.ByteBufferUtils;
 import cache.openrs.util.crypto.Whirlpool;
 import cache.reference.Reference;
@@ -20,19 +18,15 @@ import infrastructure.GlobalVariables;
  */
 public class Cache {
 
-	public static int CACHE_REVISION = -1;
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+	private final HashMap<Integer, Archive> archives;
+	private final HashMap<Integer, CacheFile> file_table;
 	private final CacheStore store;
 	private final File folder;
 
-	private final HashMap<Integer, Archive> archives;
-	private ChecksumTable checksum;
-
 	private ReferenceTable[] reference_tables;
-
-	private MultiKeyMap<Integer, CacheFile> file_table;
-
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private ChecksumTable checksum;
 
 	/**
 	 * Constructs a new {@code Cache}, and initializes the {@code CacheStore} of this {@code Cache}
@@ -43,31 +37,27 @@ public class Cache {
 	 * @throws IOException
 	 *             if there is a problem initializing the {@code CacheStore}.
 	 */
-	public Cache(File cacheFolder) throws IOException {
+	public Cache(File cacheFolder, int revision) throws IOException {
 		this.folder = cacheFolder;
 		this.store = new CacheStore(cacheFolder);
-		this.archives = new HashMap<>(store.getBlockSize());
+		this.archives = new HashMap<>();
+		this.file_table = new HashMap<>();
+		if (revision <= 0)
+			throw new IllegalArgumentException("The cache revision must be > 0 before loading");
+		this.reference_tables = new ReferenceTable[store.getIndexSize()];
 	}
 
 	/**
+	 * Loads this {@code Cache} by the given {@code revision}.
 	 * 
 	 * @throws IOException
+	 *             when an error occurs loading the cache
 	 */
-	public void load(int revision) throws IOException {
-		if (revision <= 0)
-			throw new IllegalArgumentException("The cache revision must be > 0 before loading");
-
-		CACHE_REVISION = revision;
-
-		int blockSize = store.getBlockSize();
-
-		this.file_table = new MultiKeyMap<>();
-		this.reference_tables = new ReferenceTable[blockSize];
-
+	public void load() throws IOException {
 		if (GlobalVariables.isDebugEnabled())
-			LOGGER.info("Loading cache with " + blockSize + " index files...");
+			LOGGER.info("Loading cache...");
 
-		for (int index = 0; index < blockSize; index++) {
+		for (int index = 0; index < store.getIndexSize(); index++) {
 			ByteBuffer data = store.getFileData(255, index);
 			if (data != null && data.remaining() > 0) {
 				CacheFile file = CacheFile.decode(folder, 255, data, index);
@@ -83,8 +73,10 @@ public class Cache {
 	}
 
 	/**
+	 * Rebuilds the checksum for this {@code Cache}.
 	 * 
 	 * @throws IOException
+	 *             When rebuilding fails
 	 */
 	public void rebuildChecksum() throws IOException {
 		this.checksum = new ChecksumTable(this.reference_tables.length);
@@ -109,7 +101,6 @@ public class Cache {
 				continue;
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("Error parsing IDX " + i + " index.");
 				whirlpool = Whirlpool.whirlpool(new byte[0], 0, 0);
 				continue;
 			} finally {
@@ -119,11 +110,15 @@ public class Cache {
 	}
 
 	/**
+	 * Gets the {@code Archive} for the given {@code idx} and {@code fileId}.
 	 * 
 	 * @param idx
+	 *            the index of the archive
 	 * @param fileId
-	 * @return
+	 *            the file id of the archive
+	 * @return the archive found
 	 * @throws IOException
+	 *             if the archive could not be found
 	 */
 	public Archive getArchive(int idx, int fileId) throws IOException {
 		int uid = (idx << 24) | (fileId);
@@ -134,37 +129,42 @@ public class Cache {
 		CacheFile file = getFile(idx, fileId);
 		Reference reference = reference_tables[idx].getReference(fileId);
 
-		try {
-			a = Archive.decode(reference, file);
-		} catch (IOException e) {
-			throw new IOException("Failed to decode archive, IDX: " + idx + ", File: " + fileId + (e.getMessage() == null ? "" : ": " + e.getMessage()), e);
-		}
+		a = Archive.decode(reference, file);
 		archives.put(uid, a);
 		return a;
 	}
 
 	/**
+	 * Gets the {@code CacheFile} for the given {@code idx} and {@code fileId}.
 	 * 
 	 * @param idx
+	 *            the index of the file
 	 * @param fileId
-	 * @return
+	 *            the file id of the file
+	 * @return the file found
 	 * @throws IOException
+	 *             If the file could not be found
 	 */
 	public CacheFile getFile(int idx, int fileId) throws IOException {
-		CacheFile file = file_table.get(idx, fileId);
+		int uid = (idx << 24) | (fileId);
+		CacheFile file = file_table.get(uid);
 		if (file != null)
 			return file;
 		file = CacheFile.decode(folder, idx, store.getFileData(idx, fileId), fileId);
-		file_table.put(idx, fileId, file);
+		file_table.put(uid, file);
 		return file;
 	}
 
 	/**
+	 * Returns the id of the file correlating to the {@code idx} and {@code identifier}.
 	 * 
 	 * @param idx
+	 *            the index of the file
 	 * @param identifier
-	 * @return
+	 *            the identifier
+	 * @return the file id correlating
 	 * @throws FileNotFoundException
+	 *             if the file id could not be found
 	 */
 	public int getFileId(int idx, int identifier) throws FileNotFoundException {
 		if (idx >= reference_tables.length || idx < 0)
@@ -188,43 +188,48 @@ public class Cache {
 	 *            the opcode
 	 * @return the response
 	 */
-	public ByteBuffer createResponse(int idx, int fileId, int opcode) throws IOException {
-		ByteBuffer out, raw;
+	public ByteBuffer createResponse(int idx, int fileId, int opcode) {
+		try {
+			ByteBuffer out, raw;
 
-		int length, compression;
+			int length, compression;
 
-		if (idx == 255 && fileId == 255) {
-			if (checksum == null)
-				rebuildChecksum();
-			raw = checksum.encode(true);
-			compression = 0;
-			length = raw.remaining();
-		} else {
-			raw = store.getFileData(idx, fileId);
-			compression = raw.get() & 0xFF;
-			length = raw.getInt();
+			if (idx == 255 && fileId == 255) {
+				if (checksum == null)
+					rebuildChecksum();
+				raw = checksum.encode(true);
+				compression = 0;
+				length = raw.remaining();
+			} else {
+				raw = store.getFileData(idx, fileId);
+				compression = raw.get() & 0xFF;
+				length = raw.getInt();
+			}
+
+			out = ByteBuffer.allocate(raw.remaining() + 8 + ((raw.remaining() + 8) / 512) + 4); // Why +4?
+
+			int attribs = compression;
+
+			if (opcode == 0)
+				attribs |= 0x80;
+
+			out.put((byte) idx);
+			out.putShort((short) fileId);
+			out.put((byte) attribs);
+			out.putInt(length);
+			raw.limit(raw.position() + length + (compression == 0 ? 0 : 4));
+
+			while (raw.remaining() > 0) {
+				if (out.position() % 512 == 0)
+					out.put((byte) 0xFF);
+
+				out.put(raw.get());
+			}
+			out.flip();
+			return out;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-
-		out = ByteBuffer.allocate(raw.remaining() + 8 + ((raw.remaining() + 8) / 512) + 4); // Why +4?
-
-		int attribs = compression;
-
-		if (opcode == 0)
-			attribs |= 0x80;
-
-		out.put((byte) idx);
-		out.putShort((short) fileId);
-		out.put((byte) attribs);
-		out.putInt(length);
-		raw.limit(raw.position() + length + (compression == 0 ? 0 : 4));
-
-		while (raw.remaining() > 0) {
-			if (out.position() % 512 == 0)
-				out.put((byte) 0xFF);
-
-			out.put(raw.get());
-		}
-		out.flip();
-		return out;
 	}
 }

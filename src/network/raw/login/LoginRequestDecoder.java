@@ -1,4 +1,4 @@
-package network.raw;
+package network.raw.login;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,6 +9,7 @@ import network.Connection;
 import network.ConnectionHolder;
 import network.NetworkRepository;
 import network.packet.decoding.IncomingPacketDecoder;
+import network.raw.RawHandler;
 
 /**
  * The {@code LoginRequestDecoder} decoded any information from the client after it has requested
@@ -35,10 +36,6 @@ public class LoginRequestDecoder extends ByteToMessageDecoder {
 			RawHandler handler = NetworkRepository.getRawHandler(revision);
 			if (handler == null)
 				throw new UnsupportedOperationException("Revision not supported for login: " + revision);
-			if (!handler.loaded) {
-				handler.loadRawHandler();
-				handler.loaded = true;
-			}
 			Connection connection = new Connection(ctx.channel(), revision);
 			ConnectionHolder holder = handler.createConnectionHolder(connection, in, state);
 

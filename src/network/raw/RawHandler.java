@@ -21,7 +21,7 @@ public abstract class RawHandler {
 	private PacketDecoder<ConnectionHolder>[] decoders;
 	private PacketEncoder<ConnectionHolder>[] encoders;
 
-	protected boolean loaded;
+	private boolean loaded;
 
 	/**
 	 * Constructs a new {@code RawHandler}.
@@ -135,7 +135,7 @@ public abstract class RawHandler {
 
 	/**
 	 * Creates a new {@code ConnectionHolder} object based on the specified arguments. This method is
-	 * used by the {@link network.raw.LoginRequestDecoder} to create a new
+	 * used by the {@link network.raw.login.LoginRequestDecoder} to create a new
 	 * {@link network.packet.decoding.IncomingPacketDecoder} based on the returned
 	 * {@code ConnectionHolder}.
 	 * 
@@ -162,5 +162,16 @@ public abstract class RawHandler {
 	 * @return the revision of this {@code RawHandler}
 	 */
 	public abstract int getRevision();
+
+	/**
+	 * Loads this RawHandler
+	 */
+	public final void load() {
+		if (loaded)
+			return;
+		loadRawHandler();
+
+		loaded = true;
+	}
 
 }
