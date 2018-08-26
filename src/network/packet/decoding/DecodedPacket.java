@@ -26,6 +26,14 @@ public class DecodedPacket extends Packet {
 		super(type, bytes, opcode);
 	}
 
+	public long readLong() {
+		return bytes.readLong();
+	}
+
+	public int readInt() {
+		return bytes.readInt();
+	}
+
 	public int readLEInt() {
 		return readUnsignedByte() + (readUnsignedByte() << 8) + (readUnsignedByte() << 16) + (readUnsignedByte() << 24);
 	}
@@ -72,5 +80,17 @@ public class DecodedPacket extends Packet {
 		while (bytes.readableBytes() > 0 && (b = readByte()) != 0)
 			sb.append((char) b);
 		return sb.toString();
+	}
+	
+	public void skip(int byteCount) {
+		bytes.skipBytes(byteCount);
+	}
+	
+	public void readBytes(byte[] arr) {
+		bytes.readBytes(arr);
+	}
+
+	public int readableBytes() {
+		return bytes.readableBytes();
 	}
 }

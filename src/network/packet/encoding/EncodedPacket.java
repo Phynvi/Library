@@ -352,6 +352,12 @@ public class EncodedPacket extends Packet {
 		return writeBytes(string.getBytes()).writeByte((byte) 0);
 	}
 
+	public EncodedPacket writePJStr2(String s) {
+		if (s.indexOf((char) 0) >= 0)
+			throw new IllegalArgumentException("The given string may not contain a NUL (byte 0) character");
+		return writeByte((byte) 0).writePJStr1(s);
+	}
+
 	/**
 	 * Writes the value as a byte if the value is >= 128 otherwise it will write it as a short + 32768.
 	 * 

@@ -1,4 +1,4 @@
-package infrastructure;
+package network;
 
 import entity.EntityList;
 import entity.actor.persona.Persona;
@@ -32,18 +32,18 @@ public class World {
 	private final int id;
 	private final int location;
 	private final int country;
-	private final int type;
+	private final int flags;
 	private final String name;
 	private final String host;
-	private final String region;
+	private final String activity;
 
 	private final EntityList<Persona> players = new EntityList<>(2048);
 
-	public World(int id, String name, String host, String region, int location, int country, int type) {
+	public World(int id, String name, String host, String activity, int location, int country, int flags) {
 		this.id = id;
 		this.location = location;
-		this.region = region;
-		this.type = type;
+		this.activity = activity;
+		this.flags = flags;
 		this.name = name;
 		this.country = country;
 		this.host = host;
@@ -53,8 +53,8 @@ public class World {
 		return country;
 	}
 
-	public int getType() {
-		return type;
+	public int getFlags() {
+		return flags;
 	}
 
 	public String getName() {
@@ -65,8 +65,8 @@ public class World {
 		return host;
 	}
 
-	public String getRegion() {
-		return region;
+	public String getActivity() {
+		return activity;
 	}
 
 	public int getId() {

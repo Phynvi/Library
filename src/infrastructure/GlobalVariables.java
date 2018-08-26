@@ -8,6 +8,7 @@ import entity.actor.model.ModelUpdater;
 import event.EventManager;
 import infrastructure.threads.TickThread;
 import io.netty.util.AttributeKey;
+import network.World;
 
 /**
  * The {@code GlobalVariables} class is meant to hold methods that will be used throughout the
@@ -17,7 +18,9 @@ import io.netty.util.AttributeKey;
  */
 public class GlobalVariables {
 
-	public static AttributeKey<World> WORLD_KEY = AttributeKey.valueOf("world");
+	public static final AttributeKey<World> WORLD_KEY = AttributeKey.valueOf("world");
+	public static final AttributeKey<int[]> ISAAC_KEYS_IN = AttributeKey.valueOf("isaac_keys_in");
+	public static final AttributeKey<int[]> ISAAC_KEYS_OUT = AttributeKey.valueOf("isaac_keys_out");
 
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

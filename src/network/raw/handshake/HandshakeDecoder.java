@@ -35,6 +35,7 @@ public class HandshakeDecoder extends ByteToMessageDecoder {
 	 */
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		int requestId = in.readByte() & 0xff;
+
 		HandshakeRequest request = HandshakeRequest.forId(requestId);
 		if (request == null) {
 			System.err.println("Unknown Handshake Request Id: " + requestId);

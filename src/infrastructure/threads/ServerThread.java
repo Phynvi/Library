@@ -1,10 +1,10 @@
 package infrastructure.threads;
 
 import java.util.logging.Logger;
+
 import infrastructure.Core;
 import infrastructure.CoreThread;
 import infrastructure.GlobalVariables;
-import infrastructure.World;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,6 +13,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import network.NetworkHandler;
+import network.World;
 import network.packet.encoding.OutgoingPacketEncoder;
 import network.raw.handshake.HandshakeDecoder;
 
@@ -62,7 +63,7 @@ public class ServerThread extends CoreThread {
 			bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast("encoder", new OutgoingPacketEncoder());
+					ch.pipeline().addLast("encoder", new OutgoingPacketEncoder(null));
 					ch.pipeline().addLast("decoder", new HandshakeDecoder());
 					ch.pipeline().addLast("handler", new NetworkHandler());
 					ch.attr(GlobalVariables.WORLD_KEY).set(world);

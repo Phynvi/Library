@@ -27,6 +27,8 @@ public class Cache {
 
 	private ReferenceTable[] reference_tables;
 	private ChecksumTable checksum;
+	
+	private int revision;
 
 	/**
 	 * Constructs a new {@code Cache}, and initializes the {@code CacheStore} of this {@code Cache}
@@ -44,6 +46,7 @@ public class Cache {
 		this.file_table = new HashMap<>();
 		if (revision <= 0)
 			throw new IllegalArgumentException("The cache revision must be > 0 before loading");
+		this.revision = revision;
 		this.reference_tables = new ReferenceTable[store.getIndexSize()];
 	}
 
@@ -178,6 +181,22 @@ public class Cache {
 	}
 
 	/**
+	 * Fetches the ID of the file in the given IDX with the given name hash
+	 * 
+	 * @param idx
+	 *            the IDX value, 0-37
+	 * @param name
+	 *            the name of the file (case insensitive), this is hashed
+	 * @return the file id
+	 * @throws FileNotFoundException
+	 *             if the file was not found.
+	 */
+	public int getFileId(int idx, String name) throws FileNotFoundException {
+		int hash = CacheUtility.getNameHash(name);
+		return getFileId(idx, hash);
+	}
+
+	/**
 	 * Creates a response, which goes to the client.
 	 * 
 	 * @param idx
@@ -231,5 +250,9 @@ public class Cache {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public int getRevision() {
+		return revision;
 	}
 }

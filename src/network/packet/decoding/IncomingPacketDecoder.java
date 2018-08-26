@@ -10,6 +10,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import network.ConnectionHolder;
+import network.cryptogrophy.ISAACCipher;
 import network.packet.PacketType;
 import network.raw.RawHandler;
 
@@ -31,6 +32,7 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 
 	private final ConnectionHolder holder;
 	private final RawHandler handler;
+	private final ISAACCipher inCipher;
 
 	/**
 	 * Constructs a new {@code IncomingPacketDecoder} with a specified {@code ConnectionHolder} as the
@@ -41,10 +43,13 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 	 * 
 	 * @param holder
 	 *            the holder of the {@code Connection}.
+	 * @param isaac
+	 *            the isaac cipher.
 	 */
-	public IncomingPacketDecoder(RawHandler handler, ConnectionHolder holder) {
+	public IncomingPacketDecoder(RawHandler handler, ConnectionHolder holder, ISAACCipher inCipher) {
 		this.handler = handler;
 		this.holder = holder;
+		this.inCipher = inCipher;
 	}
 
 	/**
@@ -60,7 +65,8 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 	 */
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		if (in.isReadable()) {
-			int opcode = in.readByte() & 0xFF;
+
+			int opcode = in.readUnsignedByte() - inCipher.getNextValue() & 0xFF;
 			if (opcode < 0) {
 				in.discardReadBytes();
 				return;

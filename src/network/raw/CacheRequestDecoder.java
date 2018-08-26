@@ -43,7 +43,7 @@ public class CacheRequestDecoder extends ByteToMessageDecoder {
 		while (in.readableBytes() >= 4) {
 			final int opcode = in.readByte() & 0xFF;
 			final int idx = in.readByte() & 0xFF;
-			final int file = in.readShort() & 0xFFFF;
+			final int file = Core.getCache().getRevision() <= 666 ? (in.readShort() & 0xFFFF) : in.readInt() & 0xFFFF;
 
 			switch (opcode) {
 			case 1:

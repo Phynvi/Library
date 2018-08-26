@@ -46,6 +46,9 @@ public final class NetworkRepository {
 	 * @return the raw handler based on the revision; or null if it doesn't exist
 	 */
 	public static RawHandler getRawHandler(int revision) {
-		return rawHandlers.get(revision);
+		RawHandler handler = rawHandlers.get(revision);
+		if (handler != null)
+			handler.load();
+		return handler;
 	}
 }
