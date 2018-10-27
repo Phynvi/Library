@@ -2,6 +2,7 @@ package cache;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 
 /**
@@ -16,9 +17,9 @@ public class CacheStore {
 	private final int HEADER_LENGTH;
 	private final int BLOCK_DATA_LENGTH;
 
-	private final CacheFile metaFile;
-	private final CacheFile[] indexFiles;
-	private final CacheFile dataFile;
+	private final RandomAccessFile metaFile;
+	private final RandomAccessFile[] indexFiles;
+	private final RandomAccessFile dataFile;
 
 	/**
 	 * Constructs a new {@code CacheStore} around the index correlating to the specified {@code index}
@@ -32,16 +33,16 @@ public class CacheStore {
 	 *             if there is a problem reading the data or index file within the path
 	 */
 	public CacheStore(File path) throws IOException {
-		dataFile = new CacheFile(path.getPath() + File.separator + "main_file_cache.dat2");
-		metaFile = new CacheFile(path.getPath() + File.separator + "main_file_cache.idx255");
+		dataFile = new RandomAccessFile(path.getPath() + File.separator + "main_file_cache.dat2", "r");
+		metaFile = new RandomAccessFile(path.getPath() + File.separator + "main_file_cache.idx255", "r");
 
 		this.HEADER_LENGTH = dataFile.readUnsignedShort() >= 65535 ? 10 : 8;
 		this.BLOCK_DATA_LENGTH = BLOCK_LENGTH - HEADER_LENGTH;
 
 		int size = getIndexSize();
-		indexFiles = new CacheFile[size];
+		indexFiles = new RandomAccessFile[size];
 		for (int index = 0; index < size; index++)
-			indexFiles[index] = new CacheFile(path.getPath() + File.separator + "main_file_cache.idx" + index);
+			indexFiles[index] = new RandomAccessFile(path.getPath() + File.separator + "main_file_cache.idx" + index, "r");
 	}
 
 	/**
@@ -57,7 +58,7 @@ public class CacheStore {
 	 */
 	public synchronized ByteBuffer getFileData(int idx, int id) throws IOException {
 		@SuppressWarnings("resource")
-		CacheFile indexFile = idx == 255 ? metaFile : indexFiles[idx];
+		RandomAccessFile indexFile = idx == 255 ? metaFile : indexFiles[idx];
 
 		if (id * INDEX_IDENTIFIER + INDEX_IDENTIFIER > indexFile.length())
 			throw new NullPointerException();
@@ -72,7 +73,7 @@ public class CacheStore {
 
 		if (size < 0 || size > (idx == 255 ? 500000 : 1000000))
 			throw new NullPointerException("Size: " + size);
-		if (block < 0 || block > dataFile.getChannel().size() / BLOCK_LENGTH)
+		if (block < 0 || block > dataFile.length() / BLOCK_LENGTH)
 			throw new NullPointerException("Block: " + block);
 		ByteBuffer data = ByteBuffer.allocate(size);
 		int remaining = size, chunk = 0;
@@ -85,14 +86,14 @@ public class CacheStore {
 			dataFile.getChannel().read(temporary, block * BLOCK_LENGTH);
 			temporary.flip();
 
-			int archiveId = HEADER_LENGTH == 10 ? temporary.getInt() & 0xFFFF : temporary.getShort() & 0xFFFF;
-			int currentChunk = temporary.getShort() & 0xFFFF;
-			int nextBlock = ((temporary.get() & 0xFF) << 16) | ((temporary.get() & 0xFF) << 8) | (temporary.get() & 0xFF);
-			int relativeIndex = temporary.get() & 0xFF;
+			int archiveId = HEADER_LENGTH == 10 ? temporary.getInt() & 0xffff : temporary.getShort() & 0xffff;
+			int currentChunk = temporary.getShort() & 0xffff;
+			int nextBlock = ((temporary.get() & 0xff) << 16) | ((temporary.get() & 0xff) << 8) | (temporary.get() & 0xff);
+			int relativeIndex = temporary.get() & 0xff;
 
 			if (id != archiveId || chunk != currentChunk || idx != relativeIndex)
 				throw new NullPointerException(String.format("IDX=%s, FID=%s, AID=%s, C=%s, B=%s, RI=%s", idx, id, archiveId, currentChunk, nextBlock, relativeIndex));
-			if (nextBlock < 0 || nextBlock > dataFile.getChannel().size() / BLOCK_LENGTH)
+			if (nextBlock < 0 || nextBlock > dataFile.length() / BLOCK_LENGTH)
 				throw new NullPointerException(String.format("Next Block: " + nextBlock));
 
 			data.put(temporary);
@@ -111,6 +112,10 @@ public class CacheStore {
 	 */
 	public int getIndexSize() throws IOException {
 		return (int) (metaFile.length() / INDEX_IDENTIFIER);
+	}
+
+	public RandomAccessFile getIndexFile(int idx) {
+		return idx == 255 ? metaFile : this.indexFiles[idx];
 	}
 
 	public int getHeaderLength() {

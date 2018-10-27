@@ -1,5 +1,6 @@
 package infrastructure;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -23,12 +24,15 @@ public class GlobalVariables {
 	public static final AttributeKey<int[]> ISAAC_KEYS_OUT = AttributeKey.valueOf("isaac_keys_out");
 
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final HashMap<String, Object> CONSTANTS = new HashMap<>();
 
 	private static TickThread TICKER;
 	private static EventManager EVENT_MANAGER;
 	private static ModelUpdater MODEL_UPDATER;
 
 	private static boolean DEBUGGING = true;
+
+	private static boolean isaacEnabled;
 
 	/**
 	 * Sets the specified {@code ticker} to this {@code GlobalVariables} class.
@@ -142,5 +146,22 @@ public class GlobalVariables {
 	 */
 	public static boolean isDebugEnabled() {
 		return DEBUGGING;
+	}
+
+	public static boolean isISAACEnabled() {
+		return isaacEnabled;
+	}
+
+	public static void setISAACEnabled(boolean isaacEnabled) {
+		GlobalVariables.isaacEnabled = isaacEnabled;
+	}
+
+	public static void storeConstant(String name, Object value) {
+		CONSTANTS.put(name, value);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T getConstant(String name, Class<T> cast) {
+		return (T) CONSTANTS.get(name);
 	}
 }

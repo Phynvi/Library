@@ -7,11 +7,12 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import cache.openrs.util.ByteBufferUtils;
+import cache.openrs.Archive;
+import cache.openrs.ByteBufferUtils;
+import cache.openrs.ChecksumTable;
+import cache.openrs.reference.Reference;
+import cache.openrs.reference.ReferenceTable;
 import cache.openrs.util.crypto.Whirlpool;
-import cache.reference.Reference;
-import cache.reference.ReferenceTable;
-import infrastructure.GlobalVariables;
 
 /**
  * @author Albert Beaupre
@@ -23,11 +24,10 @@ public class Cache {
 	private final HashMap<Integer, Archive> archives;
 	private final HashMap<Integer, CacheFile> file_table;
 	private final CacheStore store;
-	private final File folder;
 
 	private ReferenceTable[] reference_tables;
 	private ChecksumTable checksum;
-	
+
 	private int revision;
 
 	/**
@@ -40,7 +40,6 @@ public class Cache {
 	 *             if there is a problem initializing the {@code CacheStore}.
 	 */
 	public Cache(File cacheFolder, int revision) throws IOException {
-		this.folder = cacheFolder;
 		this.store = new CacheStore(cacheFolder);
 		this.archives = new HashMap<>();
 		this.file_table = new HashMap<>();
@@ -57,13 +56,12 @@ public class Cache {
 	 *             when an error occurs loading the cache
 	 */
 	public void load() throws IOException {
-		if (GlobalVariables.isDebugEnabled())
-			LOGGER.info("Loading cache...");
+		LOGGER.info("Loading cache...");
 
 		for (int index = 0; index < store.getIndexSize(); index++) {
 			ByteBuffer data = store.getFileData(255, index);
 			if (data != null && data.remaining() > 0) {
-				CacheFile file = CacheFile.decode(folder, 255, data, index);
+				CacheFile file = CacheFile.decode(store, 255, index, null);
 				ReferenceTable reference = ReferenceTable.decode(index, file);
 
 				this.reference_tables[index] = reference;
@@ -71,8 +69,7 @@ public class Cache {
 		}
 
 		this.rebuildChecksum();
-		if (GlobalVariables.isDebugEnabled())
-			LOGGER.info("Finished loading cache.");
+		LOGGER.info("Finished loading cache.");
 	}
 
 	/**
@@ -129,7 +126,7 @@ public class Cache {
 		if (a != null)
 			return a;
 
-		CacheFile file = getFile(idx, fileId);
+		CacheFile file = getFile(idx, fileId, null);
 		Reference reference = reference_tables[idx].getReference(fileId);
 
 		a = Archive.decode(reference, file);
@@ -148,12 +145,12 @@ public class Cache {
 	 * @throws IOException
 	 *             If the file could not be found
 	 */
-	public CacheFile getFile(int idx, int fileId) throws IOException {
+	public CacheFile getFile(int idx, int fileId, XTEAKey key) throws IOException {
 		int uid = (idx << 24) | (fileId);
 		CacheFile file = file_table.get(uid);
 		if (file != null)
 			return file;
-		file = CacheFile.decode(folder, idx, store.getFileData(idx, fileId), fileId);
+		file = CacheFile.decode(store, idx, fileId, key);
 		file_table.put(uid, file);
 		return file;
 	}
@@ -192,7 +189,7 @@ public class Cache {
 	 *             if the file was not found.
 	 */
 	public int getFileId(int idx, String name) throws FileNotFoundException {
-		int hash = CacheUtility.getNameHash(name);
+		int hash = ByteBufferUtils.getNameHash(name);
 		return getFileId(idx, hash);
 	}
 
@@ -210,7 +207,6 @@ public class Cache {
 	public ByteBuffer createResponse(int idx, int fileId, int opcode) {
 		try {
 			ByteBuffer out, raw;
-
 			int length, compression;
 
 			if (idx == 255 && fileId == 255) {
@@ -226,12 +222,9 @@ public class Cache {
 			}
 
 			out = ByteBuffer.allocate(raw.remaining() + 8 + ((raw.remaining() + 8) / 512) + 4); // Why +4?
-
 			int attribs = compression;
-
 			if (opcode == 0)
 				attribs |= 0x80;
-
 			out.put((byte) idx);
 			out.putShort((short) fileId);
 			out.put((byte) attribs);
@@ -241,7 +234,6 @@ public class Cache {
 			while (raw.remaining() > 0) {
 				if (out.position() % 512 == 0)
 					out.put((byte) 0xFF);
-
 				out.put(raw.get());
 			}
 			out.flip();
@@ -251,7 +243,7 @@ public class Cache {
 			return null;
 		}
 	}
-	
+
 	public int getRevision() {
 		return revision;
 	}

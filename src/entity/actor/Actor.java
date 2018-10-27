@@ -1,7 +1,6 @@
 package entity.actor;
 
 import java.util.function.Consumer;
-import entity.actor.model.Model;
 
 /**
  * Represents a {@code ActionQueue} holder that handles any {@code Action} queuing. The
@@ -62,12 +61,5 @@ public interface Actor {
 			}
 		});
 	}
-
-	/**
-	 * Returns the {@code Model} of this {@code Actor}.
-	 * 
-	 * @return the model
-	 */
-	public Model getModel();
 
 }

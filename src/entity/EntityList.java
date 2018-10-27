@@ -1,7 +1,8 @@
 package entity;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * The {@code EntityList} class holds an array of {@code Entity} types. The {@code EntityList} class
@@ -67,7 +68,10 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	 */
 	public boolean remove(E entity) {
 		int index = entity.getIndex();
+		if (index < 0)
+			return false;
 		if (data[index] == entity) {
+			data[index].setIndex(-1);
 			data[index] = null;
 			size--;
 			return true;
@@ -84,9 +88,13 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	 * 
 	 * @see #remove(Entity)
 	 */
-	@SuppressWarnings("unchecked")
 	public boolean remove(int index) {
-		return remove((E) data[index]);
+		if (index < 0 || data[index] == null)
+			return false;
+		data[index].setIndex(-1);
+		data[index] = null;
+		size--;
+		return true;
 	}
 
 	/**
@@ -178,7 +186,19 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	 * @return a copy of the data
 	 */
 	public Entity[] toArray() {
-		return Arrays.copyOf(data, data.length);
+		Entity[] entities = new Entity[size];
+		for (int i = 0; i < entities.length; i++)
+			entities[i] = data[i + 1];
+		return entities;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<E> toList() {
+		ArrayList<E> list = new ArrayList<>(data.length);
+		for (Entity e : data)
+			if (e != null)
+				list.add((E) e);
+		return list;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import cache.openrs.Archive;
 import infrastructure.Core;
 
 /**
@@ -50,9 +51,7 @@ public enum IDX {
 	/**
 	 * Fetches the ID of the file in the given IDX with the given name hash
 	 * 
-	 * @param idx
-	 *            the IDX value, 0-37
-	 * @param name
+	 * @param identifier
 	 *            the name of the file (case insensitive), this is hashed
 	 * @return the file id
 	 * @throws FileNotFoundException
@@ -60,8 +59,8 @@ public enum IDX {
 	 */
 	public int getFileId(String identifier) {
 		try {
-			return Core.getCache().getFileId(archiveIndex, CacheUtility.getNameHash(identifier));
-		} catch (FileNotFoundException e) {
+			return Core.getCache().getFileId(archiveIndex, identifier);
+		} catch (Exception e) {
 			System.err.printf("Cache FileID not found for Identifier [%s]: %s\n", identifier, e.getMessage());
 			e.printStackTrace();
 		}
@@ -72,22 +71,41 @@ public enum IDX {
 	 * Fetches the requested CacheFile. This file is cached so that it does not have to be parsed
 	 * multiple times.
 	 * 
-	 * @param idx
-	 *            the IDX value, 0-37
-	 * @param fileId
-	 *            the fileId to fetch
-	 * @param key
-	 *            the XTEA key to use to decrypt the file, null if it is not encrypted
+	 * @param identifier
+	 *            the name of the file (case insensitive), this is hashed
 	 * @return the cache file, not null.
 	 * @throws IOException
 	 *             if an IO error occurs
 	 * @throws FileNotFoundException
 	 *             if the file was not found.
 	 */
-	public CacheFile getFile(int fileId) {
+	public CacheFile getFile(String identifier, XTEAKey key) {
 		try {
-			return Core.getCache().getFile(archiveIndex, fileId);
-		} catch (IOException e) {
+			return Core.getCache().getFile(archiveIndex, getFileId(identifier), key);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.printf("Cache File [%s] not found: %s\n", getFileId(identifier), e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * Fetches the requested CacheFile. This file is cached so that it does not have to be parsed
+	 * multiple times.
+	 * 
+	 * @param fileId
+	 *            the fileId to fetch
+	 * @return the cache file, not null.
+	 * @throws IOException
+	 *             if an IO error occurs
+	 * @throws FileNotFoundException
+	 *             if the file was not found.
+	 */
+	public CacheFile getFile(int fileId, XTEAKey key) {
+		try {
+			return Core.getCache().getFile(archiveIndex, fileId, key);
+		} catch (Exception e) {
+			e.printStackTrace();
 			System.err.printf("Cache File [%s] not found: %s\n", fileId, e.getMessage());
 		}
 		return null;
@@ -97,12 +115,8 @@ public enum IDX {
 	 * Fetches the archive by a given IDX and fileId value. This method caches the archives, which are
 	 * immutable.
 	 * 
-	 * @param idx
-	 *            the IDX value (0-37)
 	 * @param fileId
 	 *            the file id
-	 * @param key
-	 *            the XTEA key to use to decrypt the cache file (used in Cache.getFile() call)
 	 * @return the archive
 	 * @throws IOException
 	 *             if the archive could not be retrieved. Not thrown if the archive is already cached.
@@ -110,7 +124,8 @@ public enum IDX {
 	public Archive getArchive(int fileId) {
 		try {
 			return Core.getCache().getArchive(archiveIndex, fileId);
-		} catch (IOException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			System.err.printf("Cache Archive [%s] not found: %s\n", fileId, e.getMessage());
 		}
 		return null;

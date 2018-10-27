@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * A DropTable is used to hold any {@code LootableItem} for selection based on
- * their own given chances.
+ * A DropTable is used to hold any {@code LootableItem} for selection based on their own given
+ * chances.
  * 
  * @author Albert Beaupre
  *
@@ -15,8 +15,7 @@ import java.util.Collection;
 public class DropTable<L extends LootableItem> {
 
 	/**
-	 * TODO add support for random values such as (Feather drops 1-15 items) or (Air
-	 * Rune drops 20-2000)
+	 * TODO add support for random values such as (Feather drops 1-15 items) or (Air Rune drops 20-2000)
 	 */
 	private class LootableItemWrapper {
 		private final L parent;
@@ -32,9 +31,8 @@ public class DropTable<L extends LootableItem> {
 	private final int itemDropFrequency;
 
 	/**
-	 * Constructs a new {@code DropTable} with the given {@code itemDropFrequency},
-	 * which is the amount of items that can be selected to drop aside from any
-	 * items always drop.
+	 * Constructs a new {@code DropTable} with the given {@code itemDropFrequency}, which is the amount
+	 * of items that can be selected to drop aside from any items always drop.
 	 * 
 	 * @param itemDropFrequency
 	 *            the amount of items that can be dropped aside from ALWAYS category
@@ -44,8 +42,8 @@ public class DropTable<L extends LootableItem> {
 	}
 
 	/**
-	 * Adds the given {@code LootableItem} to this {@code DropTable} as a drop that
-	 * will <b>always</b> be selected as a drop.
+	 * Adds the given {@code LootableItem} to this {@code DropTable} as a drop that will <b>always</b>
+	 * be selected as a drop.
 	 * 
 	 * @param item
 	 *            the item to add to always drop
@@ -58,8 +56,8 @@ public class DropTable<L extends LootableItem> {
 	}
 
 	/**
-	 * Adds the given {@code LootableItem} to this {@code DropTable} to be selected
-	 * based on it's chance.
+	 * Adds the given {@code LootableItem} to this {@code DropTable} to be selected based on it's
+	 * chance.
 	 * 
 	 * @param item
 	 *            the item to add to be selectable for a drop
@@ -72,10 +70,9 @@ public class DropTable<L extends LootableItem> {
 	}
 
 	/**
-	 * Selects any {@code LootableItem} that has been added to this
-	 * {@code DropTable} however many times the item drop frequency was defined
-	 * based on the chances of those items. This method also adds every item that is
-	 * selected to always drop.
+	 * Selects any {@code LootableItem} that has been added to this {@code DropTable} however many times
+	 * the item drop frequency was defined based on the chances of those items. This method also adds
+	 * every item that is selected to always drop.
 	 * 
 	 * @return the items to be selected
 	 */

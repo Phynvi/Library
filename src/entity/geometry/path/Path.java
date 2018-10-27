@@ -19,8 +19,7 @@ public class Path {
 	 */
 	public Path(Direction... directions) {
 		this.directions = new ArrayList<>();
-		for (Direction dir : directions)
-			this.directions.add(dir);
+		for (Direction dir : directions) this.directions.add(dir);
 	}
 
 	/**

@@ -41,6 +41,22 @@ public interface Shape3D {
 	}
 
 	/**
+	 * Checks if the given {@code shape} has any points within this {@code Shape3D} and returns
+	 * {@code true} if so.
+	 * 
+	 * @param shape
+	 *            the shape to check
+	 * @return true if the given shape is within this shape; reutrn false otherwise
+	 */
+	public default boolean contains(Shape3D shape) {
+		List<Point3D> points = shape.listPoints();
+		for (Point3D point : points)
+			if (this.contains(point))
+				return true;
+		return false;
+	}
+
+	/**
 	 * Lists any {@code Point3D} point that is located within the bounds of this {@code Shape3D}.
 	 * 
 	 * @return the list of points within the bounds

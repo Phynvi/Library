@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class XTEAKey {
-
 	/**
 	 * The golden ratio.
 	 */
@@ -17,10 +16,6 @@ public class XTEAKey {
 
 	private int[] keys;
 
-	/**
-	 * 
-	 * @param keys
-	 */
 	public XTEAKey(int[] keys) {
 		if (keys == null)
 			throw new NullPointerException("Keys may not be null");
@@ -28,6 +23,10 @@ public class XTEAKey {
 			throw new IllegalArgumentException("Keys.length must be 4");
 
 		this.keys = keys;
+	}
+
+	public int[] getKeys() {
+		return keys.clone();
 	}
 
 	/**
@@ -100,10 +99,6 @@ public class XTEAKey {
 			buffer.putInt(start + i * 8, v0);
 			buffer.putInt(start + i * 8 + 4, v1);
 		}
-	}
-
-	public int[] getKeys() {
-		return keys.clone();
 	}
 
 	@Override

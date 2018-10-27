@@ -1,12 +1,12 @@
-package cache;
+package cache.compression;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.zip.GZIPInputStream;
 
-import cache.apache.bzip2.CBZip2InputStream;
-import cache.apache.bzip2.GZIPDecompressor;
+import cache.XTEAKey;
 
 /**
  * Represents a type of compression used for blocks of data within the cache.
@@ -19,8 +19,8 @@ public enum CompressionType {
 	 */
 	NONE(0) {
 		@Override
-		public ByteBuffer decode(ByteBuffer bytes) throws IOException {
-			int length = bytes.getInt();
+		public ByteBuffer decode(ByteBuffer bytes, XTEAKey key) throws IOException {
+			int length = bytes.getInt(1);
 			byte[] data = new byte[length];
 			System.arraycopy(bytes.array(), 5, data, 0, data.length);
 			return ByteBuffer.wrap(data);
@@ -40,13 +40,10 @@ public enum CompressionType {
 	 */
 	BZIP(1) {
 		@Override
-		public ByteBuffer decode(ByteBuffer bytes) throws IOException {
-			int length = bytes.getInt();
-			byte[] data = new byte[bytes.getInt()];
-			CBZip2InputStream zipStream = new CBZip2InputStream(new ByteArrayInputStream(bytes.array(), 9, length), 0);
-			DataInputStream stream = new DataInputStream(zipStream);
-			stream.readFully(data);
-			stream.close();
+		public ByteBuffer decode(ByteBuffer bytes, XTEAKey key) throws IOException {
+			int length = bytes.getInt(1);
+			byte[] data = new byte[bytes.getInt(5)];
+			BZ2Decompressor.decompress(length, 9, bytes.array(), data);
 			return ByteBuffer.wrap(data);
 		}
 
@@ -64,11 +61,43 @@ public enum CompressionType {
 	 */
 	GZIP(2) {
 		@Override
-		public ByteBuffer decode(ByteBuffer bytes) throws IOException {
-			int length = bytes.getInt();
-			byte[] data = new byte[bytes.getInt()];
-			GZIPDecompressor.decompress(length, 9, bytes.array(), data);
-			return ByteBuffer.wrap(data);
+		public ByteBuffer decode(ByteBuffer bb, XTEAKey key) throws IOException {
+			ByteBuffer copy = ByteBuffer.allocate(bb.remaining());
+			copy.put(bb); // Do modify payload.
+			copy.flip();
+
+			if (key != null) {
+				key.decipher(copy, copy.position(), copy.limit());
+			}
+
+			int decompressedLength = copy.getInt();
+
+			/* create the streams */
+			InputStream is = new GZIPInputStream(new ByteBufferInputStream(copy));
+			try {
+				ByteArrayOutputStream os = new ByteArrayOutputStream(decompressedLength);
+				try {
+					/* copy data between the streams */
+					byte[] buf = new byte[4096];
+					int len = 0;
+					while ((len = is.read(buf, 0, buf.length)) != -1) {
+						os.write(buf, 0, len);
+					}
+				} finally {
+					os.close();
+				}
+
+				/* return the uncompressed bytes */
+				byte[] inflated = os.toByteArray();
+				if (inflated.length != decompressedLength) {
+					throw new IOException("Bad length header for GZIP.decode()");
+				}
+
+				return ByteBuffer.wrap(inflated);
+
+			} finally {
+				is.close();
+			}
 		}
 
 		@Override
@@ -115,7 +144,7 @@ public enum CompressionType {
 	 * @throws IOException
 	 *             if there is a problem decoding the bytes
 	 */
-	public abstract ByteBuffer decode(ByteBuffer bytes) throws IOException;
+	public abstract ByteBuffer decode(ByteBuffer bytes, XTEAKey key) throws IOException;
 
 	/**
 	 * Encodes the given {@code bytes} argument using its compression algorithm (if any) and returns the

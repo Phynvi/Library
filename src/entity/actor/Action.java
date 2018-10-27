@@ -54,7 +54,7 @@ public abstract class Action<A extends Actor> {
 	 * @return true if the next cycle can be made; return false otherwise
 	 */
 	public boolean nextCycle() {
-		if (state == ActionState.FINISH)
+		if (state == ActionState.FINISH || state == ActionState.CANCEL)
 			return false;
 		state = ActionState.values()[state.ordinal() + 1];
 		return true;

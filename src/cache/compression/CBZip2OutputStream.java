@@ -1,4 +1,4 @@
-package cache.apache.bzip2;
+package cache.compression;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -6,23 +6,13 @@ import java.io.OutputStream;
 @SuppressWarnings("unused")
 public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 
+	protected static final int QSORT_STACK_SIZE = 5000; // 1000
 	protected static final int SETMASK = (1 << 21);
 	protected static final int CLEARMASK = (~SETMASK);
 	protected static final int GREATER_ICOST = 15;
 	protected static final int LESSER_ICOST = 0;
 	protected static final int SMALL_THRESH = 20;
 	protected static final int DEPTH_THRESH = 10;
-
-	/*
-	 * If you are ever unlucky/improbable enough to get a stack overflow whilst sorting, increase the
-	 * following constant and try again. In practice I have never seen the stack go above 27 elems, so
-	 * the following limit seems very generous.
-	 */
-	protected static final int QSORT_STACK_SIZE = 5000; // 1000
-
-	private static void panic() {
-		System.out.println("panic");
-	}
 
 	private void makeMaps() {
 		int i;
@@ -37,9 +27,6 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	}
 
 	protected static void hbMakeCodeLengths(char[] len, int[] freq, int alphaSize, int maxLen) {
-		/*
-		 * Nodes and heap entries run from 1. Entry 0 for both the heap and nodes is a sentinel.
-		 */
 		int nNodes, nHeap, n1, n2, i, j, k;
 		boolean tooLong;
 
@@ -47,9 +34,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		int[] weight = new int[MAX_ALPHA_SIZE * 2];
 		int[] parent = new int[MAX_ALPHA_SIZE * 2];
 
-		for (i = 0; i < alphaSize; i++) {
+		for (i = 0; i < alphaSize; i++)
 			weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) << 8;
-		}
 
 		while (true) {
 			nNodes = alphaSize;
@@ -74,9 +60,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 					heap[zz] = tmp;
 				}
 			}
-			if (!(nHeap < (MAX_ALPHA_SIZE + 2))) {
-				panic();
-			}
+			if (!(nHeap < (MAX_ALPHA_SIZE + 2)))
+				System.err.println("panic");
 
 			while (nHeap > 1) {
 				n1 = heap[1];
@@ -88,15 +73,12 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 					tmp = heap[zz];
 					while (true) {
 						yy = zz << 1;
-						if (yy > nHeap) {
+						if (yy > nHeap)
 							break;
-						}
-						if (yy < nHeap && weight[heap[yy + 1]] < weight[heap[yy]]) {
+						if (yy < nHeap && weight[heap[yy + 1]] < weight[heap[yy]])
 							yy++;
-						}
-						if (weight[tmp] < weight[heap[yy]]) {
+						if (weight[tmp] < weight[heap[yy]])
 							break;
-						}
 						heap[zz] = heap[yy];
 						zz = yy;
 					}
@@ -111,15 +93,12 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 					tmp = heap[zz];
 					while (true) {
 						yy = zz << 1;
-						if (yy > nHeap) {
+						if (yy > nHeap)
 							break;
-						}
-						if (yy < nHeap && weight[heap[yy + 1]] < weight[heap[yy]]) {
+						if (yy < nHeap && weight[heap[yy + 1]] < weight[heap[yy]])
 							yy++;
-						}
-						if (weight[tmp] < weight[heap[yy]]) {
+						if (weight[tmp] < weight[heap[yy]])
 							break;
-						}
 						heap[zz] = heap[yy];
 						zz = yy;
 					}
@@ -144,9 +123,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 					heap[zz] = tmp;
 				}
 			}
-			if (!(nNodes < (MAX_ALPHA_SIZE * 2))) {
-				panic();
-			}
+			if (!(nNodes < (MAX_ALPHA_SIZE * 2)))
+				System.err.println("panic");
 
 			tooLong = false;
 			for (i = 1; i <= alphaSize; i++) {
@@ -162,9 +140,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 				}
 			}
 
-			if (!tooLong) {
+			if (!tooLong)
 				break;
-			}
 
 			for (i = 1; i < alphaSize; i++) {
 				j = weight[i] >> 8;
@@ -256,7 +233,6 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	/**
 	 * modified by Oliver Merkel, 010128
 	 */
-	@Override
 	public void write(int bv) throws IOException {
 		int b = (256 + bv) % 256;
 		if (currentChar != -1) {
@@ -326,13 +302,11 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 
 	boolean closed = false;
 
-	@Override
 	protected void finalize() throws Throwable {
 		close();
 		super.finalize();
 	}
 
-	@Override
 	public void close() throws IOException {
 		if (closed) {
 			return;
@@ -349,7 +323,6 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		bsStream.close();
 	}
 
-	@Override
 	public void flush() throws IOException {
 		super.flush();
 		bsStream.flush();
@@ -365,7 +338,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		 * Write `magic' bytes h indicating file-format == huffmanised, followed by a digit indicating
 		 * blockSize100k.
 		 */
-		// bsPutUChar('h');
+		//bsPutUChar('h');
 		// bsPutUChar('0' + blockSize100k);
 
 		combinedCRC = 0;
@@ -374,10 +347,10 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 	private int allowableBlockSize;
 
 	private void initBlock() {
-		// blockNo++;
+		//        blockNo++;
 		mCrc.initialiseCRC();
 		last = -1;
-		// ch = 0;
+		//        ch = 0;
 
 		for (int i = 0; i < 256; i++) {
 			inUse[i] = false;
@@ -526,9 +499,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		}
 
 		/* Decide how many coding tables to use */
-		if (nMTF <= 0) {
-			panic();
-		}
+		if (nMTF <= 0)
+			System.err.println("panic");
 
 		if (nMTF < 200) {
 			nGroups = 2;
@@ -681,12 +653,10 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		fave = null;
 		cost = null;
 
-		if (!(nGroups < 8)) {
-			panic();
-		}
-		if (!(nSelectors < 32768 && nSelectors <= (2 + (900000 / G_SIZE)))) {
-			panic();
-		}
+		if (!(nGroups < 8))
+			System.err.println("panic");
+		if (!(nSelectors < 32768 && nSelectors <= (2 + (900000 / G_SIZE))))
+			System.err.println("panic");
 
 		/* Compute MTF values for the selectors. */
 		{
@@ -724,12 +694,10 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 					minLen = len[t][i];
 				}
 			}
-			if (maxLen > 20) {
-				panic();
-			}
-			if (minLen < 1) {
-				panic();
-			}
+			if (maxLen > 20)
+				System.err.println("panic");
+			if (minLen < 1)
+				System.err.println("panic");
 			hbAssignCodes(code[t], len[t], minLen, maxLen, alphaSize);
 		}
 
@@ -817,9 +785,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 			gs = ge + 1;
 			selCtr++;
 		}
-		if (!(selCtr == nSelectors)) {
-			panic();
-		}
+		if (!(selCtr == nSelectors))
+			System.err.println("panic");
 	}
 
 	private void moveToFrontCodeAndSend() throws IOException {
@@ -957,9 +924,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		sp++;
 
 		while (sp > 0) {
-			if (sp >= QSORT_STACK_SIZE) {
-				panic();
-			}
+			if (sp >= QSORT_STACK_SIZE)
+				System.err.println("panic");
 
 			sp--;
 			lo = stack[sp].ll;
@@ -984,7 +950,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 					if (unLo > unHi) {
 						break;
 					}
-					n = (block[zptr[unLo] + d + 1]) - med;
+					n = ((int) block[zptr[unLo] + d + 1]) - med;
 					if (n == 0) {
 						int temp = 0;
 						temp = zptr[unLo];
@@ -1003,7 +969,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 					if (unLo > unHi) {
 						break;
 					}
-					n = (block[zptr[unHi] + d + 1]) - med;
+					n = ((int) block[zptr[unHi] + d + 1]) - med;
 					if (n == 0) {
 						int temp = 0;
 						temp = zptr[unHi];
@@ -1075,7 +1041,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		 * inclusive. First, set up the overshoot area for block.
 		 */
 
-		// if (verbosity >= 4) fprintf ( stderr, "   sort initialise ...\n" );
+		//   if (verbosity >= 4) fprintf ( stderr, "   sort initialise ...\n" );
 		for (i = 0; i < NUM_OVERSHOOT_BYTES; i++) {
 			block[last + i + 2] = block[(i % (last + 1)) + 1];
 		}
@@ -1083,7 +1049,7 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 			quadrant[i] = 0;
 		}
 
-		block[0] = (block[last + 1]);
+		block[0] = (char) (block[last + 1]);
 
 		if (last < 4000) {
 			/*
@@ -1217,9 +1183,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 						}
 					}
 
-					if (!(((bbSize - 1) >> shifts) <= 65535)) {
-						panic();
-					}
+					if (!(((bbSize - 1) >> shifts) <= 65535))
+						System.err.println("panic");
 				}
 
 				/*
@@ -1296,9 +1261,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 			}
 		}
 
-		if (origPtr == -1) {
-			panic();
-		}
+		if (origPtr == -1)
+			System.err.println("panic");
 	}
 
 	private boolean fullGtU(int i1, int i2) {
@@ -1308,49 +1272,43 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 
 		c1 = block[i1 + 1];
 		c2 = block[i2 + 1];
-		if (c1 != c2) {
+		if (c1 != c2)
 			return (c1 > c2);
-		}
 		i1++;
 		i2++;
 
 		c1 = block[i1 + 1];
 		c2 = block[i2 + 1];
-		if (c1 != c2) {
+		if (c1 != c2)
 			return (c1 > c2);
-		}
 		i1++;
 		i2++;
 
 		c1 = block[i1 + 1];
 		c2 = block[i2 + 1];
-		if (c1 != c2) {
+		if (c1 != c2)
 			return (c1 > c2);
-		}
 		i1++;
 		i2++;
 
 		c1 = block[i1 + 1];
 		c2 = block[i2 + 1];
-		if (c1 != c2) {
+		if (c1 != c2)
 			return (c1 > c2);
-		}
 		i1++;
 		i2++;
 
 		c1 = block[i1 + 1];
 		c2 = block[i2 + 1];
-		if (c1 != c2) {
+		if (c1 != c2)
 			return (c1 > c2);
-		}
 		i1++;
 		i2++;
 
 		c1 = block[i1 + 1];
 		c2 = block[i2 + 1];
-		if (c1 != c2) {
+		if (c1 != c2)
 			return (c1 > c2);
-		}
 		i1++;
 		i2++;
 
@@ -1359,53 +1317,45 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		do {
 			c1 = block[i1 + 1];
 			c2 = block[i2 + 1];
-			if (c1 != c2) {
+			if (c1 != c2)
 				return (c1 > c2);
-			}
 			s1 = quadrant[i1];
 			s2 = quadrant[i2];
-			if (s1 != s2) {
+			if (s1 != s2)
 				return (s1 > s2);
-			}
 			i1++;
 			i2++;
 
 			c1 = block[i1 + 1];
 			c2 = block[i2 + 1];
-			if (c1 != c2) {
+			if (c1 != c2)
 				return (c1 > c2);
-			}
 			s1 = quadrant[i1];
 			s2 = quadrant[i2];
-			if (s1 != s2) {
+			if (s1 != s2)
 				return (s1 > s2);
-			}
 			i1++;
 			i2++;
 
 			c1 = block[i1 + 1];
 			c2 = block[i2 + 1];
-			if (c1 != c2) {
+			if (c1 != c2)
 				return (c1 > c2);
-			}
 			s1 = quadrant[i1];
 			s2 = quadrant[i2];
-			if (s1 != s2) {
+			if (s1 != s2)
 				return (s1 > s2);
-			}
 			i1++;
 			i2++;
 
 			c1 = block[i1 + 1];
 			c2 = block[i2 + 1];
-			if (c1 != c2) {
+			if (c1 != c2)
 				return (c1 > c2);
-			}
 			s1 = quadrant[i1];
 			s2 = quadrant[i2];
-			if (s1 != s2) {
+			if (s1 != s2)
 				return (s1 > s2);
-			}
 			i1++;
 			i2++;
 
@@ -1439,20 +1389,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		ftab = new int[65537];
 
 		if (block == null || quadrant == null || zptr == null || ftab == null) {
-			// int totalDraw = (n + 1 + NUM_OVERSHOOT_BYTES) + (n +
-			// NUM_OVERSHOOT_BYTES) + n + 65537;
-			// compressOutOfMemory ( totalDraw, n );
+
 		}
-
-		/*
-		 * The back end needs a place to store the MTF values whilst it calculates the coding tables. We
-		 * could put them in the zptr array. However, these values will fit in a short, so we overlay szptr
-		 * at the start of zptr, in the hope of reducing the number of cache misses induced by the multiple
-		 * traversals of the MTF values when calculating coding tables. Seems to improve compression speed
-		 * by about 1%.
-		 */
-		// szptr = zptr;
-
 		szptr = new short[2 * n];
 	}
 
@@ -1468,15 +1406,12 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 		makeMaps();
 		EOB = nInUse + 1;
 
-		for (i = 0; i <= EOB; i++) {
+		for (i = 0; i <= EOB; i++)
 			mtfFreq[i] = 0;
-		}
-
 		wr = 0;
 		zPend = 0;
-		for (i = 0; i < nInUse; i++) {
+		for (i = 0; i < nInUse; i++)
 			yy[i] = (char) i;
-		}
 
 		for (i = 0; i <= last; i++) {
 			char ll_i;
@@ -1511,9 +1446,8 @@ public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
 							mtfFreq[RUNB]++;
 							break;
 						}
-						if (zPend < 2) {
+						if (zPend < 2)
 							break;
-						}
 						zPend = (zPend - 2) / 2;
 					}
 					zPend = 0;

@@ -8,9 +8,9 @@ import infrastructure.GlobalVariables;
 public abstract class Model {
 
 	private final Mask[] currentMasks;
-	private int maskData;
-
 	private boolean updating;
+	private int maskCount = 0;
+	private int maskData;
 
 	/**
 	 * Constructs a new {@code Model}.
@@ -47,6 +47,7 @@ public abstract class Model {
 	public void registerMask(Mask mask) {
 		this.currentMasks[mask.ordinal()] = mask;
 		this.maskData |= mask.data();
+		this.maskCount++;
 		if (!this.updating)
 			setForUpdating(true);
 	}
@@ -77,8 +78,8 @@ public abstract class Model {
 	public final void finishUpdate() {
 		reset();
 		this.maskData = 0;
-		for (int i = 0; i < this.currentMasks.length; i++)
-			this.currentMasks[i] = null;
+		this.maskCount = 0;
+		for (int i = 0; i < this.currentMasks.length; i++) this.currentMasks[i] = null;
 	}
 
 	/**
@@ -87,7 +88,7 @@ public abstract class Model {
 	 * @return {@code True} if so, {@code false} if not.
 	 */
 	public boolean isUpdateRequired() {
-		return this.maskData != 0;
+		return this.maskData != 0 || maskCount > 0;
 	}
 
 	/**

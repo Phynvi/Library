@@ -110,7 +110,7 @@ public abstract class Interface extends Window {
 	}
 
 	public void setString(int child, String string) {
-		this.holder.setString(this.getChildId(), child, string);
+		this.holder.sendString(this.getChildId(), child, string);
 	}
 
 	/*

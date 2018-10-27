@@ -7,58 +7,50 @@ import java.util.Iterator;
 import infrastructure.Tick;
 
 public final class ModelUpdater extends Tick {
-
 	private ArrayList<Model> updating = new ArrayList<>();
 	private ArrayDeque<Model> queued = new ArrayDeque<>();
 
-	@Override
 	public void tick() {
 		try {
-			if (queued.size() > 0) {
-				updating.addAll(queued);
-				queued.clear();
+			if (this.queued.size() > 0) {
+				this.updating.addAll(this.queued);
+				this.queued.clear();
 			}
 
-			if (updating.size() > 0) {
-				Iterator<Model> iterator = updating.iterator();
+			if (this.updating.size() > 0) {
+				Iterator<Model> iterator = this.updating.iterator();
 
-				updateLoop: while (iterator.hasNext()) {
-					Model model = iterator.next();
+				Model model;
+				while (iterator.hasNext()) {
+					model = (Model) iterator.next();
+					if (model == null)
+						continue;
 					if (!model.canBeUpdated()) {
 						iterator.remove();
-
 						model.setForUpdating(false);
-						continue updateLoop;
+					} else {
+						model.update();
 					}
-					model.update();
 				}
-				iterator = updating.iterator();
+
+				iterator = this.updating.iterator();
+
 				while (iterator.hasNext()) {
-					Model model = iterator.next();
+					model = (Model) iterator.next();
 					model.finishUpdate();
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception var3) {
+			var3.printStackTrace();
 		}
+
 	}
 
-	@Override
-	public void cancel() {
-		//This method is never to be called, but if it is, then nothing should happen
-	}
+	public void cancel() {}
 
-	/**
-	 * Allows the specified {@code Model} to be updated by this {@code ModelUpdater}. It will be updated
-	 * after it is removed from the queue that the {@code Model} is placed in.
-	 * 
-	 * @param model
-	 *            the model to set to update
-	 */
 	public void setForUpdating(Model model) {
-		if (model == null)
-			throw new NullPointerException("A NULLED Model object cannot be set for updating");
-		queued.add(model);
+		this.queued.add(model);
+		if (!this.isQueued())
+			this.queue(30);
 	}
-
 }

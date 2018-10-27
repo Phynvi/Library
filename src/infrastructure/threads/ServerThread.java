@@ -2,7 +2,6 @@ package infrastructure.threads;
 
 import java.util.logging.Logger;
 
-import infrastructure.Core;
 import infrastructure.CoreThread;
 import infrastructure.GlobalVariables;
 import io.netty.bootstrap.ServerBootstrap;
@@ -13,6 +12,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import network.NetworkHandler;
+import network.ServerInitializedEvent;
 import network.World;
 import network.packet.encoding.OutgoingPacketEncoder;
 import network.raw.handshake.HandshakeDecoder;
@@ -29,7 +29,6 @@ public class ServerThread extends CoreThread {
 	private NioEventLoopGroup workerGroup;
 
 	private final int port;
-	private boolean running;
 
 	private final World world;
 
@@ -48,13 +47,11 @@ public class ServerThread extends CoreThread {
 		this.workerGroup = new NioEventLoopGroup();
 	}
 
-	/**
-	 * Starts this {@code ServerThread} from the port previously assigned.
-	 */
-	public final void start() {
-		if (running)
-			return;
-		Core.submitRegularTask(this);
+	@Override
+	public void start() {
+		super.start();
+
+		new ServerInitializedEvent(this).call();
 	}
 
 	@Override
@@ -73,16 +70,12 @@ public class ServerThread extends CoreThread {
 
 			while (!f.isSuccess()) {} // wait until it is successfull
 
-			running = f.isSuccess();
-
 			logger.info("World Initialized: " + world.getName() + " on port " + port + ".");
 
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {
-			running = false;
 			e.printStackTrace();
 		} finally {
-			running = false;
 			workerGroup.shutdownGracefully();
 			bossGroup.shutdownGracefully();
 		}

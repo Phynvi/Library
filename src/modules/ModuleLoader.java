@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.jar.JarFile;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import util.configuration.ConfigSection;
 
@@ -18,6 +19,8 @@ import util.configuration.ConfigSection;
  * @author Albert Beaupre
  */
 public class ModuleLoader {
+
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
 	 * Retrieves a list of jar files from the specified {@code folder} and checks if they can be loaded
@@ -32,7 +35,7 @@ public class ModuleLoader {
 		List<Module> modules = new ArrayList<>();
 		if (!folder.exists()) {
 			if (!folder.mkdirs()) {
-				System.err.println("Error creating extension folder.");
+				LOGGER.severe("Error creating extension folder.");
 				return Collections.emptyList();
 			}
 		}
@@ -40,9 +43,9 @@ public class ModuleLoader {
 		for (File extensionFile : extensionFileList) {
 			try {
 				modules.add(getModuleFromFile(extensionFile));
-				System.out.println("Successfully loaded extension from file: " + extensionFile.getName() + ".");
+				LOGGER.info("Successfully loaded module from file: " + extensionFile.getName() + ".");
 			} catch (Exception e) {
-				System.err.println("Failed to load extension: " + extensionFile.getName() + ".");
+				LOGGER.severe("Failed to load extension: " + extensionFile.getName() + ".");
 				e.printStackTrace();
 				return Collections.emptyList();
 			}

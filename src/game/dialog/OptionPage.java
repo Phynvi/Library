@@ -1,8 +1,8 @@
 package game.dialog;
 
 /**
- * The {@code OptionPage} will hold the {@link game.dialog.DialogOption} options
- * in a page and handle the execution of the actions of them.
+ * The {@code OptionPage} will hold the {@link game.dialog.DialogOption} options in a page and
+ * handle the execution of the actions of them.
  * 
  * @author Albert Beaupre
  */

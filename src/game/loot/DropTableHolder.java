@@ -11,9 +11,8 @@ import java.util.Collections;
 public interface DropTableHolder {
 
 	/**
-	 * Selects {@code LootableItem} drops from the {@code DropTable} of this
-	 * {@code DropTableHolder} and calls the {@code LootableItemDropEvent} once the
-	 * items are selected.
+	 * Selects {@code LootableItem} drops from the {@code DropTable} of this {@code DropTableHolder} and
+	 * calls the {@code LootableItemDropEvent} once the items are selected.
 	 * 
 	 * @return the selected items from the drop table
 	 */

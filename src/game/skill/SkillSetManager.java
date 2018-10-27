@@ -29,6 +29,8 @@ public class SkillSetManager implements YMLSerializable {
 	private final SkillHolder holder;
 	private SkillTick skillTick;
 
+	private double experienceCounter;
+
 	/**
 	 * Constructs a new {@code SkillSetManager} with the given {@code SkillHolder} as the holder for
 	 * this class.
@@ -40,7 +42,7 @@ public class SkillSetManager implements YMLSerializable {
 		this.holder = holder;
 
 		for (SkillType type : SkillType.values()) {
-			Skill skill = new Skill();
+			Skill skill = new Skill(type);
 			if (type == SkillType.HITPOINTS)
 				skill.addExperience(getExperienceForLevel(10));
 			skills.put(type, skill);
@@ -66,6 +68,41 @@ public class SkillSetManager implements YMLSerializable {
 			SkillLevelUpEvent event = new SkillLevelUpEvent(holder, skill, previousLevel, newLevel);
 			event.call();
 		}
+		this.experienceCounter += experience;
+		holder.writeLevelPacket(type, newLevel);
+	}
+
+	public int getCombatLevel(boolean includeSummoning) {
+		int attack = getLevel(SkillType.ATTACK, false);
+		int defence = getLevel(SkillType.DEFENCE, false);
+		int strength = getLevel(SkillType.STRENGTH, false);
+		int hp = getLevel(SkillType.HITPOINTS, false);
+		int prayer = getLevel(SkillType.PRAYER, false);
+		int ranged = getLevel(SkillType.RANGED, false);
+		int magic = getLevel(SkillType.MAGIC, false);
+		int combatLevel = 3;
+		combatLevel = (int) ((defence + hp + Math.floor(prayer / 2)) * 0.25) + 1;
+		double melee = (attack + strength) * 0.325;
+		double ranger = Math.floor(ranged * 1.5) * 0.325;
+		double mage = Math.floor(magic * 1.5) * 0.325;
+		if (melee >= ranger && melee >= mage) {
+			combatLevel += melee;
+		} else if (ranger >= melee && ranger >= mage) {
+			combatLevel += ranger;
+		} else if (mage >= melee && mage >= ranger) {
+			combatLevel += mage;
+		}
+		if (includeSummoning) {
+			int summoning = getLevel(SkillType.SUMMONING, false);
+			summoning /= 8;
+			return combatLevel + summoning;
+		}
+		return combatLevel;
+	}
+
+	public void setLevel(SkillType type, int level) {
+		this.skills.get(type).setLevel(level);
+		holder.writeLevelPacket(type, level);
 	}
 
 	/**
@@ -138,8 +175,7 @@ public class SkillSetManager implements YMLSerializable {
 	 */
 	public int getTotalLevel() {
 		int total = 0;
-		for (Skill skill : skills.values())
-			total += skill.getLevel(false);
+		for (Skill skill : skills.values()) total += skill.getLevel(false);
 		return total;
 	}
 
@@ -201,20 +237,29 @@ public class SkillSetManager implements YMLSerializable {
 	@Override
 	public ConfigSection serialize() {
 		ConfigSection config = new ConfigSection();
-		for (Entry<SkillType, Skill> entry : skills.entrySet())
-			config.put(entry.getKey().name(), entry.getValue().serialize());
+		config.put("counter", experienceCounter);
+		for (Entry<SkillType, Skill> entry : skills.entrySet()) config.put(entry.getKey().name(), entry.getValue().serialize());
 		return config;
 	}
 
 	@Override
 	public void deserialize(ConfigSection section) {
+		this.experienceCounter = section.getDouble("counter");
 		for (Entry<Object, Object> entry : section.entrySet()) {
-			@SuppressWarnings("unchecked")
-			Map<Object, Object> map = (Map<Object, Object>) entry.getValue();
-
+			if (entry.getKey().equals("counter"))
+				continue;
+			@SuppressWarnings("unchecked") Map<Object, Object> map = (Map<Object, Object>) entry.getValue();
 			SkillType type = SkillType.valueOf("" + entry.getKey());
 			skills.get(type).deserialize(new ConfigSection(map));
 		}
+	}
+
+	public double getExperienceCounter() {
+		return experienceCounter;
+	}
+
+	public void setExperienceCounter(int experienceCounter) {
+		this.experienceCounter = experienceCounter;
 	}
 
 }

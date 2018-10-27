@@ -1,4 +1,4 @@
-package cache.reference;
+package cache.openrs.reference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -10,7 +10,8 @@ import java.util.Collections;
 import java.util.TreeMap;
 
 import cache.CacheFile;
-import cache.CacheUtility;
+import cache.openrs.ByteBufferUtils;
+import infrastructure.Core;
 
 /**
  * These are constructed from files which are located in the IDX files.
@@ -142,7 +143,7 @@ public class ReferenceTable {
 	}
 
 	public Reference getReferenceByHash(String str) throws FileNotFoundException {
-		return getReferenceByHash(CacheUtility.getNameHash(str));
+		return getReferenceByHash(ByteBufferUtils.getNameHash(str));
 	}
 
 	public Collection<Reference> getReferences() {
@@ -237,7 +238,7 @@ public class ReferenceTable {
 	private static int smart(ByteBuffer buffer) {
 		int peek = buffer.getShort(buffer.position());
 
-		if (peek < 0)
+		if (peek < 0 && Core.getCache().getRevision() >= 645)
 			return 0x7fffffff & buffer.getInt();
 		return buffer.getShort() & 0xFFFF;
 	}

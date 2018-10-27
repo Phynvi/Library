@@ -1,4 +1,4 @@
-package cache.reference;
+package cache.openrs.reference;
 
 import java.util.Collection;
 import java.util.Iterator;

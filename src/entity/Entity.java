@@ -46,11 +46,12 @@ public abstract class Entity implements Locatable {
 	public final void setLocation(Location location, AreaChangeType type) {
 		Location previousLocation = this.location;
 		this.location = location;
-
+		if (type == AreaChangeType.DO_NOT_DISTURB)
+			return;
 		EntityLocationChangeEvent event = new EntityLocationChangeEvent(this, type, this.location, previousLocation);
 		event.call();
-
-		this.location.map.load(location.x, location.y);
+		if (location != null)
+			this.location.map.load(location.x, location.y);
 	}
 
 	/**
@@ -196,7 +197,7 @@ public abstract class Entity implements Locatable {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getTemporary(String name, T fallback) {
-		return this.temporary == null ? fallback : (T) this.temporary.get(name);
+		return this.temporary == null ? fallback : this.temporary.get(name) == null ? fallback : (T) this.temporary.get(name);
 	}
 
 	/**

@@ -1,11 +1,12 @@
-package cache;
+package cache.openrs;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import cache.reference.Reference;
+import cache.CacheFile;
+import cache.openrs.reference.Reference;
 
 public class Archive {
 	/**

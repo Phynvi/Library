@@ -1,9 +1,56 @@
-package cache.apache.bzip2;
+package cache.compression;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public class CBZip2InputStream extends InputStream implements BZip2Constants {
+
+	private static final int START_BLOCK_STATE = 1;
+	private static final int RAND_PART_A_STATE = 2;
+	private static final int RAND_PART_B_STATE = 3;
+	private static final int RAND_PART_C_STATE = 4;
+	private static final int NO_RAND_PART_A_STATE = 5;
+	private static final int NO_RAND_PART_B_STATE = 6;
+	private static final int NO_RAND_PART_C_STATE = 7;
+
+	private CRC mCrc = new CRC();
+	private InputStream bsStream;
+
+	private boolean[] inUse = new boolean[256];
+	private boolean streamEnd = false;
+	private boolean blockRandomised;
+
+	private int last;
+	private int origPtr;
+	private int blockSize100k;
+	private int bsBuff;
+	private int bsLive;
+
+	private char[] selector = new char[MAX_SELECTORS];
+	private char[] selectorMtf = new char[MAX_SELECTORS];
+	private char[] seqToUnseq = new char[256];
+	private char[] unseqToSeq = new char[256];
+	private char[] ll8;
+
+	private int[][] limit = new int[N_GROUPS][MAX_ALPHA_SIZE];
+	private int[][] base = new int[N_GROUPS][MAX_ALPHA_SIZE];
+	private int[][] perm = new int[N_GROUPS][MAX_ALPHA_SIZE];
+	private int[] minLens = new int[N_GROUPS];
+	private int[] unzftab = new int[256];
+	private int[] tt;
+
+	private int currentState = START_BLOCK_STATE;
+	private int storedBlockCRC, storedCombinedCRC;
+	private int computedBlockCRC, computedCombinedCRC;
+	private int currentChar = -1;
+	private int nInUse;
+
+	int i2, count, chPrev, ch2;
+	int i, tPos;
+	int rNToGo = 0;
+	int rTPos = 0;
+	int j2;
+	char z;
 
 	private void makeMaps() {
 		int i;
@@ -16,63 +63,6 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 			}
 		}
 	}
-
-	private int last;
-
-	private int origPtr;
-
-	private int blockSize100k;
-
-	private boolean blockRandomised;
-
-	private int bsBuff;
-	private int bsLive;
-	private CRC mCrc = new CRC();
-
-	private boolean[] inUse = new boolean[256];
-	private int nInUse;
-
-	private char[] seqToUnseq = new char[256];
-	private char[] unseqToSeq = new char[256];
-
-	private char[] selector = new char[MAX_SELECTORS];
-	private char[] selectorMtf = new char[MAX_SELECTORS];
-
-	private int[] tt;
-	private char[] ll8;
-
-	private int[] unzftab = new int[256];
-
-	private int[][] limit = new int[N_GROUPS][MAX_ALPHA_SIZE];
-	private int[][] base = new int[N_GROUPS][MAX_ALPHA_SIZE];
-	private int[][] perm = new int[N_GROUPS][MAX_ALPHA_SIZE];
-	private int[] minLens = new int[N_GROUPS];
-
-	private InputStream bsStream;
-
-	private boolean streamEnd = false;
-
-	private int currentChar = -1;
-
-	private static final int START_BLOCK_STATE = 1;
-	private static final int RAND_PART_A_STATE = 2;
-	private static final int RAND_PART_B_STATE = 3;
-	private static final int RAND_PART_C_STATE = 4;
-	private static final int NO_RAND_PART_A_STATE = 5;
-	private static final int NO_RAND_PART_B_STATE = 6;
-	private static final int NO_RAND_PART_C_STATE = 7;
-
-	private int currentState = START_BLOCK_STATE;
-
-	private int storedBlockCRC, storedCombinedCRC;
-	private int computedBlockCRC, computedCombinedCRC;
-
-	int i2, count, chPrev, ch2;
-	int i, tPos;
-	int rNToGo = 0;
-	int rTPos = 0;
-	int j2;
-	char z;
 
 	public CBZip2InputStream(InputStream zStream, int b) {
 		ll8 = null;
@@ -88,7 +78,6 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 		setupBlock();
 	}
 
-	@Override
 	public int read() {
 		if (streamEnd) {
 			return -1;
@@ -142,19 +131,13 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 		}
 
 		if (magic1 != 0x31 || magic2 != 0x41 || magic3 != 0x59 || magic4 != 0x26 || magic5 != 0x53 || magic6 != 0x59) {
-			System.out.println("BAD BLOCK!");
-			badBlockHeader();
+			System.err.println("BAD BLOCK!");
 			streamEnd = true;
 			return;
 		}
-
 		storedBlockCRC = bsGetInt32();
-
 		blockRandomised = bsR(1) == 1;
-
-		// currBlockNo++;
 		getAndMoveToFrontDecode();
-
 		mCrc.initialiseCRC();
 		currentState = START_BLOCK_STATE;
 	}
@@ -162,9 +145,8 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 	private void endBlock() {
 		computedBlockCRC = mCrc.getFinalCRC();
 		/* A bad CRC is considered a fatal error. */
-		if (storedBlockCRC != computedBlockCRC) {
-			crcError();
-		}
+		if (storedBlockCRC != computedBlockCRC)
+			System.err.println("Bad CRC");
 
 		computedCombinedCRC = (computedCombinedCRC << 1) | (computedCombinedCRC >>> 31);
 		computedCombinedCRC ^= computedBlockCRC;
@@ -172,24 +154,11 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 
 	private void complete() {
 		storedCombinedCRC = bsGetInt32();
-		if (storedCombinedCRC != computedCombinedCRC) {
-			crcError();
-		}
+		if (storedCombinedCRC != computedCombinedCRC)
+			System.err.println("Bad CRC");
 
 		bsFinishedWithStream();
 		streamEnd = true;
-	}
-
-	private static void blockOverrun() {
-		System.out.println("CRC Error");
-	}
-
-	private static void badBlockHeader() {
-		System.out.println("CRC Error");
-	}
-
-	private static void crcError() {
-		System.out.println("CRC Error");
 	}
 
 	private void bsFinishedWithStream() {
@@ -201,7 +170,7 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 				}
 			}
 		} catch (IOException ioe) {
-			// ignore
+			//ignore
 		}
 	}
 
@@ -219,11 +188,10 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 			try {
 				thech = (char) bsStream.read();
 			} catch (IOException e) {
-				System.out.println("CRC Error");
+				e.printStackTrace();
 			}
-			if (thech == -1) {
-				System.out.println("CRC Error");
-			}
+			if (thech == -1)
+				System.err.println("Compressed stream EOF");
 			zzi = thech;
 			bsBuff = (bsBuff << 8) | (zzi & 0xff);
 			bsLive += 8;
@@ -248,11 +216,11 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 	}
 
 	private int bsGetIntVS(int numBits) {
-		return bsR(numBits);
+		return (int) bsR(numBits);
 	}
 
 	private int bsGetInt32() {
-		return bsGetint();
+		return (int) bsGetint();
 	}
 
 	private void hbCreateDecodeTables(int[] limit, int[] base, int[] perm, char[] length, int minLen, int maxLen, int alphaSize) {
@@ -268,20 +236,14 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 			}
 		}
 
-		for (i = 0; i < MAX_CODE_LEN; i++) {
+		for (i = 0; i < MAX_CODE_LEN; i++)
 			base[i] = 0;
-		}
-		for (i = 0; i < alphaSize; i++) {
+		for (i = 0; i < alphaSize; i++)
 			base[length[i] + 1]++;
-		}
-
-		for (i = 1; i < MAX_CODE_LEN; i++) {
+		for (i = 1; i < MAX_CODE_LEN; i++)
 			base[i] += base[i - 1];
-		}
-
-		for (i = 0; i < MAX_CODE_LEN; i++) {
+		for (i = 0; i < MAX_CODE_LEN; i++)
 			limit[i] = 0;
-		}
 		vec = 0;
 
 		for (i = minLen; i <= maxLen; i++) {
@@ -289,9 +251,8 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 			limit[i] = vec - 1;
 			vec <<= 1;
 		}
-		for (i = minLen + 1; i <= maxLen; i++) {
+		for (i = minLen + 1; i <= maxLen; i++)
 			base[i] = ((limit[i - 1] + 1) << 1) - base[i];
-		}
 	}
 
 	private void recvDecodingTables() {
@@ -301,13 +262,11 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 		boolean[] inUse16 = new boolean[16];
 
 		/* Receive the mapping table */
-		for (i = 0; i < 16; i++) {
+		for (i = 0; i < 16; i++)
 			inUse16[i] = bsR(1) == 1;
-		}
 
-		for (i = 0; i < 256; i++) {
+		for (i = 0; i < 256; i++)
 			inUse[i] = false;
-		}
 
 		for (i = 0; i < 16; i++) {
 			if (inUse16[i]) {
@@ -327,9 +286,8 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 		nSelectors = bsR(15);
 		for (i = 0; i < nSelectors; i++) {
 			j = 0;
-			while (bsR(1) == 1) {
+			while (bsR(1) == 1)
 				j++;
-			}
 			selectorMtf[i] = (char) j;
 		}
 
@@ -373,12 +331,10 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 			minLen = 32;
 			maxLen = 0;
 			for (i = 0; i < alphaSize; i++) {
-				if (len[t][i] > maxLen) {
+				if (len[t][i] > maxLen)
 					maxLen = len[t][i];
-				}
-				if (len[t][i] < minLen) {
+				if (len[t][i] < minLen)
 					minLen = len[t][i];
-				}
 			}
 			hbCreateDecodeTables(limit[t], base[t], perm[t], len[t], minLen, maxLen, alphaSize);
 			minLens[t] = minLen;
@@ -398,17 +354,10 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 		groupNo = -1;
 		groupPos = 0;
 
-		/*
-		 * Setting up the unzftab entries here is not strictly necessary, but it does save having to do it
-		 * later in a separate pass, and so saves a block's worth of cache misses.
-		 */
-		for (i = 0; i <= 255; i++) {
+		for (i = 0; i <= 255; i++)
 			unzftab[i] = 0;
-		}
-
-		for (i = 0; i <= 255; i++) {
+		for (i = 0; i <= 255; i++)
 			yy[i] = (char) i;
-		}
 
 		last = -1;
 
@@ -432,11 +381,10 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 							try {
 								thech = (char) bsStream.read();
 							} catch (IOException e) {
-								System.out.println("CRC Error");
+								e.printStackTrace();
 							}
-							if (thech == -1) {
-								System.out.println("CRC Error");
-							}
+							if (thech == -1)
+								System.err.println("Compressed Stream EOF");
 							zzi = thech;
 							bsBuff = (bsBuff << 8) | (zzi & 0xff);
 							bsLive += 8;
@@ -451,10 +399,8 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 		}
 
 		while (true) {
-
-			if (nextSym == EOB) {
+			if (nextSym == EOB)
 				break;
-			}
 
 			if (nextSym == RUNA || nextSym == RUNB) {
 				char ch;
@@ -487,11 +433,10 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 										try {
 											thech = (char) bsStream.read();
 										} catch (IOException e) {
-											System.out.println("CRC Error");
+											e.printStackTrace();
 										}
-										if (thech == -1) {
-											System.out.println("CRC Error");
-										}
+										if (thech == -1)
+											System.err.println("Compressed Stream EOF");
 										zzi = thech;
 										bsBuff = (bsBuff << 8) | (zzi & 0xff);
 										bsLive += 8;
@@ -516,25 +461,18 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 					s--;
 				}
 
-				if (last >= limitLast) {
-					blockOverrun();
-				}
+				if (last >= limitLast)
+					System.err.println("Block Overrun");
 				continue;
 			} else {
 				char tmp;
 				last++;
-				if (last >= limitLast) {
-					blockOverrun();
-				}
+				if (last >= limitLast)
+					System.err.println("Block Overrun");
 
 				tmp = yy[nextSym - 1];
 				unzftab[seqToUnseq[tmp]]++;
 				ll8[last] = seqToUnseq[tmp];
-
-				/*
-				 * This loop is hammered during decompression, hence the unrolling. for (j = nextSym-1; j > 0; j--)
-				 * yy[j] = yy[j-1];
-				 */
 
 				j = nextSym - 1;
 				for (; j > 3; j -= 4) {
@@ -543,9 +481,8 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 					yy[j - 2] = yy[j - 3];
 					yy[j - 3] = yy[j - 4];
 				}
-				for (; j > 0; j--) {
+				for (; j > 0; j--)
 					yy[j] = yy[j - 1];
-				}
 
 				yy[0] = tmp;
 				{
@@ -568,7 +505,7 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 									try {
 										thech = (char) bsStream.read();
 									} catch (IOException e) {
-										System.out.println("CRC Error");
+										e.printStackTrace();
 									}
 									zzi = thech;
 									bsBuff = (bsBuff << 8) | (zzi & 0xff);
@@ -592,22 +529,19 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 		char ch;
 
 		cftab[0] = 0;
-		for (i = 1; i <= 256; i++) {
+		for (i = 1; i <= 256; i++)
 			cftab[i] = unzftab[i - 1];
-		}
-		for (i = 1; i <= 256; i++) {
+		for (i = 1; i <= 256; i++)
 			cftab[i] += cftab[i - 1];
-		}
 
 		for (i = 0; i <= last; i++) {
-			ch = ll8[i];
+			ch = (char) ll8[i];
 			tt[cftab[ch]] = i;
 			cftab[ch]++;
 		}
 		cftab = null;
 
 		tPos = tt[origPtr];
-
 		count = 0;
 		i2 = 0;
 		ch2 = 256; /* not a char and not EOF */
@@ -629,12 +563,11 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 			if (rNToGo == 0) {
 				rNToGo = rNums[rTPos];
 				rTPos++;
-				if (rTPos == 512) {
+				if (rTPos == 512)
 					rTPos = 0;
-				}
 			}
 			rNToGo--;
-			ch2 ^= (rNToGo == 1) ? 1 : 0;
+			ch2 ^= (int) ((rNToGo == 1) ? 1 : 0);
 			i2++;
 
 			currentChar = ch2;
@@ -694,7 +627,7 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 	}
 
 	private void setupRandPartC() {
-		if (j2 < z) {
+		if (j2 < (int) z) {
 			currentChar = ch2;
 			mCrc.updateCRC(ch2);
 			j2++;
@@ -727,7 +660,7 @@ public class CBZip2InputStream extends InputStream implements BZip2Constants {
 	}
 
 	private void setupNoRandPartC() {
-		if (j2 < z) {
+		if (j2 < (int) z) {
 			currentChar = ch2;
 			mCrc.updateCRC(ch2);
 			j2++;

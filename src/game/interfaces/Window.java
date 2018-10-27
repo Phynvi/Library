@@ -1,11 +1,15 @@
 package game.interfaces;
 
 import java.util.Objects;
+import java.util.logging.Logger;
+
+import infrastructure.GlobalVariables;
 
 /**
  * @author Albert Beaupre
  */
 public abstract class Window {
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
 	 * The {@code PaneHolder} of this {@code Window}.
@@ -57,7 +61,7 @@ public abstract class Window {
 		int hash = 0;
 		for (int o : options)
 			hash |= 2 << o;
-		holder.setAccessMask(this.interfaceId, hash, offset, length, componentId);
+		holder.sendAccessMask(this.interfaceId, hash, offset, length, componentId);
 	}
 
 	/**
@@ -92,6 +96,11 @@ public abstract class Window {
 	 *            the item ID that was clicked, possibly -1, not to be trusted.
 	 */
 	public abstract void onClick(int option, int buttonId, int slotId, int itemId);
+
+	public void onUse(Window to, int fromButtonId, int fromItemId, int fromSlot, int toButtonId, int toItemId, int toSlot) {
+		if (GlobalVariables.isDebugEnabled())
+			LOGGER.warning("Unhandled ItemOnItem. Target window=" + to + ", fromItem=" + fromItemId + ", toItem=" + toItemId + ",  fromSlot=" + fromSlot + ", toSlot=" + toSlot);
+	}
 
 	/**
 	 * Returns the child id of this {@code Window}, normally referred to as the interface id.

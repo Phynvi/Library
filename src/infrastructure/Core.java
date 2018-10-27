@@ -26,7 +26,7 @@ import infrastructure.threads.TickThread;
 public class Core {
 
 	private static final ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(4); // Plans to implement 4 threads
-	private static final ExecutorService taskPool = Executors.newCachedThreadPool();
+	private static final ExecutorService taskPool = Executors.newFixedThreadPool(4);
 	
 	private static long TASK_COUNT = 0;
 

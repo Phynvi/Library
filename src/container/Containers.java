@@ -21,7 +21,10 @@ public class Containers {
 			int id = item.getId();
 			int amount = item.getAmount();
 			int index = c.indexOf(item.getId());
-			int maxStack = item.getMaximumStackValue() != c.getMaximumStack() ? item.getMaximumStackValue() : c.getMaximumStack();
+
+			int mxv = item.getData("max_stack", Integer.class);
+
+			int maxStack = mxv != c.getMaximumStack() ? mxv : c.getMaximumStack();
 			if (index != -1) {
 				int there = c.get(index).getAmount();
 				int total = there + amount > maxStack ? maxStack : there + amount;
@@ -64,7 +67,8 @@ public class Containers {
 			int amount = item.getAmount();
 			if (item.isStackable()) {
 				int index = c.indexOf(item.getId());
-				int maxStack = item.getMaximumStackValue() != c.getMaximumStack() ? item.getMaximumStackValue() : c.getMaximumStack();
+				int mxv = item.getData("max_stack", Integer.class);
+				int maxStack = mxv != c.getMaximumStack() ? mxv : c.getMaximumStack();
 				if (index != -1) {
 					int there = c.get(index).getAmount();
 					int total = there + amount > maxStack ? maxStack : there + amount;

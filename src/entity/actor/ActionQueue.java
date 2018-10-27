@@ -39,12 +39,11 @@ public final class ActionQueue<A extends Actor> extends Tick {
 		Iterator<Action<A>> iterator = this.actions.iterator();
 		while (iterator.hasNext()) {
 			Action<A> a = iterator.next();
-			if (a.cancellable())
+			if (a.cancellable() && a.getState() != ActionState.FINISH)
 				this.cancel(a);
 		}
 		this.actions.offer(action);
-		if (!this.isQueued())
-			this.queue(600);
+		this.queue();
 	}
 
 	/**
@@ -63,6 +62,14 @@ public final class ActionQueue<A extends Actor> extends Tick {
 		}
 	}
 
+	public void clearForcefully() {
+		Iterator<Action<A>> iterator = actions.iterator();
+		while (iterator.hasNext()) {
+			Action<A> action = iterator.next();
+			this.cancel(action);
+		}
+	}
+
 	/**
 	 * Cancels the specified {@code entity.actor.action} if within this {@code ActionQueue} and sets its
 	 * {@code ActionState} to {@link ActionState#CANCEL} and cycles it through the cancel state before
@@ -72,7 +79,7 @@ public final class ActionQueue<A extends Actor> extends Tick {
 	 *            .actor.action the entity.actor.action to be cancelled
 	 */
 	public void cancel(Action<A> action) {
-		if (this.actions.remove(action)) {
+		if (action.cancellable() && this.actions.remove(action)) {
 			action.setState(ActionState.CANCEL);
 			action.cycle(ActionState.CANCEL);
 		}

@@ -5,8 +5,7 @@ import java.util.Collection;
 import java.util.Random;
 
 /**
- * The RouletteTable is used for a type of Roulette selection between
- * {@code LootableItem} objects.
+ * The RouletteTable is used for a type of Roulette selection between {@code LootableItem} objects.
  * 
  * @author Albert Beaupre
  *
@@ -21,8 +20,7 @@ public class RoulettePicker<L extends LootableItem> {
 	private double chanceValueTotal;
 
 	/**
-	 * Constructs a new {@code RoulettePicker} with the given argument as selectable
-	 * loot.
+	 * Constructs a new {@code RoulettePicker} with the given argument as selectable loot.
 	 * 
 	 * @param loot
 	 *            the loot to fill the table with
@@ -33,8 +31,7 @@ public class RoulettePicker<L extends LootableItem> {
 	}
 
 	/**
-	 * Constructs a new {@code RoulettePicker} with the given collection of
-	 * {@code LootableItem}.
+	 * Constructs a new {@code RoulettePicker} with the given collection of {@code LootableItem}.
 	 * 
 	 * @param collection
 	 *            the collection of lootable items to fill this roulette picker with
@@ -51,14 +48,13 @@ public class RoulettePicker<L extends LootableItem> {
 	}
 
 	/**
-	 * Adds a new {@code LootableItem} object to this {@code RoulettePicker} for
-	 * selection.
+	 * Adds a new {@code LootableItem} object to this {@code RoulettePicker} for selection.
 	 * 
 	 * @param item
 	 *            the item to add to the table
 	 */
 	public void add(L item) {
-		if (item.getChance() <= 0)
+		if (item.getChance() < 0)
 			throw new IllegalArgumentException("Lootable item cannot have a chance rate of <= 0");
 		if (this.loot.add(item))
 			this.chanceValueTotal += item.getChance();
@@ -84,8 +80,7 @@ public class RoulettePicker<L extends LootableItem> {
 	}
 
 	/**
-	 * Returns the amount of {@code LootableItem} items within this
-	 * {@code RoulettePicker}.
+	 * Returns the amount of {@code LootableItem} items within this {@code RoulettePicker}.
 	 * 
 	 * @return the amount of items
 	 */

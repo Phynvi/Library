@@ -1,5 +1,6 @@
 package network.packet.encoding;
 
+import infrastructure.GlobalVariables;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,20 +28,19 @@ public class OutgoingPacketEncoder extends MessageToByteEncoder<EncodedPacket> {
 	 */
 	protected void encode(ChannelHandlerContext ctx, EncodedPacket out, ByteBuf in) throws Exception {
 		if (!out.isRaw()) {
-			int packetBufferLength = out.getLength();
-			int bufferLength = 1 + packetBufferLength + out.getType().getSize();
-			ByteBuf response = Unpooled.buffer(bufferLength);
+			int packetLength = 1 + out.getLength() + out.getType().getSize();
+			ByteBuf response = Unpooled.buffer(packetLength);
 			if (out.getOpcode() > 127)
-				response.writeByte(128);//TODO this might break but you wont know until u use a packet with this.
-			response.writeByte(out.getOpcode() + outCipher.getNextValue() & 0xFF);
+				response.writeByte(128);
+			int value = out.getOpcode();
+			if (GlobalVariables.isISAACEnabled())
+				value += outCipher.getNextValue() & 0xFF;
+
+			response.writeByte(value);
 			if (out.getType() == PacketType.VAR_BYTE) {
-				if (packetBufferLength > 255)
-					return;
-				response.writeByte(packetBufferLength);
+				response.writeByte(out.getLength());
 			} else if (out.getType() == PacketType.VAR_SHORT) {
-				if (packetBufferLength > 65535)
-					return;
-				response.writeShort(packetBufferLength);
+				response.writeShort(out.getLength());
 			}
 			response.writeBytes(out.getBytes());
 			ctx.writeAndFlush(response);

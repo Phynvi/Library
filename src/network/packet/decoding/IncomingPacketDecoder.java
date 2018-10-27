@@ -65,8 +65,9 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 	 */
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		if (in.isReadable()) {
-
-			int opcode = in.readUnsignedByte() - inCipher.getNextValue() & 0xFF;
+			int opcode = in.readByte() & 0xFF;
+			if (GlobalVariables.isISAACEnabled())
+				opcode -= inCipher.getNextValue() & 0xFF;
 			if (opcode < 0) {
 				in.discardReadBytes();
 				return;
@@ -97,7 +98,7 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 					if (GlobalVariables.isDebugEnabled())
 						LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
 				}
-			} else {}
+			}
 		}
 	}
 }

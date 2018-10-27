@@ -26,6 +26,20 @@ public class DecodedPacket extends Packet {
 		super(type, bytes, opcode);
 	}
 
+	public DecodedPacket(ByteBuf bytes) {
+		super(null, bytes, -1);
+	}
+
+	public int readSmart() {
+		int i = readUnsignedByte();
+		if (i < 128) {
+			return i;
+		} else {
+			i -= 128;
+			return (i << 8) | (readUnsignedByte());
+		}
+	}
+
 	public long readLong() {
 		return bytes.readLong();
 	}
@@ -44,6 +58,22 @@ public class DecodedPacket extends Packet {
 
 	public int readUnsignedByte() {
 		return bytes.readUnsignedByte();
+	}
+
+	public int readUnsignedShort() {
+		return bytes.readUnsignedShort();
+	}
+
+	public int read24BitInt() {
+		return ((readByte() & 0xff) << 16) + ((readByte() & 0xff) << 8) + (readByte() & 0xff);
+	}
+
+	public String readPJStr1() {
+		StringBuilder sb = new StringBuilder();
+		byte b;
+		while ((b = readByte()) != 0)
+			sb.append((char) b);
+		return sb.toString();
 	}
 
 	public byte readByteA() {
@@ -81,11 +111,11 @@ public class DecodedPacket extends Packet {
 			sb.append((char) b);
 		return sb.toString();
 	}
-	
+
 	public void skip(int byteCount) {
 		bytes.skipBytes(byteCount);
 	}
-	
+
 	public void readBytes(byte[] arr) {
 		bytes.readBytes(arr);
 	}

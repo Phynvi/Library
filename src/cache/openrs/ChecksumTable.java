@@ -1,4 +1,4 @@
-package cache;
+package cache.openrs;
 
 import java.awt.Container;
 import java.io.ByteArrayOutputStream;
@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
+import cache.openrs.reference.ReferenceTable;
 import cache.openrs.util.crypto.Rsa;
 import cache.openrs.util.crypto.Whirlpool;
-import cache.reference.ReferenceTable;
 
 /**
  * A {@link ChecksumTable} stores checksums and versions of {@link ReferenceTable}s. When encoded in

@@ -1,4 +1,4 @@
-package cache.apache.bzip2;
+package cache.compression;
 
 public interface BZip2Constants {
 

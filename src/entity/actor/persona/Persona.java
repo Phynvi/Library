@@ -9,6 +9,8 @@ import container.Item;
 import entity.Entity;
 import entity.actor.ActionQueue;
 import entity.actor.Actor;
+import entity.actor.model.Mask;
+import entity.actor.model.Model;
 import entity.geometry.Location;
 import entity.geometry.path.Mobile;
 import game.skill.SkillHolder;
@@ -50,6 +52,10 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 		this.registerForSerialization("equipment", equipment);
 	}
 
+	public void mask(Mask mask) {
+		this.getModel().registerMask(mask);
+	}
+	
 	/**
 	 * This clarifies that this {@code Persona} is active in-game, meaning they exist to other players.
 	 * 
@@ -143,5 +149,12 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 	public SkillSetManager getSkills() {
 		return skillManager;
 	}
+
+	/**
+	 * Returns the {@code Model} of this {@code Actor}.
+	 * 
+	 * @return the model
+	 */
+	public abstract Model getModel();
 
 }

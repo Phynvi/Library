@@ -88,7 +88,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	/**
 	 * This method is called when <b>any change</b> happens to this {@code Container}.
 	 */
-	private void refresh() {
+	public void refresh() {
 		for (Consumer<Container<E>> refresher : this.refreshers)
 			refresher.accept(this);
 	}
@@ -497,7 +497,8 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 		ConfigSection config = new ConfigSection();
 		for (int i = 0; i < this.capacity; i++) {
 			Item item = this.get(i);
-			config.set("" + i, new ConfigSection().set("id", item.getId()).set("amount", item.getAmount()));
+			if (item != null)
+				config.set("" + i, new ConfigSection().set("id", item.getId()).set("amount", item.getAmount()));
 		}
 		return config;
 	}

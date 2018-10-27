@@ -65,7 +65,7 @@ public interface PaneHolder {
 	 * @param componentId
 	 *            the child ID of the interface to modify. This is frequently 0.
 	 */
-	public abstract void setAccessMask(int interfaceId, int flags, int offset, int length, int componentId);
+	public abstract void sendAccessMask(int interfaceId, int flags, int offset, int length, int componentId);
 
 	/**
 	 * Sets the String overlay for the given component for this interface.
@@ -75,7 +75,7 @@ public interface PaneHolder {
 	 * @param s
 	 *            the String to set
 	 */
-	public abstract void setString(int interfaceId, int componentId, String s);
+	public abstract void sendString(int interfaceId, int componentId, String s);
 
 	/**
 	 * Sets the specified component to be visible/invisible based on the specified {@code visible}
@@ -86,7 +86,7 @@ public interface PaneHolder {
 	 * @param visible
 	 *            the flag to set as visible or not
 	 */
-	public abstract void setComponentVisible(int interfaceId, int componentId, boolean visible);
+	public abstract void sendComponentVisible(int interfaceId, int componentId, boolean visible);
 
 	/**
 	 * 
@@ -95,4 +95,6 @@ public interface PaneHolder {
 	 * @param container
 	 */
 	public abstract void sendItems(int interfaceId, boolean split, Container<Item> container);
+
+	public abstract void sendConfig(int id, int value);
 }

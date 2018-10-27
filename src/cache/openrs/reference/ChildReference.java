@@ -1,4 +1,4 @@
-package cache.reference;
+package cache.openrs.reference;
 
 /**
  * Represents a reference for an item inside an archive from a runescape cache.

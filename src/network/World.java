@@ -2,13 +2,13 @@ package network;
 
 import entity.EntityList;
 import entity.actor.persona.Persona;
+import entity.geometry.map.RSMap;
 
 /**
  * 
  * @author Albert Beaupre
  */
 public class World {
-
 	public static final int COUNTRY_AUSTRALIA = 16;
 	public static final int COUNTRY_BELGIUM = 22;
 	public static final int COUNTRY_BRAZIL = 31;
@@ -22,22 +22,21 @@ public class World {
 	public static final int COUNTRY_SWEDEN = 191;
 	public static final int COUNTRY_UK = 77;
 	public static final int COUNTRY_USA = 225;
-
 	public static final int HIGHLIGHT = 16;
 	public static final int LOOTSHARE = 8;
 	public static final int MEMBERS = 1;
 	public static final int NON_MEMBERS = 0;
 	public static final int PVP = 4;
-
+	private final String name;
+	private final String host;
+	private final String activity;
 	private final int id;
 	private final int location;
 	private final int country;
 	private final int flags;
-	private final String name;
-	private final String host;
-	private final String activity;
-
+	private final EntityList<Persona> lobbyPlayers = new EntityList<>(2048);
 	private final EntityList<Persona> players = new EntityList<>(2048);
+	private RSMap map;
 
 	public World(int id, String name, String host, String activity, int location, int country, int flags) {
 		this.id = id;
@@ -50,35 +49,66 @@ public class World {
 	}
 
 	public int getCountry() {
-		return country;
+		return this.country;
 	}
 
 	public int getFlags() {
-		return flags;
+		return this.flags;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public String getHost() {
-		return host;
+		return this.host;
 	}
 
 	public String getActivity() {
-		return activity;
+		return this.activity;
 	}
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public int getLocation() {
-		return location;
+		return this.location;
+	}
+
+	public EntityList<Persona> getLobbyPlayers() {
+		return this.lobbyPlayers;
 	}
 
 	public EntityList<Persona> getPlayers() {
-		return players;
+		return this.players;
 	}
 
+	public boolean isOnline(String username) {
+		for (Persona persona : players) {
+			if (persona != null && persona.getName().equalsIgnoreCase(username))
+				return true;
+		}
+		return true;
+	}
+
+	public boolean isInLobby(String username) {
+		for (Persona persona : lobbyPlayers) {
+			if (persona != null && persona.getName().equalsIgnoreCase(username))
+				return true;
+		}
+		return true;
+	}
+
+	public String toString() {
+		return String.format("id=%s, activity=%s, host=%s, name=%s, flag=%s, country=%s", this.id, this.activity, this.host, this.name, this.flags, this.country);
+	}
+
+	public RSMap getMap() {
+		return this.map;
+	}
+
+	public void setMap(RSMap map) {
+		this.map = map;
+	}
 }

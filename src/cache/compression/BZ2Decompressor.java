@@ -1,16 +1,15 @@
-package cache.apache.bzip2;
+package cache.compression;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.zip.GZIPInputStream;
 
-public class GZIPDecompressor {
+public class BZ2Decompressor {
 
 	public static void decompress(int slen, int off, byte[] in, byte[] out) throws IOException {
 		byte in2[] = new byte[slen];
 		System.arraycopy(in, off, in2, 0, slen);
-		DataInputStream ins = new DataInputStream(new GZIPInputStream(new ByteArrayInputStream(in2)));
+		DataInputStream ins = new DataInputStream(new CBZip2InputStream(new ByteArrayInputStream(in2), 0));
 		try {
 			ins.readFully(out);
 		} finally {

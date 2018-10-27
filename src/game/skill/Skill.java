@@ -10,9 +10,15 @@ import util.configuration.YMLSerializable;
  */
 public class Skill implements YMLSerializable {
 
+	private final SkillType type;
+
 	private int currentLevel = 1;
 	private int temporaryModification;
 	private double experience;
+
+	public Skill(SkillType type) {
+		this.type = type;
+	}
 
 	/**
 	 * Adds the given {@code experience} to this {@code Skill} and changes the current level based on
@@ -58,6 +64,11 @@ public class Skill implements YMLSerializable {
 		return modified ? currentLevel + temporaryModification : currentLevel;
 	}
 
+	public void setLevel(int level) {
+		this.currentLevel = level;
+		this.experience = SkillSetManager.getExperienceForLevel(level);
+	}
+
 	/**
 	 * Returns the current amount of experience this {@code Skill} is at.
 	 * 
@@ -74,9 +85,13 @@ public class Skill implements YMLSerializable {
 
 	@Override
 	public void deserialize(ConfigSection section) {
-		this.currentLevel = section.getInt("currentLevel");
+		this.currentLevel = section.getInt("level");
 		this.temporaryModification = section.getInt("mod");
 		this.experience = section.getDouble("exp");
+	}
+
+	public SkillType getType() {
+		return type;
 	}
 
 }

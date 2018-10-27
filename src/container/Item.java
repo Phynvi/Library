@@ -125,12 +125,7 @@ public class Item {
 		return DataCenter.retrieveData("items", id, "stackable", Boolean.class);
 	}
 
-	/**
-	 * Returns the amount this {@code Item} can be stacked to.
-	 * 
-	 * @return the amount that the item can be stacked to.
-	 */
-	public int getMaximumStackValue() {
-		return DataCenter.retrieveData("items", id, "max_stack", Integer.class);
+	public <T> T getData(String name, Class<T> cast) {
+		return (T) DataCenter.retrieveData("items", id, name, cast);
 	}
 }

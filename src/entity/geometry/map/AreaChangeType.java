@@ -22,6 +22,8 @@ public enum AreaChangeType {
 	 * This {@code AreaChangeType} is used when an {@code Entity} has been moved in/out of an
 	 * {@code Area} by the server.
 	 */
-	SERVER
+	SERVER,
+
+	DO_NOT_DISTURB
 
 }
