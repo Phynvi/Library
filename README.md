@@ -48,7 +48,7 @@ Here is a brief list of things to complete:
   - [x] Event Listening/Managing
   - [x] Easy Mask/Update handling
   - [ ] <strike>Multiple Protocol Support</strike> (This seems inconsistent with what needs to be developed at the moment)
-  - [ ] Easy packet reading/writing
+  - [x] Easy packet reading/writing
 - [ ] Content Features
   - [x] Interface handling and functionalities
   - [x] Action system
