@@ -22,6 +22,10 @@ public class EntityOptions {
 		this.entity = entity;
 	}
 
+	public EntityOption get(int index) {
+		return entityOptions[index];
+	}
+
 	/**
 	 * 
 	 * @param index

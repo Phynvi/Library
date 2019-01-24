@@ -394,7 +394,7 @@ public abstract class RSMap extends AreaManager implements EventListener {
 	 * @return a {@code HashSet} with any entities with the given class type are within the radius of
 	 *         the location
 	 */
-	public <T extends Entity> HashSet<T> findEntities(Point3D location, Class<? extends Entity> clazz, int radius) {
+	public <T> HashSet<T> findEntities(Point3D location, Class<T> clazz, int radius) {
 		HashSet<T> found = new HashSet<>();
 		for (int i = -radius; i <= radius; i++) {
 			for (int j = -radius; j <= radius; j++) {

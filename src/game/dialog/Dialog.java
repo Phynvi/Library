@@ -22,6 +22,9 @@ public class Dialog implements FacialExpressions {
 	 */
 	protected final DialogTransactor transactor;
 
+	private boolean breakHere;
+	private Page currentPage;
+
 	/**
 	 * Constructs a new {@code Dialog} based on the {@code DialogTransactor}.
 	 * 
@@ -111,8 +114,17 @@ public class Dialog implements FacialExpressions {
 	 * @return a chain of this instance
 	 */
 	public Dialog when(Predicate<DialogTransactor> predicate) {
-		if (!predicate.test(transactor))
+		if (!predicate.test(transactor)) {
+			breakHere = !breakHere;
+		}
+		return this;
+	}
+
+	public Dialog or(Predicate<DialogTransactor> predicate) {
+		if (!predicate.test(transactor)) {
 			pages.pollLast();
+			breakHere = false;
+		}
 		return this;
 	}
 
@@ -191,7 +203,7 @@ public class Dialog implements FacialExpressions {
 	 * @return a chain of this instance
 	 */
 	public Dialog selectOption(int index) {
-		Page last = pages.peekLast();
+		Page last = pages.poll();
 		if (!(last instanceof OptionPage))
 			throw new UnsupportedOperationException("The page selected is not an OptionPage");
 		OptionPage page = (OptionPage) last;
@@ -230,11 +242,11 @@ public class Dialog implements FacialExpressions {
 			return null;
 		}
 		Page page = pages.poll();
+		this.currentPage = page;
 		if (page instanceof InformationPage) {
 			transactor.displayInformation((InformationPage) page);
 		} else if (page instanceof OptionPage) {
 			transactor.displayOptions((OptionPage) page);
-			pages.clear();
 		} else {
 			transactor.displayDialogPage(page);
 		}
@@ -248,6 +260,10 @@ public class Dialog implements FacialExpressions {
 	 */
 	public final void finish() {
 		this.pages.clear();
+	}
+
+	public Page getCurrentPage() {
+		return this.currentPage;
 	}
 
 }

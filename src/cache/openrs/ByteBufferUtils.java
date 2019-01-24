@@ -20,6 +20,15 @@ public final class ByteBufferUtils {
 	 */
 	private static char CHARACTERS[] = { '\u20AC', '\0', '\u201A', '\u0192', '\u201E', '\u2026', '\u2020', '\u2021', '\u02C6', '\u2030', '\u0160', '\u2039', '\u0152', '\0', '\u017D', '\0', '\0', '\u2018', '\u2019', '\u201C', '\u201D', '\u2022', '\u2013', '\u2014', '\u02DC', '\u2122', '\u0161', '\u203A', '\u0153', '\0', '\u017E', '\u0178' };
 
+	public static String readRS2String(ByteBuffer buffer) {
+		StringBuilder sb = new StringBuilder();
+		byte b;
+		while (buffer.remaining() > 0 && (b = buffer.get()) != 0) {
+			sb.append((char) b);
+		}
+		return sb.toString();
+	}
+
 	/**
 	 * Gets a null-terminated string from the specified buffer, using a modified ISO-8859-1 character
 	 * set.
@@ -42,6 +51,17 @@ public final class ByteBufferUtils {
 			}
 		}
 		return bldr.toString();
+	}
+
+	public static int getExtendedTriByte(ByteBuffer buffer) {
+		int total = 0;
+		int smart = getTriByte(buffer);
+		while (smart == 0x7FFF) {
+			smart = getTriByte(buffer);
+			total += 0x7FFF;
+		}
+		total += smart;
+		return total;
 	}
 
 	/**

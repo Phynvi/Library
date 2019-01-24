@@ -19,11 +19,16 @@ public enum CompressionType {
 	 */
 	NONE(0) {
 		@Override
-		public ByteBuffer decode(ByteBuffer bytes, XTEAKey key) throws IOException {
-			int length = bytes.getInt(1);
-			byte[] data = new byte[length];
-			System.arraycopy(bytes.array(), 5, data, 0, data.length);
-			return ByteBuffer.wrap(data);
+		public ByteBuffer decode(ByteBuffer bb, XTEAKey key) throws IOException {
+			ByteBuffer copy = ByteBuffer.allocate(bb.remaining());
+			copy.put(bb); //Do modify payload.
+			copy.flip();
+			
+			if(key != null){
+				key.decipher(copy, copy.position(), copy.limit());
+			}
+			
+			return copy;
 		}
 
 		@Override
@@ -40,10 +45,13 @@ public enum CompressionType {
 	 */
 	BZIP(1) {
 		@Override
-		public ByteBuffer decode(ByteBuffer bytes, XTEAKey key) throws IOException {
-			int length = bytes.getInt(1);
-			byte[] data = new byte[bytes.getInt(5)];
-			BZ2Decompressor.decompress(length, 9, bytes.array(), data);
+		public ByteBuffer decode(ByteBuffer bb, XTEAKey key) throws IOException {
+			if (key != null) {
+				key.decipher(bb, bb.position(), bb.limit());
+			}
+			int length = bb.getInt(1);
+			byte[] data = new byte[bb.getInt(5)];
+			BZ2Decompressor.decompress(length, 9, bb.array(), data);
 			return ByteBuffer.wrap(data);
 		}
 

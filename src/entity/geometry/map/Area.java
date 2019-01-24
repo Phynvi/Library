@@ -88,4 +88,9 @@ public abstract class Area implements Shape3D, EventListener {
 			onLeave(event.entity, event.type);
 		}
 	}
+
+	@Override
+	public boolean inRange(Point3D point, int range) {
+		return bounds.inRange(point, range);
+	}
 }

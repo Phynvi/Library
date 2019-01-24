@@ -157,6 +157,13 @@ public abstract class RawHandler {
 	public abstract int[] getKeys();
 
 	/**
+	 * The sizes of the packets for the game messages
+	 * 
+	 * @return the packet sizes
+	 */
+	public abstract int[] getPacketSizes();
+
+	/**
 	 * Returns the revision that this {@code RawHandler} will be handling.
 	 * 
 	 * @return the revision of this {@code RawHandler}

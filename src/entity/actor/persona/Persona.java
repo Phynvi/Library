@@ -24,8 +24,6 @@ import util.configuration.YMLSerializable;
  */
 public abstract class Persona extends Entity implements Actor, SkillHolder, YMLSerializable, Mobile {
 
-	private final ActionQueue<Persona> actions = new ActionQueue<>();
-
 	/**
 	 * The {@code attachments} map is used to attach any {@code YMLSerializable} values to this
 	 * {@code Persona}.
@@ -38,10 +36,9 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 	 */
 	public ConfigSection config = new ConfigSection();
 
-	public final Container<Item> inventory = new Container<>(Containers.AVAILABLE_STACK, 28, 1, Integer.MAX_VALUE);
-	public final Container<Item> equipment = new Container<>(Containers.AVAILABLE_STACK, 14, 1, Integer.MAX_VALUE);
-
+	private final Container<Item> inventory = new Container<>(Containers.AVAILABLE_STACK, 28, 1, Integer.MAX_VALUE);
 	private final SkillSetManager skillManager = new SkillSetManager(this);
+	private final ActionQueue<Persona> actions = new ActionQueue<>();
 
 	/**
 	 * Constructs a new {@code Persona} to be created.
@@ -49,13 +46,12 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 	public Persona() {
 		this.registerForSerialization("skills", skillManager);
 		this.registerForSerialization("inventory", inventory);
-		this.registerForSerialization("equipment", equipment);
 	}
 
 	public void mask(Mask mask) {
 		this.getModel().registerMask(mask);
 	}
-	
+
 	/**
 	 * This clarifies that this {@code Persona} is active in-game, meaning they exist to other players.
 	 * 
@@ -148,6 +144,10 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 	 */
 	public SkillSetManager getSkills() {
 		return skillManager;
+	}
+
+	public Container<Item> getInventory() {
+		return inventory;
 	}
 
 	/**

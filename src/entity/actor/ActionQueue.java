@@ -21,6 +21,7 @@ import java.util.LinkedList;
 public final class ActionQueue<A extends Actor> extends Tick {
 
 	private final LinkedList<Action<A>> actions; // The queue of actions that will be cycled
+	private boolean hasUncancellable;
 
 	/**
 	 * Constructs a new {@code ActionQueue}
@@ -36,14 +37,19 @@ public final class ActionQueue<A extends Actor> extends Tick {
 	 *            .actor.action the entity.actor.action to queue.
 	 */
 	public void queue(Action<A> action) {
+		if (hasUncancellable)
+			return;
 		Iterator<Action<A>> iterator = this.actions.iterator();
 		while (iterator.hasNext()) {
 			Action<A> a = iterator.next();
 			if (a.cancellable() && a.getState() != ActionState.FINISH)
 				this.cancel(a);
 		}
+		if (!action.cancellable())
+			hasUncancellable = true;
 		this.actions.offer(action);
-		this.queue();
+		if (!this.isQueued())
+			this.queue();
 	}
 
 	/**
@@ -85,6 +91,10 @@ public final class ActionQueue<A extends Actor> extends Tick {
 		}
 	}
 
+	public boolean hasUncancellable() {
+		return this.hasUncancellable;
+	}
+
 	/**
 	 * This method only runs when there are actions queued.
 	 * 
@@ -96,13 +106,18 @@ public final class ActionQueue<A extends Actor> extends Tick {
 	 * entity.actor.action is completely stopped.
 	 */
 	public final void tick() {
-		if (this.actions.isEmpty())
+		if (this.actions.isEmpty()) {
+			this.cancel();
+			this.hasUncancellable = false;
 			return;
+		}
 		Action<A> action = this.actions.peek();
 		if (action != null) {
 			if (!action.cycle(action.getState())) {
-				this.actions.remove();
+				this.actions.poll();
 				this.queue(600);
+				if (!action.cancellable())
+					this.hasUncancellable = false;
 			} else {
 				this.queue(600);
 			}

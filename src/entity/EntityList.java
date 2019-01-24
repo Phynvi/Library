@@ -71,7 +71,6 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 		if (index < 0)
 			return false;
 		if (data[index] == entity) {
-			data[index].setIndex(-1);
 			data[index] = null;
 			size--;
 			return true;
@@ -91,7 +90,6 @@ public class EntityList<E extends Entity> implements Iterable<E> {
 	public boolean remove(int index) {
 		if (index < 0 || data[index] == null)
 			return false;
-		data[index].setIndex(-1);
 		data[index] = null;
 		size--;
 		return true;

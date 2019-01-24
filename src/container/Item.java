@@ -12,7 +12,7 @@ import util.configuration.ConfigSection;
 public class Item {
 
 	private final short id; // This value should not be modifiable
-	private int amount;
+	protected int amount;
 
 	private ConfigSection attributes;
 
@@ -80,6 +80,10 @@ public class Item {
 			attributes = null; //There are so many items within the game, this needs to be disposed of
 	}
 
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
 	/**
 	 * Returns a new {@code Item} with the same information but with amount of the item decreased by the
 	 * given argument.
@@ -122,7 +126,8 @@ public class Item {
 	 * @return true if it can stack with the same item
 	 */
 	public boolean isStackable() {
-		return DataCenter.retrieveData("items", id, "stackable", Boolean.class);
+		Boolean b = DataCenter.retrieveData("items", id, "stackable", Boolean.class);
+		return b == null ? false : b;
 	}
 
 	public <T> T getData(String name, Class<T> cast) {

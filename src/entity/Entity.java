@@ -43,7 +43,7 @@ public abstract class Entity implements Locatable {
 	 * @param location
 	 *            the location to set this {@code Entity}
 	 */
-	public final void setLocation(Location location, AreaChangeType type) {
+	public void setLocation(Location location, AreaChangeType type) {
 		Location previousLocation = this.location;
 		this.location = location;
 		if (type == AreaChangeType.DO_NOT_DISTURB)
@@ -67,7 +67,7 @@ public abstract class Entity implements Locatable {
 	 * @param location
 	 *            the location to set this {@code Entity}
 	 */
-	public final void setLocation(Location location) {
+	public void setLocation(Location location) {
 		this.setLocation(location, AreaChangeType.SERVER);
 	}
 

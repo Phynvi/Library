@@ -10,6 +10,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.AttributeKey;
 import network.Connection;
 import network.ConnectionHolder;
+import network.NetworkHandler;
 import network.NetworkRepository;
 import network.cryptogrophy.ISAACCipher;
 import network.packet.decoding.IncomingPacketDecoder;
@@ -21,14 +22,14 @@ public class LoginRequestDecoder extends ByteToMessageDecoder {
 
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		if (in.readableBytes() >= 3) {
-			int state = in.readUnsignedByte();
-			int packetSize = in.readUnsignedShort();
+			int state = in.readByte() & 0xFF;
+			int packetSize = in.readShort() & 0xFFFF;
 			if (packetSize != in.readableBytes())
 				throw new IOException("Invalid login packet size");
 
 			int revision = in.readInt();
 
-			while (in.readByte() != 10);
+			while (in.readByte() != 10); // TODO RSA
 
 			int[] isaacKeysIn = new int[4];
 			int[] isaacKeysOut = new int[4];
@@ -48,7 +49,8 @@ public class LoginRequestDecoder extends ByteToMessageDecoder {
 			Connection connection = new Connection(ctx.channel(), revision);
 			ConnectionHolder holder = handler.createConnectionHolder(connection, in, state);
 			ctx.channel().attr(CON_HOLD_KEY).set(holder);
-			ctx.pipeline().replace("decoder", "decoder", new IncomingPacketDecoder(handler, holder, new ISAACCipher(isaacKeysIn)));
+			ctx.pipeline().replace("handler", "handler", new NetworkHandler(handler, holder, new ISAACCipher(isaacKeysIn)));
+			ctx.pipeline().replace("decoder", "decoder", new IncomingPacketDecoder(handler, new ISAACCipher(isaacKeysIn)));
 		}
 
 	}

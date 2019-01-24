@@ -1,11 +1,17 @@
 package network;
 
-import io.netty.buffer.ByteBuf;
+import java.util.logging.Logger;
+
+import infrastructure.GlobalVariables;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import network.cryptogrophy.ISAACCipher;
 import network.event.ChannelActiveEvent;
 import network.event.ChannelInactiveEvent;
 import network.event.ChannelUnregisteredEvent;
+import network.packet.decoding.DecodedPacket;
+import network.packet.decoding.PacketDecoder;
+import network.raw.RawHandler;
 
 /**
  * The {@code NetworkHandler} class handles all receiving, sending, unregistering, reading, and
@@ -17,6 +23,27 @@ import network.event.ChannelUnregisteredEvent;
  * @author Albert Beaupre
  */
 public class NetworkHandler extends ChannelInboundHandlerAdapter {
+
+	private final ConnectionHolder holder;
+	private final RawHandler handler;
+	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	/**
+	 * Constructs a new {@code NetworkHandler} with a specified {@code ConnectionHolder} as the holder
+	 * of the {@code Connection}.
+	 * 
+	 * @param handler
+	 *            the {@code RawHandler} used to get to this decoding process
+	 * 
+	 * @param holder
+	 *            the holder of the {@code Connection}.
+	 * @param isaac
+	 *            the isaac cipher.
+	 */
+	public NetworkHandler(RawHandler handler, ConnectionHolder holder, ISAACCipher inCipher) {
+		this.handler = handler;
+		this.holder = holder;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -57,8 +84,16 @@ public class NetworkHandler extends ChannelInboundHandlerAdapter {
 	public void channelRead(ChannelHandlerContext ctx, Object message) {
 		if (message == null)
 			return;
-		if (message instanceof ByteBuf)
-			ctx.writeAndFlush(((ByteBuf) message));
+		if (message instanceof DecodedPacket) {
+			DecodedPacket packet = (DecodedPacket) message;
+			PacketDecoder<ConnectionHolder> processor = handler.getPacketDecoder(packet.getOpcode());
+			if (processor != null) {
+				processor.process(holder, packet);
+			} else {
+				if (GlobalVariables.isDebugEnabled())
+					LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", packet.getOpcode(), packet.getLength()));
+			}
+		}
 	}
 
 	/*

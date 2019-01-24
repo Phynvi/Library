@@ -62,7 +62,7 @@ public class ServerThread extends CoreThread {
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("encoder", new OutgoingPacketEncoder(null));
 					ch.pipeline().addLast("decoder", new HandshakeDecoder());
-					ch.pipeline().addLast("handler", new NetworkHandler());
+					ch.pipeline().addLast("handler", new NetworkHandler(null, null, null));
 					ch.attr(GlobalVariables.WORLD_KEY).set(world);
 				}
 			}).option(ChannelOption.SO_KEEPALIVE, true).option(ChannelOption.TCP_NODELAY, true);

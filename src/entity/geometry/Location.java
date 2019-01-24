@@ -159,6 +159,10 @@ public class Location extends Point3D {
 		return new Location(map, x, y, z);
 	}
 
+	public static Location getDelta(Location l, Location o) {
+		return new Location(l.map, o.x - l.x, o.y - l.y, o.z - l.z);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

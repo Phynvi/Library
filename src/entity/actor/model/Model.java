@@ -79,7 +79,8 @@ public abstract class Model {
 		reset();
 		this.maskData = 0;
 		this.maskCount = 0;
-		for (int i = 0; i < this.currentMasks.length; i++) this.currentMasks[i] = null;
+		for (int i = 0; i < this.currentMasks.length; i++)
+			this.currentMasks[i] = null;
 	}
 
 	/**
@@ -88,7 +89,7 @@ public abstract class Model {
 	 * @return {@code True} if so, {@code false} if not.
 	 */
 	public boolean isUpdateRequired() {
-		return this.maskData != 0 || maskCount > 0;
+		return this.maskData > 0 || maskCount > 0;
 	}
 
 	/**

@@ -102,6 +102,7 @@ public class Containers {
 					Item previous = c.get(index).decrease(item.getAmount());
 					if (previous.getAmount() < c.getMinimumStack())
 						c.set(index, null);
+					else c.set(index, previous);
 					return true;
 				}
 			} else {

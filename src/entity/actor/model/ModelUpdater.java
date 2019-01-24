@@ -28,6 +28,7 @@ public final class ModelUpdater extends Tick {
 					if (!model.canBeUpdated()) {
 						iterator.remove();
 						model.setForUpdating(false);
+						model.finishUpdate();
 					} else {
 						model.update();
 					}

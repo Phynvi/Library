@@ -174,7 +174,8 @@ public class Cache {
 		for (Reference r : t.getReferences())
 			if (r.getIdentifier() == identifier)
 				return r.getId();
-		throw new FileNotFoundException("IDX " + idx + ", identifier " + identifier);
+		System.err.println("IDX " + idx + ", identifier " + identifier);
+		return 0;
 	}
 
 	/**

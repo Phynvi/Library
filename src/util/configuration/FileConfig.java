@@ -1,11 +1,14 @@
 package util.configuration;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Map;
+
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -43,6 +46,11 @@ public class FileConfig extends ConfigSection {
 			case JSON:
 				break;
 			case TXT:
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String string;
+				int count = 0;
+				while ((string = reader.readLine()) != null)
+					this.map.put(count++, string);
 				break;
 			case YAML:
 				DumperOptions options = new DumperOptions();

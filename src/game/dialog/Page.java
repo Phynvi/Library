@@ -51,4 +51,9 @@ public class Page {
 		this.text = text;
 	}
 
+	@Override
+	public String toString() {
+		return "Page Text: " + text;
+	}
+
 }

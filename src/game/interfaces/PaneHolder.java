@@ -2,6 +2,7 @@ package game.interfaces;
 
 import container.Container;
 import container.Item;
+import entity.actor.persona.Persona;
 
 /**
  * 
@@ -22,6 +23,16 @@ public interface PaneHolder {
 	 * @return the main game pane
 	 */
 	public Pane getGamePane();
+
+	public abstract void sendItemOnInterface(int interfaceId, int childId, int itemId);
+
+	public abstract void sendGlobalString(int id, String string);
+
+	public abstract void invokeBlankScript(int id);
+
+	public abstract void invokeScript(int id, Object... params);
+
+	public abstract void sendGlobalConfig(int id, int value);
 
 	/**
 	 * 
@@ -94,7 +105,13 @@ public interface PaneHolder {
 	 * @param split
 	 * @param container
 	 */
-	public abstract void sendItems(int interfaceId, boolean split, Container<Item> container);
+	public abstract void sendItems(int interfaceId, boolean split, Container<? extends Item> container);
 
 	public abstract void sendConfig(int id, int value);
+
+	public abstract void sendNPCOnInterface(int interfaceId, int componentId, int npcId);
+
+	public abstract void sendPlayerOnInterface(Persona persona, int interfaceId, int componentId);
+
+	public abstract void sendAnimationOnInterface(int interfaceId, int componentId, int animation);
 }

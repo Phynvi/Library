@@ -65,8 +65,9 @@ public class XTEAStore {
 		while (buffer.remaining() > 0) {
 			int id = buffer.getShort() & 0xFFFF;
 			int[] key = new int[4];
-			for (int i2 = 0; i2 < 4; i2++)
+			for (int i2 = 0; i2 < 4; i2++) {
 				key[i2] = buffer.getInt();
+			}
 			store.setKey(id, new XTEAKey(key));
 		}
 		raf.close();

@@ -17,6 +17,8 @@ public abstract class Action<A extends Actor> {
 
 	private ActionState state; // The current state which this Action is at
 
+	private int count;
+
 	/**
 	 * Constructs a new {@code Action} from the specified {@code actor} as the owner of this
 	 * {@code Action}.
@@ -28,6 +30,30 @@ public abstract class Action<A extends Actor> {
 		this.actor = actor;
 
 		this.state = ActionState.START;
+	}
+
+	/**
+	 * This method is used as a waiting method
+	 * 
+	 * <p>
+	 * <b>Example: This will print "Hello World" in 10 seconds</b>
+	 * 
+	 * <pre>
+	 * if (countFor(5)) {
+	 * 	animate();
+	 * 	cutLog();
+	 * }
+	 * </pre>
+	 * 
+	 * @param ticks
+	 * @return
+	 */
+	public boolean countFor(int ticks) {
+		count++;
+		int value = count;
+		if (count >= ticks)
+			count = 0;
+		return value >= ticks;
 	}
 
 	/**

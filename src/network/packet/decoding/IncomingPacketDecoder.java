@@ -1,15 +1,12 @@
 package network.packet.decoding;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 import infrastructure.GlobalVariables;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import network.ConnectionHolder;
 import network.cryptogrophy.ISAACCipher;
 import network.packet.PacketType;
 import network.raw.RawHandler;
@@ -22,33 +19,20 @@ import network.raw.RawHandler;
  */
 public class IncomingPacketDecoder extends ByteToMessageDecoder {
 
-	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private static final HashMap<Integer, int[]> PACKET_SIZES = new HashMap<>();
-
-	static {
-		PACKET_SIZES.put(637, new int[] { 8, -1, -1, 16, 6, 2, 8, 6, 3, -1, 16, 15, 0, 8, 11, 8, -1, -1, 3, 2, -3, -1, 7, 2, -1, 7, -1, 3, 3, 6, 4, 3, 0, 3, 4, 5, -1, -1, 7, 8, 4, -1, 4, 7, 3, 15, 8, 3, 2, 4, 18, -1, 1, 3, 7, 7, 4, -1, 8, 2, 7, -1, 1, -1, 3, 2, -1, 8, 3, 2, 3, 7, 3, 8, -1, 0, 7, -1, 11, -1, 3, 7, 8, 12, 4, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3 });
-		PACKET_SIZES.put(666, new int[] { 0, 7, -1, 8, 3, -1, 15, 8, 6, -1, 3, 8, -1, -1, 3, 4, 7, 8, 1, -1, 4, 2, -1, 7, 7, 8, 16, 3, 7, 3, -1, -1, 4, 0, 6, 5, 6, 4, 7, 7, 8, 0, 15, 3, 3, 7, -1, 3, 8, 7, -1, 3, 4, 18, 8, -1, 5, 11, 7, -1, 1, 3, -1, 4, 0, 11, 8, 2, -1, 3, 3, 16, 3, 2, -1, 7, 4, 2, 3, -1, -1, -1, -1, 3, 8, 8, 7, 0, -1, -1, 3, 3, 4, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	}
-
-	private final ConnectionHolder holder;
 	private final RawHandler handler;
 	private final ISAACCipher inCipher;
 
 	/**
-	 * Constructs a new {@code IncomingPacketDecoder} with a specified {@code ConnectionHolder} as the
-	 * holder of the {@code Connection}.
+	 * Constructs a new {@code IncomingPacketDecoder}
 	 * 
 	 * @param handler
 	 *            the {@code RawHandler} used to get to this decoding process
 	 * 
-	 * @param holder
-	 *            the holder of the {@code Connection}.
 	 * @param isaac
 	 *            the isaac cipher.
 	 */
-	public IncomingPacketDecoder(RawHandler handler, ConnectionHolder holder, ISAACCipher inCipher) {
+	public IncomingPacketDecoder(RawHandler handler, ISAACCipher inCipher) {
 		this.handler = handler;
-		this.holder = holder;
 		this.inCipher = inCipher;
 	}
 
@@ -72,32 +56,17 @@ public class IncomingPacketDecoder extends ByteToMessageDecoder {
 				in.discardReadBytes();
 				return;
 			}
-			int length = PACKET_SIZES.get(handler.getRevision())[opcode];
+			int length = handler.getPacketSizes()[opcode];
 			if (length == -1 && in.isReadable())
 				length = in.readByte() & 0xFF;
 			if (length <= in.readableBytes()) {
 				if (length < 1) {
-					DecodedPacket packet = new DecodedPacket(PacketType.STANDARD, Unpooled.buffer(), opcode);
-					PacketDecoder<ConnectionHolder> processor = handler.getPacketDecoder(opcode);
-					if (processor != null) {
-						processor.process(holder, packet);
-					} else {
-						if (GlobalVariables.isDebugEnabled())
-							LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
-					}
+					out.add(new DecodedPacket(PacketType.STANDARD, Unpooled.buffer(), opcode));
 					return;
 				}
 				byte[] payload = new byte[length];
 				in.readBytes(payload, 0, length);
-				DecodedPacket packet = new DecodedPacket(PacketType.STANDARD, Unpooled.wrappedBuffer(payload), opcode);
-
-				PacketDecoder<ConnectionHolder> processor = handler.getPacketDecoder(opcode);
-				if (processor != null) {
-					processor.process(holder, packet);
-				} else {
-					if (GlobalVariables.isDebugEnabled())
-						LOGGER.warning(String.format("Unprocessed Packet[opcode=%s, length=%s]", opcode, length));
-				}
+				out.add(new DecodedPacket(PacketType.STANDARD, Unpooled.wrappedBuffer(payload), opcode));
 			}
 		}
 	}

@@ -28,7 +28,7 @@ public class OutgoingPacketEncoder extends MessageToByteEncoder<EncodedPacket> {
 	 */
 	protected void encode(ChannelHandlerContext ctx, EncodedPacket out, ByteBuf in) throws Exception {
 		if (!out.isRaw()) {
-			int packetLength = 1 + out.getLength() + out.getType().getSize();
+			int packetLength = 1 + out.getLength() + out.getLength();
 			ByteBuf response = Unpooled.buffer(packetLength);
 			if (out.getOpcode() > 127)
 				response.writeByte(128);

@@ -29,7 +29,11 @@ public class DataCenter {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T retrieveData(String dataKey, Object sectionKey, Object sectionLocation, Class<T> cast) {
-		return (T) DATA.get(dataKey.toLowerCase()).getSection(sectionKey).get(sectionLocation);
+		try {
+			return (T) DATA.get(dataKey.toLowerCase()).getSection(sectionKey).get(sectionLocation);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 
 	/**

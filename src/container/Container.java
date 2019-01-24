@@ -105,7 +105,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	 */
 	public boolean remove(int index, int amount) {
 		if (data[index] != null) {
-			data[index] = data[index].decrease(amount);
+			data[index].setAmount(data[index].getAmount() - amount);
 			if (data[index].getAmount() < minimumStack) // TODO < 1 should be <
 														// minStack
 				data[index] = null;
@@ -183,7 +183,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 				if (comparator.compare(this.get(i), this.get(j)) < 0) {
 					Item tmp = this.get(j);
 					this.set(j, this.get(i));
-					this.set(i, tmp);
+					this.set(i, (E) tmp);
 				}
 			}
 		}
@@ -267,7 +267,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	 *            the index to swap to
 	 */
 	public void swap(int fromIndex, int toIndex) {
-		Item old = get(toIndex);
+		E old = get(toIndex);
 		set(toIndex, get(fromIndex));
 		set(fromIndex, old);
 		refresh();
@@ -315,10 +315,10 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	 *            the item to be inserted
 	 * @return true if the item was inserted; return false otherwise
 	 */
-	public boolean insert(int index, Item element) {
+	public boolean insert(int index, E element) {
 		if (getFreeSlots() == 0)
 			return false;
-		Item[] items = Arrays.copyOf(data, data.length);
+		E[] items = (E[]) Arrays.copyOf(data, data.length);
 		for (int i = index + 1; i < capacity; i++)
 			set(i, items[i - 1]);
 		data[index] = element;
@@ -336,7 +336,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	 *            the item to set at the index
 	 * @return the previous item which was placed at the index; return null if there wasn't one
 	 */
-	public E set(int index, Item element) {
+	public E set(int index, E element) {
 		E e = (E) (data[index] = element);
 		refresh();
 		return e;
@@ -355,8 +355,8 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 	 * Converts the items within this {@code Container} to an array, which contains nulled objects if
 	 * there is no item within that place in the array.
 	 */
-	public Item[] toArray() {
-		return Arrays.copyOf(data, data.length);
+	public E[] toArray() {
+		return (E[]) Arrays.copyOf(data, data.length);
 	}
 
 	/*
@@ -492,6 +492,10 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 		this.refreshers.add(refresher);
 	}
 
+	public void removeRefreshListener(Consumer<Container<E>> refresher) {
+		this.refreshers.remove(refresher);
+	}
+
 	@Override
 	public ConfigSection serialize() {
 		ConfigSection config = new ConfigSection();
@@ -511,7 +515,7 @@ public class Container<E extends Item> implements Collection<E>, Iterable<E>, YM
 			int slot = Integer.parseInt("" + entry.getKey());
 			int id = map.getInt("id");
 			int amount = map.getInt("amount");
-			this.set(slot, new Item(id, amount));
+			this.set(slot, (E) new Item(id, amount));
 		}
 	}
 

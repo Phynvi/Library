@@ -1,6 +1,7 @@
 package entity.geometry;
 
 import java.util.Objects;
+
 import util.configuration.ConfigSection;
 import util.configuration.YMLSerializable;
 
@@ -26,6 +27,10 @@ public class Point3D implements YMLSerializable {
 	 * The Z coordinate of this {@code Point3D}. If no Z coordinate is set it will default to 0.
 	 */
 	public int z;
+
+	public Point3D() {
+		this(0, 0, 0);
+	}
 
 	public Point3D(Point3D point) {
 		this(point.x, point.y, point.z);
@@ -154,6 +159,10 @@ public class Point3D implements YMLSerializable {
 		this.x = section.getInt("x");
 		this.y = section.getInt("y");
 		this.z = section.getInt("z");
+	}
+
+	public Point3D newInstance() {
+		return new Point3D(x, y, z);
 	}
 
 	/*

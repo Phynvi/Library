@@ -46,7 +46,7 @@ public class HandshakeDecoder extends ByteToMessageDecoder {
 			int revision = in.readInt();
 
 			RawHandler handler = NetworkRepository.getRawHandler(revision);
-			if (handler == null)
+			if (handler == null) 
 				throw new NullPointerException("Unsupported revision on handshake: " + revision);
 			int[] data = handler.getKeys();
 			ByteBuf buffer = Unpooled.buffer(data.length + 1);
