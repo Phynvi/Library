@@ -38,4 +38,11 @@ public class OptionPage extends Page {
 		options[optionIndex].action.run();
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int index = 0; index < options.length; index++)
+			sb.append(String.format("[%s: %s], ", index, options[index].name));
+		return sb.toString();
+	}
 }

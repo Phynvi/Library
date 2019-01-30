@@ -36,4 +36,13 @@ public class DialogOption {
 		this.action = Objects.requireNonNull(action, "The action of the entityOption cannot equal null");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return name;
+	}
+
 }

@@ -136,7 +136,9 @@ public class Dialog implements FacialExpressions {
 	 * @return a chain of this instance
 	 */
 	public Dialog then(Consumer<DialogTransactor> consumer) {
-		pages.peekLast().action = () -> consumer.accept(transactor);
+		if (!breakHere) {
+			pages.peekLast().action = () -> consumer.accept(transactor);
+		} else breakHere = false;
 		return this;
 	}
 
@@ -148,10 +150,12 @@ public class Dialog implements FacialExpressions {
 	 * @return a chain of this instance
 	 */
 	public Dialog then(Runnable... runnables) {
-		pages.peekLast().action = () -> {
-			for (Runnable r : runnables)
-				r.run();
-		};
+		if (!breakHere) {
+			pages.peekLast().action = () -> {
+				for (Runnable r : runnables)
+					r.run();
+			};
+		} else breakHere = false;
 		return this;
 	}
 
