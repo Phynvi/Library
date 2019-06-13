@@ -1,63 +1,27 @@
 package sql;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public abstract class SQLDatabase {
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
+
+public abstract class SQLDatabase<T> {
+
+	protected ConnectionSource connection;
+	protected Dao<T, String> dao;
 	
-	private String database;
-	private String username;
-	private String password;
-	private Connection connection = null;
-	private Statement statement;
-	private SQLHandler handler;
-
-	protected SQLDatabase(String database, String username, String password, SQLHandler handler) {
-		this.database = database;
-		this.username = username;
-		this.password = password;
-		this.handler = handler;
-	}
-
-	protected abstract void cycle() throws SQLException;
-
-	protected abstract void ping();
-
-	protected void connect() {
+	public SQLDatabase(String host, String table, String username, String password, Class<T> daoKlass) {
 		try {
-			Class.forName("com.mysql.jdbc.Driver").getConstructor().newInstance();
-			connection = DriverManager.getConnection(String.format("jdbc:mysql://%s/%s", handler.getAddress(), database), username, password);
-			statement = connection.createStatement();
-		} catch (Exception e) {
+			this.connection = new JdbcConnectionSource(String.format("jdbc:mysql://%s/%s", host, table), username, password);
+			this.dao = DaoManager.createDao(connection, daoKlass);
+			TableUtils.createTableIfNotExists(connection, daoKlass);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
-	protected void ping(String table, String variable) {
-		try {
-			query(String.format("SELECT * FROM `%s` WHERE `%s` = 'null'", table, variable));
-		} catch (Exception e) {
-			connect();
-		}
-	}
-
-	protected ResultSet query(String query) throws SQLException {
-		try {
-			if (query.toLowerCase().startsWith("select")) {
-				return statement.executeQuery(query);
-			} else {
-				statement.executeUpdate(query);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	protected Connection getConnection() {
-		return connection;
-	}
+	
+	public abstract void cycle();
 }
