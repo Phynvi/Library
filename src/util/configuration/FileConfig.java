@@ -4,13 +4,22 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 /**
  * A ConfigSection which is based on a particular file. This class contains methods for reloading
@@ -20,6 +29,26 @@ import org.yaml.snakeyaml.Yaml;
  */
 public class FileConfig extends ConfigSection {
 
+	private static final Gson gson;
+	
+	static {
+		gson = new GsonBuilder().setPrettyPrinting().create();
+		/*
+		 * registerTypeHierarchyAdapter(Map.class, new JsonSerializer<Map<?, ?>>() {
+			@Override
+			public JsonElement serialize(Map<?, ?> src, Type typeOfSrc, JsonSerializationContext context) {
+				if (src == null || src.isEmpty())
+					return null;
+				JsonObject obj = new JsonObject();
+				for(Map.Entry<?, ?> entry : src.entrySet()) {
+					obj.add(entry.getKey().toString(), context.serialize(entry.getValue()));
+				}
+				return obj;
+			}
+		})
+		 */
+	}
+	
 	/** The file we write to */
 	private final File file;
 
@@ -37,13 +66,16 @@ public class FileConfig extends ConfigSection {
 	@SuppressWarnings("unchecked")
 	public void load(ConfigType type) {
 		try {
-			InputStream in = new FileInputStream(file);
+			FileInputStream in = new FileInputStream(file);
 			Map<String, Object> data = null;
 
 			switch (type) {
 			case BINARY:
 				break;
 			case JSON:
+				try(FileReader reader = new FileReader(file)) {
+					data = gson.fromJson(reader, Map.class);
+				}
 				break;
 			case TXT:
 				BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -90,6 +122,8 @@ public class FileConfig extends ConfigSection {
 			case BINARY:
 				break;
 			case JSON:
+				gson.toJson(map, ps);
+				ps.flush();
 				break;
 			case TXT:
 				break;
@@ -102,7 +136,8 @@ public class FileConfig extends ConfigSection {
 			default:
 				break;
 			}
-			ps.print(out);
+			if(out != null)
+				ps.print(out);
 			ps.close();
 		} catch (Exception e) {
 			e.printStackTrace();
