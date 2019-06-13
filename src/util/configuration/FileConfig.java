@@ -68,7 +68,6 @@ public class FileConfig extends ConfigSection {
 		try {
 			FileInputStream in = new FileInputStream(file);
 			Map<String, Object> data = null;
-
 			switch (type) {
 			case BINARY:
 				break;

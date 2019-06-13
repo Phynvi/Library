@@ -6,3 +6,4 @@ dependencies/
 data/
 tests/
 /.gradle/
+/build/

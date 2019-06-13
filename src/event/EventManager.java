@@ -2,8 +2,11 @@ package event;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -21,63 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Albert Beaupre
  */
 public class EventManager {
-
-	/**
-	 * Used to execute a {@code Method} when an {@code EventListener} has listened to the call of an
-	 * {@code Event}.
-	 * 
-	 * @author Albert
-	 */
-	private class EventExecutor {
-
-		private final EventListener listener;
-		private final Method method;
-
-		/**
-		 * Constructs a new {@code EventExecutor} with the specified {@code listener} that uses the
-		 * specified {@code method} for execution.
-		 * 
-		 * @param listener
-		 *            the event listener with the underlying method
-		 * @param method
-		 *            the method to use for execution
-		 */
-		public EventExecutor(EventListener listener, Method method) {
-			this.listener = listener;
-			this.method = method;
-		}
-
-		/**
-		 * Executes the specified {@code event} using the {@code EventListener} and {@code Method} attached
-		 * to this {@code EventExecutor.}
-		 * 
-		 * @param event
-		 *            the event to execute
-		 */
-		public void execute(Event event) {
-			try {
-				method.invoke(listener, event);
-			} catch (Throwable throwable) {
-				throwable.printStackTrace();
-			}
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			return listener.equals(obj);
-		}
-
-		@Override
-		public int hashCode() {
-			return listener.hashCode();
-		}
-
-		@Override
-		public String toString() {
-			return listener.getClass().getSimpleName();
-		}
-
-	}
 
 	/**
 	 * This map is used to store event listener methods based on their relevant event.
@@ -110,9 +56,23 @@ public class EventManager {
 			@SuppressWarnings("unchecked")
 			Class<? extends Event> eventClazz = (Class<? extends Event>) method.getParameterTypes()[0];
 			HashSet<EventExecutor> methodSet = eventExecutors.getOrDefault(eventClazz, new HashSet<>());
-			methodSet.add(new EventExecutor(listener, method));
+			MethodExecutor methodExecutor = new MethodExecutor(listener, method);
+			methodExecutor.setPriority(method.getAnnotation(EventMethod.class).priority());
+			methodSet.add(methodExecutor);
 			eventExecutors.put(eventClazz, methodSet);
 		}
+	}
+	
+	public <T extends Event> void registerEvent(Class<T> eventClazz, Consumer<T> consumer) {
+		registerEvent(eventClazz, consumer, EventPriority.NORMAL);
+	}
+	
+	public <T extends Event> void registerEvent(Class<T> eventClazz, Consumer<T> consumer, EventPriority priority) {
+		HashSet<EventExecutor> consumerSet = eventExecutors.getOrDefault(eventClazz, new HashSet<>());
+		ConsumerExecutor<T> consumerExecutor = new ConsumerExecutor<>(consumer);
+		consumerExecutor.setPriority(priority);
+		consumerSet.add(consumerExecutor);
+		eventExecutors.put(eventClazz, consumerSet);
 	}
 
 	/**
@@ -144,15 +104,13 @@ public class EventManager {
 	 * @see event.Event
 	 */
 	public void callEvent(Event event) {
-		for (Entry<Class<? extends Event>, HashSet<EventExecutor>> entry : eventExecutors.entrySet()) {
-			if (entry.getKey().isInstance(event)) {
-				for (EventExecutor executor : entry.getValue()) {
-					if (event.isCancelled())
-						continue;
-					executor.execute(event);
-					if (event.isConsumed())
-						break;
-				}
+		List<EventExecutor> executors = eventExecutors.get(event.getClass()).stream().sorted((e1, e2) ->  e2.getPriority().ordinal() - e1.getPriority().ordinal()).collect(Collectors.toList());
+		for(EventExecutor e : executors) {
+			if(!event.isCancelled()) {
+				e.execute(event);
+			}
+			if (event.isConsumed()) {
+				break;
 			}
 		}
 	}
