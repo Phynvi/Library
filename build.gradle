@@ -1,0 +1,31 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'mysql:mysql-connector-java:8.0.16'
+	implementation 'org.pf4j:pf4j:2.6.0'
+	implementation 'com.google.code.gson:gson:2.8.5'
+	
+	compile group: 'io.netty', name: 'netty-all', version: '5.0.0.Alpha2'
+	compile group: 'commons-collections', name: 'commons-collections', version: '3.2.2'
+	compile group: 'org.yaml', name: 'snakeyaml', version: '1.24'
+	compile group: 'com.j256.ormlite', name: 'ormlite-jdbc', version: '5.1'
+	
+	compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+}
+
+sourceSets {
+	main {
+		resources {
+			srcDirs "src/", "resources/"
+		}
+	}
+}

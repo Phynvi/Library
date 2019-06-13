@@ -19,7 +19,7 @@ import infrastructure.GlobalVariables;
  * 
  * @author Albert Beaupre
  */
-public class Event {
+public abstract class Event {
 
 	private boolean consumed; // This will flag whether or not this specific event has been used.
 	private boolean cancelled; // This will flag whether or not this specific event has been cancelled.
@@ -76,5 +76,4 @@ public class Event {
 	public boolean isCancelled() {
 		return cancelled;
 	}
-
 }
