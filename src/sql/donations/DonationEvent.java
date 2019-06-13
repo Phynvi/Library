@@ -1,13 +1,22 @@
 package sql.donations;
 
 import event.Event;
-import lombok.Builder;
 
-@Builder
 public class DonationEvent extends Event {
 
-	private String username;
-	private int productId;
-	private int productAmount;
-	private double dollarAmmount;
+	public String username;
+	public int productId;
+	
+	public DonationEvent(String username, int productId) {
+		this.username = username;
+		this.productId = productId;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public int getProductId() {
+		return productId;
+	}
 }
