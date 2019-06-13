@@ -5,3 +5,4 @@ bin/
 dependencies/
 data/
 tests/
+/.gradle/
