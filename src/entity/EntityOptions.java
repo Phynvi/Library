@@ -1,5 +1,8 @@
 package entity;
 
+import event.impl.EntityChangeOptionEvent;
+import event.impl.EntitySelectOptionEvent;
+
 /**
  * 
  * @author Albert Beaupre
