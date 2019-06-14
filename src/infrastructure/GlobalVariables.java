@@ -5,6 +5,9 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import org.pf4j.PluginLoader;
+import org.pf4j.PluginManager;
+
 import entity.actor.model.ModelUpdater;
 import event.EventManager;
 import infrastructure.threads.TickThread;
@@ -28,6 +31,7 @@ public class GlobalVariables {
 
 	private static TickThread TICKER;
 	private static EventManager EVENT_MANAGER;
+	private static PluginManager PLUGIN_MANAGER;
 	private static ModelUpdater MODEL_UPDATER;
 
 	private static boolean DEBUGGING = true;
@@ -49,7 +53,7 @@ public class GlobalVariables {
 		Core.scheduleFixedTask(TICKER, 0, 1, TimeUnit.MILLISECONDS);
 		LOGGER.info("A TickThread has successfully been set");
 	}
-
+	
 	/**
 	 * Returns the {@code TickThread} that has been set to this {@code GlobalVariables} class that will
 	 * globally handle Ticks.
@@ -65,6 +69,20 @@ public class GlobalVariables {
 		return GlobalVariables.TICKER;
 	}
 
+	public static PluginManager getPluginManager() {
+		if (GlobalVariables.PLUGIN_MANAGER == null)
+			throw new NullPointerException("There is not a PluginManager set");
+		return PLUGIN_MANAGER;
+	}
+	
+	public static void setPluginManager(PluginManager pluginManager) {
+		if (GlobalVariables.PLUGIN_MANAGER != null) {
+			LOGGER.warning("A PluginLoader has already been set");
+			return;
+		}
+		GlobalVariables.PLUGIN_MANAGER = pluginManager;
+	}
+	
 	/**
 	 * Sets the specified {@code eventManager} to this {@code GlobalVariables} class so it may globally
 	 * handle any {@code Event}.

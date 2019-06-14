@@ -6,12 +6,12 @@ import java.util.HashSet;
 import entity.Entity;
 import entity.EntityList;
 import entity.actor.npc.NPC;
-import entity.geometry.EntityLocationChangeEvent;
 import entity.geometry.Location;
 import entity.geometry.Point3D;
 import entity.geometry.Shape3D;
 import event.EventListener;
 import event.EventMethod;
+import event.impl.EntityLocationChangeEvent;
 import infrastructure.GlobalVariables;
 import network.World;
 
@@ -94,48 +94,48 @@ public abstract class RSMap extends AreaManager implements EventListener {
 
 	@EventMethod
 	public void onEntityLocationChange(EntityLocationChangeEvent event) {
-		Entity entity = event.entity;
+		Entity entity = event.getEntity();
 		if (entity.getLocation() != null && entity.getLocation().map != this)
 			return;
-		if (event.currentLocation == null) {
+		if (event.getCurrentLocation() == null) {
 			if (entity instanceof NPC) {
 				npcs.remove((NPC) entity);
 			} else {
-				if (event.previousLocation != null) {
-					HashSet fromSet = this.entities.get(event.previousLocation);
+				if (event.getPreviousLocation() != null) {
+					HashSet fromSet = this.entities.get(event.getPreviousLocation());
 					if (fromSet == null)
 						fromSet = new HashSet<>();
 					fromSet.remove(entity);
-					this.entities.put(event.previousLocation, fromSet);
+					this.entities.put(event.getPreviousLocation(), fromSet);
 				}
 			}
 			entity.destroy();
 			return;
 		}
-		if (event.currentLocation.map == null)
+		if (event.getCurrentLocation().map == null)
 			return;
 
-		if (event.previousLocation != null) {
+		if (event.getPreviousLocation() != null) {
 			if (entity instanceof NPC) {
 				npcs.remove((NPC) entity);
 			} else {
-				HashSet fromSet = this.entities.get(event.previousLocation);
+				HashSet fromSet = this.entities.get(event.getPreviousLocation());
 				if (fromSet == null)
 					fromSet = new HashSet<>();
 				fromSet.remove(entity);
-				this.entities.put(event.previousLocation, fromSet);
+				this.entities.put(event.getPreviousLocation(), fromSet);
 			}
 
 			Location previousRegionLocation = entity.getTemporary("previous_region_location", null);
 			if (previousRegionLocation == null)
-				entity.temporary("previous_region_location", previousRegionLocation = event.previousLocation);
+				entity.temporary("previous_region_location", previousRegionLocation = event.getPreviousLocation());
 
-			int diffX = Math.abs(event.currentLocation.getRegionX() - previousRegionLocation.getRegionX());
-			int diffY = Math.abs(event.currentLocation.getRegionY() - previousRegionLocation.getRegionY());
+			int diffX = Math.abs(event.getCurrentLocation().getRegionX() - previousRegionLocation.getRegionX());
+			int diffY = Math.abs(event.getCurrentLocation().getRegionY() - previousRegionLocation.getRegionY());
 
 			if (diffX >= 5 || diffY >= 5) {
 
-				entity.temporary("previous_region_location", event.currentLocation);
+				entity.temporary("previous_region_location", event.getCurrentLocation());
 				/*
 				 * Set the map region changing flag so the new map region packet is sent upon the next update.
 				 */
@@ -146,11 +146,11 @@ public abstract class RSMap extends AreaManager implements EventListener {
 		if (entity instanceof NPC) {
 			npcs.add((NPC) entity);
 		} else {
-			HashSet toSet = this.entities.get(event.currentLocation);
+			HashSet toSet = this.entities.get(event.getCurrentLocation());
 			if (toSet == null)
 				toSet = new HashSet<>();
 			toSet.add(entity);
-			this.entities.put(event.currentLocation, toSet);
+			this.entities.put(event.getCurrentLocation(), toSet);
 		}
 	}
 

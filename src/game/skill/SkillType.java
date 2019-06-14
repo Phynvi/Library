@@ -7,6 +7,7 @@ package game.skill;
  * @author Albert Beaupre
  */
 public enum SkillType {
+	
 	ATTACK(0),
 	DEFENCE(1),
 	STRENGTH(2),

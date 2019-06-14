@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLHandler extends Thread {
+public class SQLHandler implements Runnable {
 
 	private List<SQLDatabase<?>> databases;
 	

@@ -22,6 +22,6 @@ public abstract class SQLDatabase<T> {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public abstract void cycle();
 }
