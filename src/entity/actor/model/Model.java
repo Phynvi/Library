@@ -9,8 +9,8 @@ public abstract class Model {
 
 	private final Mask[] currentMasks;
 	private boolean updating;
-	private int maskCount = 0;
-	private int maskData;
+	private byte maskCount = 0;
+	private short maskData;
 
 	/**
 	 * Constructs a new {@code Model}.
@@ -79,7 +79,7 @@ public abstract class Model {
 		reset();
 		this.maskData = 0;
 		this.maskCount = 0;
-		for (int i = 0; i < this.currentMasks.length; i++)
+		for (byte i = 0; i < this.currentMasks.length; i++)
 			this.currentMasks[i] = null;
 	}
 
@@ -99,7 +99,7 @@ public abstract class Model {
 	 *            The mask data of the update flag.
 	 * @return true if the mask was registered, false if not.
 	 */
-	public boolean activated(byte data) {
+	public boolean activated(short data) {
 		return (this.maskData & data) != 0;
 	}
 
@@ -110,7 +110,7 @@ public abstract class Model {
 	 *            the ordinal of the mask
 	 * @return true if the mask was registered, false if not.
 	 */
-	public boolean activated(int ordinal) {
+	public boolean activated(byte ordinal) {
 		return this.currentMasks[ordinal] != null;
 	}
 
@@ -119,7 +119,7 @@ public abstract class Model {
 	 * 
 	 * @return the combined mask data
 	 */
-	public int getMaskData() {
+	public short getMaskData() {
 		return this.maskData;
 	}
 

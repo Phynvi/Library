@@ -1,16 +1,34 @@
-package entity.actor.model;
+package infrastructure.threads;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import infrastructure.Tick;
+import entity.actor.model.Model;
+import infrastructure.Core;
+import infrastructure.CoreThread;
 
-public final class ModelUpdater extends Tick {
+public final class ModelUpdaterThread extends CoreThread {
+
 	private ArrayList<Model> updating = new ArrayList<>();
 	private ArrayDeque<Model> queued = new ArrayDeque<>();
 
-	public void tick() {
+	private boolean running;
+
+	public ModelUpdaterThread() {
+		super("Model Updater", Thread.MAX_PRIORITY, false);
+	}
+
+	public synchronized void setForUpdating(Model model) {
+		this.queued.add(model);
+		if (!running) {
+			Core.submitThread(this);
+		}
+	}
+
+	@Override
+	public void run() {
+		this.running = true;
 		try {
 			if (this.queued.size() > 0) {
 				this.updating.addAll(this.queued);
@@ -41,17 +59,9 @@ public final class ModelUpdater extends Tick {
 					model.finishUpdate();
 				}
 			}
-		} catch (Exception var3) {
-			var3.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-	}
-
-	public void cancel() {}
-
-	public void setForUpdating(Model model) {
-		this.queued.add(model);
-		if (!this.isQueued())
-			this.queue(30);
+		this.running = false;
 	}
 }

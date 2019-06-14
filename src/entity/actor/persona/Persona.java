@@ -25,14 +25,14 @@ import util.configuration.YMLSerializable;
 public abstract class Persona extends Entity implements Actor, SkillHolder, YMLSerializable, Mobile {
 
 	/**
-	 * The {@code attachments} map is used to attach any {@code YMLSerializable} values to this
-	 * {@code Persona}.
+	 * The {@code attachments} map is used to attach any {@code YMLSerializable}
+	 * values to this {@code Persona}.
 	 */
 	private HashMap<String, YMLSerializable> registered_serializables = new HashMap<>();
 
 	/**
-	 * The {@code config} variable is used to store any configurations to this {@code Persona} that can
-	 * be serialized.
+	 * The {@code config} variable is used to store any configurations to this
+	 * {@code Persona} that can be serialized.
 	 */
 	public ConfigSection config = new ConfigSection();
 
@@ -48,36 +48,52 @@ public abstract class Persona extends Entity implements Actor, SkillHolder, YMLS
 		this.registerForSerialization("inventory", inventory);
 	}
 
+	/**
+	 * Registers a mask to the {@code Model} of this {@code Persona}.
+	 * 
+	 * <p>
+	 * This method is effectively equivalent to:
+	 * 
+	 * <pre>
+	 * persona.getModel().registerMask(mask);
+	 * </pre>
+	 * 
+	 * @param mask
+	 */
 	public void mask(Mask mask) {
 		this.getModel().registerMask(mask);
 	}
 
 	/**
-	 * This clarifies that this {@code Persona} is active in-game, meaning they exist to other players.
+	 * This clarifies that this {@code Persona} is active in-game, meaning they
+	 * exist to other players.
 	 * 
 	 * @return true if persona is active; return false otherwise
 	 */
 	public abstract boolean isActive();
 
 	/**
-	 * This registers the given serializable object with this Persona. If the config has already been
-	 * loaded, then the deserialize() method is called on the given object, using the ConfigSection
-	 * available in this Persona's config at the given key. If the config has not yet been loaded (This
-	 * is done in the load(File f) call), then the serializable object is still registered under the
-	 * given key, and then when the config is loaded, the deserialize() method is called with the
-	 * appropriate ConfigSection as an argument.
+	 * This registers the given serializable object with this Persona. If the
+	 * config has already been loaded, then the deserialize() method is called
+	 * on the given object, using the ConfigSection available in this Persona's
+	 * config at the given key. If the config has not yet been loaded (This is
+	 * done in the load(File f) call), then the serializable object is still
+	 * registered under the given key, and then when the config is loaded, the
+	 * deserialize() method is called with the appropriate ConfigSection as an
+	 * argument.
 	 * 
-	 * Calling this method also means that when this Persona has serialize() called, it will call the
-	 * serialize() method on the given YML object and set the ConfigSection at the given key to the
-	 * result. The result of this serialization is then written to disk, allowing persistant data to be
+	 * Calling this method also means that when this Persona has serialize()
+	 * called, it will call the serialize() method on the given YML object and
+	 * set the ConfigSection at the given key to the result. The result of this
+	 * serialization is then written to disk, allowing persistant data to be
 	 * stored across Personas.
 	 * 
 	 * @param key
 	 *            the key for the config section.
 	 * @param yml
 	 *            the object to deserialize/serialize.
-	 * @return true if the object was deserialized, false if the server is still waiting for the holder
-	 *         to load.
+	 * @return true if the object was deserialized, false if the server is still
+	 *         waiting for the holder to load.
 	 */
 	public boolean registerForSerialization(String key, YMLSerializable yml) {
 		if (key == null)

@@ -1,9 +1,8 @@
 package game.dialog;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
-public class DialogTest extends NPCDialog {
+public class DialogTest extends Dialog {
 
 	private static DialogTransactor transactor = new DialogTransactor() {
 
@@ -35,18 +34,18 @@ public class DialogTest extends NPCDialog {
 	};
 
 	public DialogTest() {
-		super(transactor, 1);
+		super(transactor);
 
 		player("Hello, how are you?");
-		npc("I'm good, I'm a man of RuneScape. The adventerous world of bull crap.");
+		npc(1, "I'm good, I'm a man of RuneScape. The adventerous world of bull crap.");
 		player("Oh, really, give me money then!");
-		npc("Okay");
+		npc(1, "Okay");
 		options("Kill the man any way, then take his money", () -> {
 			player("I'll kill you fool");
-			npc("Oh god please no!");
+			npc(1, "Oh god please no!");
 		}, "Graciously take his money without killing him", () -> {
 			player("Thank you very much");
-			npc("You're very welcome sir.");
+			npc(1, "You're very welcome sir.");
 			//after options are selected, continue the dialog within the option runnables
 		});
 	}

@@ -1,8 +1,11 @@
 package entity.actor;
 
+import java.util.function.Consumer;
+
 /**
- * Represents a {@code ActionQueue} holder that handles any {@code Action} queuing. The
- * {@code Actor} is used within any {@code Action} as an 'owner' to be running the {@code Action}.
+ * Represents a {@code ActionQueue} holder that handles any {@code Action}
+ * queuing. The {@code Actor} is used within any {@code Action} as an 'owner' to
+ * be running the {@code Action}.
  * 
  * @author Albert Beaupre
  * 
@@ -19,7 +22,8 @@ public interface Actor {
 	ActionQueue getActions();
 
 	/**
-	 * Queues the specified {@code action} to the {@code ActionQueue} that this {@code Actor} contains.
+	 * Queues the specified {@code action} to the {@code ActionQueue} that this
+	 * {@code Actor} contains.
 	 * 
 	 * <p>
 	 * This is effectively equivalent to:
@@ -34,6 +38,31 @@ public interface Actor {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public default void queue(Action action) {
 		getActions().queue(action);
+	}
+
+	/**
+	 * Queues a newly created {@code Action} that executes code based on the
+	 * code within the given {@code consumer} argument. This allows for quick
+	 * queuing of an {@code Action}.
+	 * 
+	 * @param cancellable
+	 *            true if the action is cancellable; false otherwise
+	 * @param consumer
+	 *            the consumer action to execute for the action
+	 */
+	public default void queue(boolean cancellable, Consumer<ActionState> consumer) {
+		this.queue(new Action<Actor>(this) {
+			@Override
+			public boolean cycle(ActionState state) {
+				consumer.accept(state);
+				return false;
+			}
+
+			@Override
+			public boolean cancellable() {
+				return cancellable;
+			}
+		});
 	}
 
 }

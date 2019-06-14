@@ -24,14 +24,39 @@ public interface PaneHolder {
 	 */
 	public Pane getGamePane();
 
+	/**
+	 * 
+	 * @param interfaceId
+	 * @param childId
+	 * @param itemId
+	 */
 	public abstract void sendItemOnInterface(int interfaceId, int childId, int itemId);
 
+	/**
+	 * 
+	 * @param id
+	 * @param string
+	 */
 	public abstract void sendGlobalString(int id, String string);
 
+	/**
+	 * 
+	 * @param id
+	 */
 	public abstract void invokeBlankScript(int id);
 
+	/**
+	 * 
+	 * @param id
+	 * @param params
+	 */
 	public abstract void invokeScript(int id, Object... params);
 
+	/**
+	 * 
+	 * @param id
+	 * @param value
+	 */
 	public abstract void sendGlobalConfig(int id, int value);
 
 	/**
@@ -58,10 +83,11 @@ public interface PaneHolder {
 	public abstract void sendCloseInterface(int window, int position);
 
 	/**
-	 * Sends the right click/use configuration for items/spells/prayers on this interface. To convert
-	 * dementhium to Blaze, dementhium is of the format:<br>
-	 * sendAMask(Player holder, int set1, int set2, int interfaceId1, int childId1, int interfaceId2,
-	 * int childId2)<br>
+	 * Sends the right click/use configuration for items/spells/prayers on this
+	 * interface. To convert dementhium to Blaze, dementhium is of the
+	 * format:<br>
+	 * sendAMask(Player holder, int set1, int set2, int interfaceId1, int
+	 * childId1, int interfaceId2, int childId2)<br>
 	 * Where interfaceId2 << 16 | childId2 = is our int flags,<br>
 	 * set2 is our length,<br>
 	 * set1 is our offset,<br>
@@ -70,7 +96,8 @@ public interface PaneHolder {
 	 * @param flags
 	 *            The flags. Use a SettingsBuilder to generate these easily
 	 * @param offset
-	 *            the starting index of the containers items. Eg for inventory this is 0.
+	 *            the starting index of the containers items. Eg for inventory
+	 *            this is 0.
 	 * @param length
 	 *            the number of items. Eg for inventory this is 27
 	 * @param componentId
@@ -89,8 +116,8 @@ public interface PaneHolder {
 	public abstract void sendString(int interfaceId, int componentId, String s);
 
 	/**
-	 * Sets the specified component to be visible/invisible based on the specified {@code visible}
-	 * argument.
+	 * Sets the specified component to be visible/invisible based on the
+	 * specified {@code visible} argument.
 	 * 
 	 * @param componentId
 	 *            the component to change visibility

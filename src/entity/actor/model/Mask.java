@@ -15,14 +15,14 @@ public abstract class Mask implements Comparable<Mask> {
 	 * 
 	 * @return the data value of this {@code Mask}
 	 */
-	public abstract int data();
+	public abstract short data();
 
 	/**
 	 * Returns the ordinal (index) which this {@code Mask} is specifically read by any {@code Model}.
 	 * 
 	 * @return the ordinate (index) of this {@code Mask} to be read
 	 */
-	public abstract int ordinal();
+	public abstract byte ordinal();
 
 	/**
 	 * Writes information based on this {@code Mask} to the specified {@code packet} argument.

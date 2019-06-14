@@ -5,8 +5,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * The {@code Dialog} class is used to create a conversation between any player or NPC using the
- * {@link game.dialog.Page} to create pages as a written conversation.
+ * The {@code Dialog} class is used to create a conversation between any player
+ * or NPC using the {@link game.dialog.Page} to create pages as a written
+ * conversation.
  * 
  * @author Albert Beaupre
  */
@@ -36,17 +37,8 @@ public class Dialog implements FacialExpressions {
 	}
 
 	/**
-	 * Displays 1 option with 1 action.
-	 */
-	public Dialog options(String optionName, Runnable i) {
-		DialogOption option1 = new DialogOption(optionName, i);
-		pages.add(new OptionPage("Choose an Option", option1));
-		return this;
-	}
-
-	/**
 	 * 
-	 * Displays 2 options with 2 actions.
+	 * Displays 2 options with 2 corresponding actions.
 	 */
 	public Dialog options(String optionName, Runnable i, String optionName2, Runnable i2) {
 		DialogOption option1 = new DialogOption(optionName, i);
@@ -57,7 +49,7 @@ public class Dialog implements FacialExpressions {
 
 	/**
 	 * 
-	 * Displays 3 options with 3 actions.
+	 * Displays 3 options with 3 corresponding actions.
 	 */
 	public Dialog options(String optionName, Runnable i, String optionName2, Runnable i2, String optionName3, Runnable i3) {
 		DialogOption option1 = new DialogOption(optionName, i);
@@ -69,7 +61,7 @@ public class Dialog implements FacialExpressions {
 
 	/**
 	 * 
-	 * Displays 4 options with 4 actions.
+	 * Displays 4 options with 4 corresponding actions.
 	 */
 	public Dialog options(String optionName, Runnable i, String optionName2, Runnable i2, String optionName3, Runnable i3, String optionName4, Runnable i4) {
 		DialogOption option1 = new DialogOption(optionName, i);
@@ -81,7 +73,7 @@ public class Dialog implements FacialExpressions {
 	}
 
 	/**
-	 * Displays 5 options with 5 actions.
+	 * Displays 5 options with 5 corresponding actions.
 	 */
 	public Dialog options(String optionName, Runnable i, String optionName2, Runnable i2, String optionName3, Runnable i3, String optionName4, Runnable i4, String optionName5, Runnable i5) {
 		DialogOption option1 = new DialogOption(optionName, i);
@@ -106,8 +98,9 @@ public class Dialog implements FacialExpressions {
 	}
 
 	/**
-	 * Removes the last {@code Page} queued to this {@code Dialog} if the specified {@code predicate}
-	 * does not return true in its {@link Predicate#test(Object)} function.
+	 * Removes the last {@code Page} queued to this {@code Dialog} if the
+	 * specified {@code predicate} does not return true in its
+	 * {@link Predicate#test(Object)} function.
 	 * 
 	 * @param predicate
 	 *            the predicate to test
@@ -138,12 +131,14 @@ public class Dialog implements FacialExpressions {
 	public Dialog then(Consumer<DialogTransactor> consumer) {
 		if (!breakHere) {
 			pages.peekLast().action = () -> consumer.accept(transactor);
-		} else breakHere = false;
+		} else
+			breakHere = false;
 		return this;
 	}
 
 	/**
-	 * Writes multiple actions to the last {@code Page} written to this {@code Dialog}.
+	 * Writes multiple actions to the last {@code Page} written to this
+	 * {@code Dialog}.
 	 * 
 	 * @param runnables
 	 *            the actions to execute when the {@code Page} is opened.
@@ -155,12 +150,14 @@ public class Dialog implements FacialExpressions {
 				for (Runnable r : runnables)
 					r.run();
 			};
-		} else breakHere = false;
+		} else
+			breakHere = false;
 		return this;
 	}
 
 	/**
-	 * Writes a {@code Page} to this {@code Dialog} that is meant to be written for a player to speak.
+	 * Writes a {@code Page} to this {@code Dialog} that is meant to be written
+	 * for a player to speak.
 	 * 
 	 * <p>
 	 * This method is effectively equivalent to:
@@ -169,8 +166,8 @@ public class Dialog implements FacialExpressions {
 	 * player(CALM_TALK, name);
 	 * </pre>
 	 * 
-	 * @param name
-	 *            the name that is spoken
+	 * @param text
+	 *            the text that is spoken
 	 * @return a chain of this instance
 	 */
 	public Dialog player(String text) {
@@ -178,12 +175,13 @@ public class Dialog implements FacialExpressions {
 	}
 
 	/**
-	 * Writes a {@code Page} to this {@code Dialog} that is meant to be written for a player to speak.
+	 * Writes a {@code Page} to this {@code Dialog} that is meant to be written
+	 * for a player to speak.
 	 * 
 	 * @param expression
 	 *            the expression id value of the player speaking
-	 * @param name
-	 *            the name that is spoken
+	 * @param text
+	 *            the text that is spoken
 	 * @return a chain of this instance
 	 */
 	public Dialog player(int expression, String text) {
@@ -195,15 +193,56 @@ public class Dialog implements FacialExpressions {
 	}
 
 	/**
-	 * Selects the entityOption from an {@code OptionPage} and executes the action within the
-	 * entityOption.
+	 * Writes a {@code Page} to this {@code Dialog} that is meant to be written
+	 * for a player to speak.
+	 * 
+	 * <p>
+	 * This method is effectively equivalent to:
+	 * 
+	 * <pre>
+	 * player(CALM_TALK, name);
+	 * </pre>
+	 * 
+	 * @param npcId
+	 *            the id of the npc speaking
+	 * @param text
+	 *            the text that is spoken
+	 * @return a chain of this instance
+	 */
+	public Dialog npc(int npcId, String text) {
+		return this.npc(npcId, CALM_TALK, text);
+	}
+
+	/**
+	 * Writes a {@code Page} to this {@code Dialog} that is meant to be written
+	 * for a player to speak.
+	 * 
+	 * @param npcId
+	 *            the id of the npc speaking
+	 * @param expression
+	 *            the expression id value of the player speaking
+	 * @param text
+	 *            the text that is spoken
+	 * @return a chain of this instance
+	 */
+	public Dialog npc(int npcId, int expression, String text) {
+		Page page = new Page(text);
+		page.npcId = npcId;
+		page.expression = expression;
+		pages.add(page);
+		return this;
+	}
+
+	/**
+	 * Selects the entityOption from an {@code OptionPage} and executes the
+	 * action within the entityOption.
 	 * 
 	 * @param index
 	 *            the index of the entityOption to select
 	 * 
 	 * @throws UnsupportedOperationException
-	 *             if an {@code OptionPage} is not the current page or if the specified index of the
-	 *             entityOption is not available
+	 *             if an {@code OptionPage} is not the current page or if the
+	 *             specified index of the entityOption is not available
 	 * @return a chain of this instance
 	 */
 	public Dialog selectOption(int index) {
@@ -233,8 +272,9 @@ public class Dialog implements FacialExpressions {
 	 * Continues the dialog to the next page.
 	 * 
 	 * <p>
-	 * The {@code Page} returned is the next page within this {@code Dialog}, if existing, If there is
-	 * not another page, the {@link DialogTransactor#exitDialog()} method is called and the dialog is
+	 * The {@code Page} returned is the next page within this {@code Dialog}, if
+	 * existing, If there is not another page, the
+	 * {@link DialogTransactor#exitDialog()} method is called and the dialog is
 	 * stopped and null is returned.
 	 * 
 	 * @return the next page; return null otherwise

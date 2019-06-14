@@ -20,8 +20,8 @@ public abstract class Action<A extends Actor> {
 	private int count;
 
 	/**
-	 * Constructs a new {@code Action} from the specified {@code actor} as the owner of this
-	 * {@code Action}.
+	 * Constructs a new {@code Action} from the specified {@code actor} as the
+	 * owner of this {@code Action}.
 	 * 
 	 * @param actor
 	 *            the owner of this entity.actor.action
@@ -36,7 +36,6 @@ public abstract class Action<A extends Actor> {
 	 * This method is used as a waiting method
 	 * 
 	 * <p>
-	 * <b>Example: This will print "Hello World" in 10 seconds</b>
 	 * 
 	 * <pre>
 	 * if (countFor(5)) {
@@ -57,25 +56,28 @@ public abstract class Action<A extends Actor> {
 	}
 
 	/**
-	 * Cycles through this {@code Action} until {@code false} is returned or until the specified
-	 * {@code state} is equal to {@link ActionState#STOP}.
+	 * Cycles through this {@code Action} until {@code false} is returned or
+	 * until the specified {@code state} is equal to {@link ActionState#STOP}.
 	 * 
 	 * @param state
 	 *            the state at which this {@code Action} is at
-	 * @return true if the {@code Action} continues to cycle; return false otherwise
+	 * @return true if the {@code Action} continues to cycle; return false
+	 *         otherwise
 	 */
 	public abstract boolean cycle(ActionState state);
 
 	/**
-	 * If this method is set to false, then this {@code Action} <b>must</b> finish before it ends.
+	 * If this method is set to false, then this {@code Action} <b>must</b>
+	 * finish before it ends.
 	 * 
 	 * @return true if cancellable; return false otherwise
 	 */
 	public abstract boolean cancellable();
 
 	/**
-	 * Continues onto the next cycle of this {@code Action} and returns true if the state isn't already
-	 * at {@link ActionState#STOP}; otherwise it returns true and sets the state to the next state.
+	 * Continues onto the next cycle of this {@code Action} and returns true if
+	 * the state isn't already at {@link ActionState#STOP}; otherwise it returns
+	 * true and sets the state to the next state.
 	 * 
 	 * @return true if the next cycle can be made; return false otherwise
 	 */
@@ -87,15 +89,16 @@ public abstract class Action<A extends Actor> {
 	}
 
 	/**
-	 * Queues this {@code Action} to the {@code ActionQueue} of the {@code Actor} controlling this
-	 * {@code Action}.
+	 * Queues this {@code Action} to the {@code ActionQueue} of the
+	 * {@code Actor} controlling this {@code Action}.
 	 */
 	public final void queue() {
 		this.actor.queue(this);
 	}
 
 	/**
-	 * Sets the state of this {@code Action} to the specified {@code state} argument.
+	 * Sets the state of this {@code Action} to the specified {@code state}
+	 * argument.
 	 * 
 	 * @param state
 	 *            the state to set to this {@code Action}
