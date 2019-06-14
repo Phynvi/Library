@@ -10,8 +10,8 @@ public class ConsumerExecutor<T extends Event> extends EventExecutor {
 		this.consumer = consumer;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public void execute(Event event) {
 		this.consumer.accept((T) event);
 	}

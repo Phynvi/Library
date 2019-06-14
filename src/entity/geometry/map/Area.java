@@ -2,12 +2,12 @@ package entity.geometry.map;
 
 import java.util.List;
 import entity.Entity;
-import entity.geometry.EntityLocationChangeEvent;
 import entity.geometry.Location;
 import entity.geometry.Point3D;
 import entity.geometry.Shape3D;
 import event.EventListener;
 import event.EventMethod;
+import event.impl.EntityLocationChangeEvent;
 
 /**
  * The {@code Area} class is used to handle a specific area based on the bounds of a {@code Shape3D}
@@ -72,20 +72,20 @@ public abstract class Area implements Shape3D, EventListener {
 
 	@EventMethod
 	public void onAreaChange(EntityLocationChangeEvent event) {
-		Location current = event.currentLocation;
-		Location previous = event.previousLocation;
+		Location current = event.getCurrentLocation();
+		Location previous = event.getPreviousLocation();
 
 		if (previous == null) {
 			if (contains(current)) {
-				onEnter(event.entity, event.type);
+				onEnter(event.getEntity(), event.getType());
 			}
 			return;
 		}
 
 		if (contains(current) && !contains(previous)) {
-			onEnter(event.entity, event.type);
+			onEnter(event.getEntity(), event.getType());
 		} else if (!contains(current) && contains(previous)) {
-			onLeave(event.entity, event.type);
+			onLeave(event.getEntity(), event.getType());
 		}
 	}
 

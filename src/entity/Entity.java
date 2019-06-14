@@ -1,9 +1,9 @@
 package entity;
 
-import entity.geometry.EntityLocationChangeEvent;
 import entity.geometry.Locatable;
 import entity.geometry.Location;
 import entity.geometry.map.AreaChangeType;
+import event.impl.EntityLocationChangeEvent;
 import util.ReflectUtil;
 import util.configuration.ConfigSection;
 
@@ -72,7 +72,7 @@ public abstract class Entity implements Locatable {
 	}
 
 	/**
-	 * This will trigger the {@link entity.geometry.EntityLocationChangeEvent} event with the
+	 * This will trigger the {@link event.impl.EntityLocationChangeEvent} event with the
 	 * {@link AreaChangeType#TELEPORT} as the type of location change.
 	 * 
 	 * <p>

@@ -1,6 +1,7 @@
 package infrastructure;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -8,6 +9,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import org.pf4j.DefaultPluginManager;
+import org.pf4j.PluginManager;
 
 import cache.Cache;
 import entity.actor.model.ModelUpdater;
@@ -52,7 +56,10 @@ public class Core {
 			GlobalVariables.setTicker(new TickThread());
 			GlobalVariables.setEventManager(new EventManager());
 			GlobalVariables.setModelUpdater(new ModelUpdater());
-
+			GlobalVariables.setPluginManager(new DefaultPluginManager(Paths.get("./plugins/")));
+			PluginManager pluginManager = GlobalVariables.getPluginManager();
+			pluginManager.loadPlugins();
+			pluginManager.startPlugins();
 		} catch (Exception e) {
 			System.err.println("Error initializing Core...");
 			e.printStackTrace();
